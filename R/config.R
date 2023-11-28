@@ -2,8 +2,10 @@
 .libPaths(c("/home/akenny/R_lib", .libPaths()))
 
 # Set packages
-cfg$pkgs <- c("splines", "survival", "SuperLearner")
-cfg$pkgs_nocluster <- c("ggplot2")
+cfg$pkgs <- c(
+  "splines", "survival", "SuperLearner", "magrittr", "ggplot2", "dplyr"
+)
+cfg$pkgs_nocluster <- c()
 
 # Set cluster config
 if (Sys.getenv("HOME")=="/home/akenny") {
