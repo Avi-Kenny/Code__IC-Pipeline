@@ -1490,7 +1490,8 @@ if (flags$run_mediation) {
       # density_bins = 0 # !!!!!
     )
   )
-  saveRDS(ests_np_med, paste0(cfg2$analysis," plots/ests_med_",cfg2$tid,".rds"))
+  saveRDS(ests_np_med, paste0("rds/", cfg2$analysis, " objs/ests_med_",
+                              cfg2$tid, ".rds"))
   
   print("MEDIATION ANALYSIS RESULTS")
   print("--------------------------")
@@ -1500,6 +1501,8 @@ if (flags$run_mediation) {
   
   # Process results
   if (F) {
+    
+    # !!!!! Move this section
     
     # Choose analysis
     # "Janssen" "Moderna" "AMP" "AZD1222" "Janssen (partA)" "Profiscov"
@@ -1523,7 +1526,7 @@ if (flags$run_mediation) {
     )
 
     for (i in inds) {
-      ests <- readRDS(paste0(analysis," plots/ests_med_",i,".rds"))
+      ests <- readRDS(paste0("rds/", analysis, " objs/ests_med_", i, ".rds"))
       e_nde <- as.list(ests[ests$effect=="NDE",][2:5])
       e_nie <- as.list(ests[ests$effect=="NIE",][2:5])
       e_pm <- as.list(ests[ests$effect=="PM",][2:5])
@@ -1628,12 +1631,15 @@ if (flags$run_mediation) {
                            xlim=c(-1,1))
       
       # Export 10x6
-      ggsave(filename = paste0(cfg2$analysis," plots/plot_pm.pdf"), plot=p_pm,
-             device="pdf", width=10, height=6)
-      ggsave(filename = paste0(cfg2$analysis," plots/plot_nde.pdf"), plot=p_nde,
-             device="pdf", width=10, height=6)
-      ggsave(filename = paste0(cfg2$analysis," plots/plot_nie.pdf"), plot=p_nie,
-             device="pdf", width=10, height=6)
+      ggsave(filename = paste0("../Figures + Tables/", cfg2$analysis,
+                               " plots/plot_pm.pdf"),
+             plot=p_pm, device="pdf", width=10, height=6)
+      ggsave(filename = paste0("../Figures + Tables/", cfg2$analysis,
+                               " plots/plot_nde.pdf"),
+             plot=p_nde, device="pdf", width=10, height=6)
+      ggsave(filename = paste0("../Figures + Tables/", cfg2$analysis,
+                               " plots/plot_nie.pdf"),
+             plot=p_nie, device="pdf", width=10, height=6)
       
     }
     
@@ -1675,19 +1681,22 @@ if ("Grenander" %in% cfg2$estimators$cr) {
     )
     
     if (flags$save_data_objs) {
-      saveRDS(ests, paste0(cfg2$analysis," plots/ests_g_",cfg2$tid,".rds"))
+      saveRDS(ests, paste0("rds/", cfg2$analysis, " objs/ests_g_", cfg2$tid,
+                           ".rds"))
     }
     
     if (flags$save_diagnostics) {
       ggsave(
-        filename = paste0(cfg2$analysis," plots/diagnostics_",cfg2$tid,".pdf"),
+        filename = paste0("rds/", cfg2$analysis, " objs/diagnostics_",
+                          cfg2$tid, ".pdf"),
         plot = diagnostics(ests), device="pdf", width=12, height=8
       )
     }
     
   } else {
     
-    ests <- readRDS(paste0(cfg2$analysis," plots/ests_g_",cfg2$tid,".rds"))
+    ests <- readRDS(paste0("rds/", cfg2$analysis, " objs/ests_g_", cfg2$tid,
+                           ".rds"))
     
   }
   
@@ -1724,12 +1733,14 @@ if ("Cox (spline 3 df)" %in% cfg2$estimators$cr) {
     )
     
     if (flags$save_data_objs) {
-      saveRDS(ests, paste0(cfg2$analysis," plots/ests_z3_",cfg2$tid,".rds"))
+      saveRDS(ests, paste0("rds/", cfg2$analysis, " objs/ests_z3_", cfg2$tid,
+                           ".rds"))
     }
     
   } else {
     
-    ests <- readRDS(paste0(cfg2$analysis," plots/ests_z3_",cfg2$tid,".rds"))
+    ests <- readRDS(paste0("rds/", cfg2$analysis, " objs/ests_z3_", cfg2$tid,
+                           ".rds"))
     
   }
   
@@ -1779,12 +1790,14 @@ if ("Cox (spline 4 df)" %in% cfg2$estimators$cr) {
     }
     
     if (flags$save_data_objs) {
-      saveRDS(ests, paste0(cfg2$analysis," plots/ests_z4_",cfg2$tid,".rds"))
+      saveRDS(ests, paste0("rds/", cfg2$analysis, " objs/ests_z4_", cfg2$tid,
+                           ".rds"))
     }
     
   } else {
     
-    ests <- readRDS(paste0(cfg2$analysis," plots/ests_z4_",cfg2$tid,".rds"))
+    ests <- readRDS(paste0("rds/", cfg2$analysis, " objs/ests_z4_", cfg2$tid,
+                           ".rds"))
     
   }
   
@@ -1820,12 +1833,14 @@ if ("Cox gcomp" %in% cfg2$estimators$cr) {
     )
     
     if (flags$save_data_objs) {
-      saveRDS(ests, paste0(cfg2$analysis," plots/ests_c_",cfg2$tid,".rds"))
+      saveRDS(ests, paste0("rds/", cfg2$analysis, " objs/ests_c_", cfg2$tid,
+                           ".rds"))
     }
     
   } else {
     
-    ests <- readRDS(paste0(cfg2$analysis," plots/ests_c_",cfg2$tid,".rds"))
+    ests <- readRDS(paste0("rds/", cfg2$analysis, " objs/ests_c_", cfg2$tid,
+                           ".rds"))
     
   }
   
@@ -1863,12 +1878,14 @@ if ("Cox edge" %in% cfg2$estimators$cr) {
     )
     
     if (flags$save_data_objs) {
-      saveRDS(ests, paste0(cfg2$analysis," plots/ests_e_",cfg2$tid,".rds"))
+      saveRDS(ests, paste0("rds/", cfg2$analysis, " objs/ests_e_", cfg2$tid,
+                           ".rds"))
     }
     
   } else {
     
-    ests <- readRDS(paste0(cfg2$analysis," plots/ests_e_",cfg2$tid,".rds"))
+    ests <- readRDS(paste0("rds/", cfg2$analysis, " objs/ests_e_", cfg2$tid,
+                           ".rds"))
     
   }
   
@@ -1906,23 +1923,24 @@ if (flags$run_hyptest) {
   if (F) {
     saveRDS(
       test_results,
-      paste0(cfg2$analysis," plots/test_results_",cfg2$tid,".rds")
+      paste0("rds/", cfg2$analysis, " objs/test_results_", cfg2$tid, ".rds")
     )
   }
   
   test_results$extras <- NULL
   write.table(
     do.call(rbind, test_results),
-    file = paste0(cfg2$analysis," plots/hyptest_",cfg2$tid,".csv"),
+    file = paste0("rds/", cfg2$analysis, " objs/hyptest_", cfg2$tid, ".csv"),
     sep = ",",
     row.names = FALSE
   )
   
   # Process hyp test results
+  # !!!!! Move this
   if (F) {
     
-    # folder <- "Janssen (partA) plots/Run 11 (58 graphs, 0.90 cutoff)/Hyptest"
-    folder <- "Profiscov plots/Run 5 (added hyptest)/Hyptest"
+    # folder <- "../Figures + Tables/Janssen (partA) plots/Run 11 (58 graphs, 0.90 cutoff)/Hyptest"
+    folder <- "../Figures + Tables/Profiscov plots/Run 5 (added hyptest)/Hyptest"
     files <- dir(folder)
     n_pvals <- length(files)
     p_vals <- rep(NA, n_pvals)
@@ -2372,13 +2390,15 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
     }
     
     ggsave(
-      filename = paste0(cfg2$analysis," plots/",filename),
+      filename = paste0("../Figures + Tables/", cfg2$analysis, " plots/",
+                        filename),
       plot=plot, device="pdf", width=6, height=4
     )
     
     if (flags$table_of_vals) {
       write.table(trim_plot_data(plot_data_risk, cutoffs, cfg2),
-                  file=paste0(cfg2$analysis," plots/risk_",cfg2$tid,".csv"),
+                  file=paste0("../Figures + Tables/", cfg2$analysis,
+                              " plots/risk_", cfg2$tid, ".csv"),
                   sep=",",
                   row.names=FALSE)
     }
@@ -2444,22 +2464,33 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
     }
     
     ggsave(
-      filename = paste0(cfg2$analysis," plots/",filename),
+      filename = paste0("../Figures + Tables/", cfg2$analysis, " plots/",
+                        filename),
       plot=plot, device="pdf", width=6, height=4
     )
     
     if (flags$save_plot_objs) {
-      saveRDS(plot_data_cve, paste0(cfg2$analysis," plots/plot_data_cve_",
-                                    cfg2$tid,".rds"))
-      saveRDS(hst, paste0(cfg2$analysis," plots/hst_",cfg2$tid,".rds"))
-      saveRDS(cutoffs, paste0(cfg2$analysis," plots/cutoffs_",cfg2$tid,".rds"))
-      saveRDS(cfg2, paste0(cfg2$analysis," plots/cfg2_",cfg2$tid,".rds"))
-      saveRDS(dat_v, paste0(cfg2$analysis," plots/dat_v_",cfg2$tid,".rds"))
+      saveRDS(
+        plot_data_cve,
+        paste0("rds/", cfg2$analysis, " objs/plot_data_cve_", cfg2$tid, ".rds"))
+      saveRDS(
+        hst,
+        paste0("rds/", cfg2$analysis, " objs/hst_", cfg2$tid, ".rds"))
+      saveRDS(
+        cutoffs,
+        paste0("rds/", cfg2$analysis, " objs/cutoffs_", cfg2$tid, ".rds"))
+      saveRDS(
+        cfg2,
+        paste0("rds/", cfg2$analysis, " objs/cfg2_", cfg2$tid, ".rds"))
+      saveRDS(
+        dat_v,
+        paste0("rds/", cfg2$analysis, " objs/dat_v_", cfg2$tid, ".rds"))
     }
     
     if (flags$table_of_vals) {
       write.table(trim_plot_data(plot_data_cve, cutoffs, cfg2),
-                  file=paste0(cfg2$analysis," plots/cve_",cfg2$tid,".csv"),
+                  file=paste0("../Figures + Tables/", cfg2$analysis,
+                              " plots/cve_", cfg2$tid, ".csv"),
                   sep=",",
                   row.names=FALSE)
     }
@@ -2614,7 +2645,7 @@ if (F) {
     
     # Generate s_orig
     s_orig <- dat_amp$s[!is.na(dat_amp$s)]
-    saveRDS(s_orig, paste0(cfg2$analysis, " plots/s_orig_", i, ".rds"))
+    saveRDS(s_orig, paste0("rds/", cfg2$analysis, " objs/s_orig_", i, ".rds"))
     
     if (i %in% c(1,5,9,13,14,15)) {
       
@@ -2624,7 +2655,7 @@ if (F) {
         wt = dat_amp$weights[!is.na(dat_amp$s)],
         trial = F
       )
-      saveRDS(hst, paste0(cfg2$analysis, " plots/hist_", i, ".rds"))
+      saveRDS(hst, paste0("rds/", cfg2$analysis, " objs/hist_", i, ".rds"))
       
       # Generate KM object
       srv_ov <- survfit(Surv(dat_amp$y,dat_amp$delta)~1)
@@ -2639,7 +2670,7 @@ if (F) {
         ci_up = rep(ci_up_ov, 2),
         overall = c("Overall L", "Overall R")
       )
-      saveRDS(km, paste0(cfg2$analysis, " plots/km_", i, ".rds"))
+      saveRDS(km, paste0("rds/", cfg2$analysis, " objs/km_", i, ".rds"))
       
     }
     
@@ -2656,15 +2687,15 @@ if (F) {
   for (i in c(1:9)) {
     
     # Read in data objects
-    plot_data_risk <- readRDS(paste0(cfg2$analysis, " plots/km_",
+    plot_data_risk <- readRDS(paste0("rds/", cfg2$analysis, " objs/km_",
                                      plot_map$overall[i], ".rds"))
-    hst <- readRDS(paste0(cfg2$analysis, " plots/hist_",
+    hst <- readRDS(paste0("rds/", cfg2$analysis, " objs/hist_",
                           plot_map$hist[i], ".rds"))
     for (j in plot_map$gren[[i]]) {
-      s_orig <- readRDS(paste0(cfg2$analysis, " plots/s_orig_",
+      s_orig <- readRDS(paste0("rds/", cfg2$analysis, " objs/s_orig_",
                                j, ".rds"))
       s_grid <- seq(from=min(s_orig), to=max(s_orig), length.out=101)
-      ests <- readRDS(paste0(cfg2$analysis, " plots/ests_g_",
+      ests <- readRDS(paste0("rds/", cfg2$analysis, " objs/ests_g_",
                              j, ".rds"))
       ests2 <- process_ests(ests, s_grid, run_cve=F, lab_risk=cfg2$amp_tx2[j])
       plot_data_risk <- rbind(plot_data_risk, ests2$risk)
@@ -2682,7 +2713,8 @@ if (F) {
       hst = hst
     )
     ggsave(
-      filename = paste0(cfg2$analysis," plots/plot_risk_",i,".pdf"),
+      filename = paste0("../Figures + Tables/", cfg2$analysis,
+                        " plots/plot_risk_", i, ".pdf"),
       plot=plot, device="pdf", width=6, height=4
     )
     
@@ -3380,8 +3412,8 @@ if (F) {
   i <- 1
   
   # Load data objects
-  folder_144 <- "RV144 plots/"
-  folder_705 <- "HVTN 705 (compare RV144) plots/"
+  folder_144 <- "rds/RV144 objs/"
+  folder_705 <- "rds/HVTN 705 (compare RV144) objs/"
   hst_144 <- readRDS(paste0(folder_144, "hst_", i, ".rds"))
   hst_705 <- readRDS(paste0(folder_705, "hst_", i, ".rds"))
   cutoffs_144 <- readRDS(paste0(folder_144, "cutoffs_", i, ".rds"))
