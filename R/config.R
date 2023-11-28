@@ -12,13 +12,15 @@ if (Sys.getenv("HOME")=="/home/akenny") {
   # Bionic
   cluster_config <- list(
     js = "slurm",
-    dir = paste0("/home/akenny/", Sys.getenv("project"))
+    dir = paste0("/home/akenny/", Sys.getenv("proj"),
+                 "/Code__", Sys.getenv("proj"))
   )
 } else if (Sys.getenv("HOME")=="/home/users/avikenny") {
   # Bayes
   cluster_config <- list(
     js = "ge",
-    dir = paste0("/home/users/avikenny/Desktop/", Sys.getenv("project"))
+    dir = paste0("/home/users/avikenny/Desktop/", Sys.getenv("proj"),
+                 "/Code__", Sys.getenv("proj"))
   )
 } else {
   cluster_config <- list(js="", dir="")

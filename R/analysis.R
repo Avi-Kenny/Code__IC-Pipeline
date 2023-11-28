@@ -78,8 +78,8 @@
     run_hyptest = F,
     run_mediation = F,
     hvtn705_abstract_fig = F,
-    table_of_vals = T,
-    save_data_objs = T,
+    table_of_vals = F,
+    save_data_objs = F,
     save_plot_objs = F,
     save_diagnostics = F,
     paper_npcve = F,
@@ -917,10 +917,10 @@
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="AVI-KENNY-T460") {
     cfg2$tid <- 35
-    cfg2$dataset <- paste0(cfg2$folder_cluster,cfg2$dataset)
+    cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
-    cfg2$dataset <- paste0(cfg2$folder_local,cfg2$dataset)
+    cfg2$dataset <- paste0("../Data/", cfg2$folder_local, cfg2$dataset)
   }
   
   # Set config based on cfg2$map
@@ -1358,7 +1358,7 @@ if (cfg2$estimators$overall %in% c("Cox gcomp", "KM")) {
 if (cfg2$estimators$overall=="Cox import" ||
     "Cox import" %in% cfg2$estimators$cr) {
   
-  path1 <- paste0(cfg2$folder_local, "output/", cfg2$cr2_trial, "/",
+  path1 <- paste0("../Data/", cfg2$folder_local, "output/", cfg2$cr2_trial, "/",
                   cfg2$cr2_COR, "/marginalized.risk.Rdata")
   path2 <- gsub("risk.Rdata", "risk.no.marker.Rdata", path1)
   load(path1) # risks.all.1
