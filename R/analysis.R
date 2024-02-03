@@ -12,7 +12,7 @@
   # "Janssen" "Moderna" "AMP" "AZD1222" "Janssen (partA)" "Profiscov"
   # "HVTN 705 (primary)" "HVTN 705 (all)" "RV144" "HVTN 705 (second)"
   # "HVTN 705 (compare RV144)" "Moderna (boost)"
-  cfg2 <- list(analysis="Janssen (partA)", seed=1)
+  cfg2 <- list(analysis="Moderna", seed=1)
   
   # Set proper task ID variable
   if (cluster_config$js=="slurm") {
@@ -152,7 +152,7 @@
     cfg2$dataset <- c("janssen_pooled_real_data_processed_with_riskscore.csv", "janssen_pooled_realADCP_data_processed_with_riskscore.csv")
     cfg2$folder_local <- "Janssen data/"
     # cfg2$folder_cluster <- "Z:/covpn/p3003/analysis/correlates/Part_A_Blinded_Phase_Data/adata/"
-    cfg2$folder_cluster <- "C:/Users/avike/OneDrive/Desktop/Avi/Biostats + Research/Research/Marco Carone/Project - VaxCurve/VaxCurve/R/Janssen data/"
+    cfg2$folder_cluster <- "C:/Users/avike/OneDrive/Desktop/Avi/Research/IC-Pipeline/Data/Janssen data/"
     cfg2$cr2_trial <- c("janssen_pooled_real", "janssen_pooled_realADCP")
     cfg2$cr2_COR <- "D29IncludeNotMolecConfirmedstart1"
     cfg2$v <- list(
@@ -785,7 +785,7 @@
     cfg2$t_0 <- c(578) # c(0)
     cfg2$dataset <- c("rv144_ank.csv")
     cfg2$folder_local <- "RV144 data/"
-    cfg2$folder_cluster <- "C:/Users/avike/OneDrive/Desktop/Avi/Biostats + Research/Research/Marco Carone/Project - VaxCurve/VaxCurve/R/RV144 data/"
+    cfg2$folder_cluster <- "C:/Users/avike/OneDrive/Desktop/Avi/Research/IC-Pipeline/Data/RV144 data/"
     cfg2$cr2_trial <- ""
     cfg2$cr2_COR <- ""
     cfg2$v <- list(
@@ -916,7 +916,7 @@
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="AVI-KENNY-T460") {
-    cfg2$tid <- 35
+    cfg2$tid <- 1
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
