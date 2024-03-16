@@ -12,7 +12,7 @@
   # "Janssen" "Moderna" "AMP" "AZD1222" "Janssen (partA)" "Profiscov"
   # "HVTN 705 (primary)" "HVTN 705 (all)" "RV144" "HVTN 705 (second)"
   # "HVTN 705 (compare RV144)" "Moderna (boost)"
-  cfg2 <- list(analysis="Moderna", seed=1)
+  cfg2 <- list(analysis="Janssen (partA)", seed=1)
   
   # Set proper task ID variable
   if (cluster_config$js=="slurm") {
@@ -78,14 +78,14 @@
     run_hyptest = F,
     run_mediation = F,
     hvtn705_abstract_fig = F,
-    table_of_vals = F,
-    save_data_objs = F,
+    table_of_vals = T, # !!!!!
+    save_data_objs = T, # !!!!!
     save_plot_objs = F,
     save_diagnostics = F,
     paper_npcve = F,
     paper_cox = F,
     hvtn124_plot = F,
-    partA_mnscrpt2 = F
+    partA_mnscrpt2 = F # !!!!!
   )
   
   # Set default cfg2 values (+ those common to multiple analyses)
@@ -151,8 +151,7 @@
     cfg2$t_0 <- 54
     cfg2$dataset <- c("janssen_pooled_real_data_processed_with_riskscore.csv", "janssen_pooled_realADCP_data_processed_with_riskscore.csv")
     cfg2$folder_local <- "Janssen data/"
-    # cfg2$folder_cluster <- "Z:/covpn/p3003/analysis/correlates/Part_A_Blinded_Phase_Data/adata/"
-    cfg2$folder_cluster <- "C:/Users/avike/OneDrive/Desktop/Avi/Research/IC-Pipeline/Data/Janssen data/"
+    cfg2$folder_cluster <- "Z:/covpn/p3003/analysis/correlates/Part_A_Blinded_Phase_Data/adata/"
     cfg2$cr2_trial <- c("janssen_pooled_real", "janssen_pooled_realADCP")
     cfg2$cr2_COR <- "D29IncludeNotMolecConfirmedstart1"
     cfg2$v <- list(
@@ -391,7 +390,6 @@
     cfg2$lab_title <- c("IgG gp140 C97ZA: Month 7", "ADCP gp140 C97ZA: Month 7", "IgG3 V1V2 breadth: Month 7", "IgG3 gp120+gp140 breadth: Month 7", "ELISPot PTE Env: Month 7", "Multi-epitope functions: Month 7", "ADCP gp140 Mos1: Month 7", "IgG V1V2 breadth: Month 7", "ADCC AUC CAP8: Month 7", "ADCC AUC CH58: Month 7", "ADCC AUC WITO: Month 7", "Pct CD4+ T-cells expressing IFN-g/IL-2: Month 7", "Pct CD8+ T-cells expressing IFN-g/IL-2: Month 7", "IgG3 AE.A244 V1V2 Tags 293F: Month 7", "IgG3 C.1086C V1V2 Tags: Month 7", "IgG3 gp70-001428.2.42 V1V2: Month 7", "IgG3 gp70-1012.11.TC21.3257 V1V2: Month 7", "IgG3 gp70-1394C9G1 V1V2: Month 7", "IgG3 gp70-BF1266 431a V1V2: Month 7", "IgG3 gp70-Ce1086 B2 V1V2: Month 7", "IgG3 gp70-B.CaseA2 V1V2: Month 7", "IgG3 V1V2 A244/1086/CaseA: Month 7", "IgG3 V1V2 breadth score trunc1: Month 7", "IgG3 V1V2 breadth score selected trunc1: Month 7", "IgG3 V2i breadth score trunc1: Month 7", "IgG3 V2p breadth score trunc1: Month 7")
     cfg2$lab_x <- c("IgG gp140 C97ZA (EU/ml) (=s)", "Average phagocytosis score to gp140 C97ZA (=s)", "IgG3 V1V2 breadth (Wt avg log10 Net MFI) (=s)", "IgG3 gp120 + gp140 breadth (Wt avg log10 Net MFI) (=s)", "ELISPot PTE Env (=s)", "Multi-epitope functions (=s)", "Average phagocytosis score to gp140 Mos1 (=s)", "IgG V1V2 breadth (Wt avg log10 Net MFI) (=s)", "AUC baseline-subtracted CAP8 (% loss of luc activity) (=s)", "AUC baseline-subtracted CH58 (% loss of luc activity) (=s)", "AUC baseline-subtracted WITO (% loss of luc activity) (=s)", "CD4+ T cell responses to any Env peptide pools (=s)", "CD8+ T cell responses to any Env peptide pools (=s)", "IgG3 Net MFI to AE.A244 V1V2 Tags 293F (=s)", "IgG3 Net MFI to C.1086C V1V2 Tags (=s)", "IgG3 Net MFI to gp70-001428.2.42 V1V2 (=s)", "IgG3 Net MFI to gp70-1012.11.TC21.3257 V1V2 (=s)", "IgG3 Net MFI to gp70-1394C9G1 V1V2 (=s)", "IgG3 Net MFI to gp70-BF1266 431a V1V2 (=s)", "IgG3 Net MFI to gp70-Ce1086 B2 V1V2 (=s)", "IgG3 Net MFI to gp70-B.CaseA2 V1V2 (=s)", "IgG3 V1V2 breadth (AE.A244/C.1086/B.CaseA) (=s)", "IgG3 V1V2 breadth score trunc1 (=s)", "IgG3 V1V2 breadth score selected trunc1 (=s)", "IgG3 V2i breadth score trunc1 (=s)", "IgG3 V2p breadth score trunc1 (=s)")
     cfg2$t_0 <- 550
-    # cfg2$dataset <- "HVTN705_secondcasecontrolprocesseddata_v11.csv"
     cfg2$dataset <- "HVTN705_secondcasecontrolprocesseddata_v12.csv"
     cfg2$folder_local <- "HVTN 705 (second) data/"
     cfg2$folder_cluster <- "Z:/vaccine/p705/analysis/lab/cc/copcor/"
@@ -785,7 +783,7 @@
     cfg2$t_0 <- c(578) # c(0)
     cfg2$dataset <- c("rv144_ank.csv")
     cfg2$folder_local <- "RV144 data/"
-    cfg2$folder_cluster <- "C:/Users/avike/OneDrive/Desktop/Avi/Research/IC-Pipeline/Data/RV144 data/"
+    cfg2$folder_cluster <- "C:/Users/ak811/Desktop/Avi/Research/IC-Pipeline/Data/RV144 data/"
     cfg2$cr2_trial <- ""
     cfg2$cr2_COR <- ""
     cfg2$v <- list(
@@ -915,7 +913,7 @@
   # cfg2$estimators <- list(overall="Cox gcomp", cr=c("Cox gcomp")) # !!!!!
   
   # Set config based on local vs. cluster
-  if (Sys.getenv("USERDOMAIN")=="AVI-KENNY-T460") {
+  if (Sys.getenv("USERDOMAIN")=="WIN") {
     cfg2$tid <- 1
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
@@ -943,6 +941,7 @@
   }
   
   # Moderna-specific code
+  # Note: This is probably no longer necessary
   if (cfg2$analysis=="Moderna" && (cfg2$tid %in% c(5,7,9))) {
     cfg2$qnt <- lapply(cfg2$qnt, function(x) { c(0,x[2]) })
   }
@@ -1104,6 +1103,18 @@
     weights = df_weights,
     ph2 = df_z
   )
+  
+  # ULOQ truncation for Janssen partA
+  if (cfg2$analysis=="Janssen (partA)") {
+    if (cfg2$marker=="Day29bindSpike") {
+      uloq <- 238.1165
+    } else if (cfg2$marker=="Day29bindRBD") {
+      uloq <- 172.5755
+    } else if (cfg2$marker=="Day29pseudoneutid50") {
+      uloq <- 844.7208
+    }
+    df_ph1$marker <- pmin(df_ph1$marker, log10(uloq))
+  }
   
   # Create data object needed by `vaccine` package functions
   dat <- vaccine::load_data(
@@ -1484,7 +1495,6 @@ if (flags$run_mediation) {
     t_0 = cfg2$t_0,
     scale = "VE",
     params_np = vaccine::params_med_np(
-      grid_size = list(y=101, s=101, x=5),
       surv_type = cfg2$params$Q_n_type,
       density_type = cfg2$params$g_n_type
       # density_bins = 0 # !!!!!
@@ -2027,8 +2037,7 @@ if (flags$run_hyptest) {
     )
     curve_colors <- c(
       "darkgrey", "darkgrey", "darkgrey", "darkgrey",
-      "darkorchid3", "darkorchid3", "firebrick3", "firebrick3", # !!!!!
-      # "firebrick3", "firebrick3", "firebrick3", "firebrick3", # !!!!!
+      "darkorchid3", "darkorchid3", "firebrick3", "firebrick3",
       "deepskyblue3", "deepskyblue3",
       "deepskyblue3", "deepskyblue3",
       "deepskyblue3", "darkorchid3", "firebrick3", "darkolivegreen3",
@@ -2083,11 +2092,15 @@ if (flags$run_hyptest) {
     }
     if (!is.na(zoom_y_max)) { zoom_y[2] <- min(zoom_y_max, zoom_y[2]) }
     
-    # Hack to get zoom_y value for HVTN 124 plots
-    if (flags$hvtn124_plot) { zoom_x <<- zoom_x; zoom_y <<- zoom_y; }
-    
     # Generate histogram/KDE data
     dens_height <- 0.6 * (zoom_y[2]/1.05-zoom_y[1])
+    
+    # Hack to get needed values for HVTN 124 plots
+    if (flags$hvtn124_plot) {
+      zoom_x <<- zoom_x
+      zoom_y <<- zoom_y
+      dens_height <<- dens_height
+    }
     
     # !!!!! For now, accessing data globally; change
     min_s <- min(dat_v$s, na.rm=T)
@@ -2159,7 +2172,6 @@ if (flags$run_hyptest) {
         ymax = dens_height * (dens$y/max(dens$y)) + zoom_y[1]
       )
       
-
     }
     
     # Create and return ggplot2 object
@@ -2209,7 +2221,8 @@ if (flags$run_hyptest) {
           aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax),
           hist_data,
           alpha = 0.3,
-          fill = "orange", # "forestgreen"
+          fill = "orange",
+          # fill = "forestgreen",
           inherit.aes = F
         )
       
@@ -2220,7 +2233,8 @@ if (flags$run_hyptest) {
         data = kde_data,
         inherit.aes = F,
         color = "white",
-        fill = "orange", # "forestgreen"
+        fill = "orange",
+        # fill = "forestgreen",
         alpha = 0.3
       )
       
@@ -2511,56 +2525,114 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
 if (F) {
   
   # Read in data
-  dat_124 <- read.csv(paste0("C:/Users/avike/OneDrive/Desktop/Avi/Biostats + R",
-                             "esearch/Research/Peter Gilbert/Project - HVTN 12",
-                             "4/bama_igg3_data_v124_for_avi_v2.csv"))
+  dat_124 <- read.csv(paste0("C:/Users/ak811/Desktop/Avi/Research/_Old/HVTN 12",
+                             "4 (Peter Gilbert)/Data/bama_igg3_data_v124_for_a",
+                             "vi_v3.csv"))
   
   # Map marker names
-  cfg2$marker2 <- case_when(
+  cfg2$marker2 <- dplyr::case_when(
     cfg2$marker=="Day210IgG3gp70.001428.2.42.V1V240delta" ~ "gp70-001428.2.42 V1V2",
     cfg2$marker=="Day210IgG3gp70.BF1266.431a.V1V240delta" ~ "gp70-BF1266_431a_V1V2",
     cfg2$marker=="Day210IgG3gp70.Ce1086.B2.V1V240delta" ~ "gp70-Ce1086_B2 V1V2",
     cfg2$marker=="Day210IgG3gp70.B.CaseA.V1.V240delta" ~ "gp70_B.CaseA_V1_V2",
     cfg2$marker=="Day210IgG3AE.A244.V1V2.Tags_293F40delta" ~ "gp70-CM244.ec1 V1V2",
-    cfg2$marker=="Day210IgG340mdw_V1V2" ~ "5-antigen V1V2 panel",
+    # cfg2$marker=="Day210IgG340mdw_V1V2" ~ "5-antigen V1V2 panel", # OLD
+    cfg2$marker=="Day210IgG340mdw_V1V2_trunc1" ~ "5-antigen V1V2 panel", # NEW
     TRUE ~ "ERROR"
   )
   
   # Extract marker values
   dat_124 %<>% dplyr::filter(antigen==cfg2$marker2 & trt=="T2")
   mrk_vals <- log10(dat_124$delta)
-
-  # Generate histogram
-  get.marker.histogram2 <- function(marker) {
-    tmp.1 <- hist(marker, breaks=15, plot=F)
-    wt <- rep(1, length(marker))
-    tmp <- plotrix::weighted.hist(marker, wt, breaks=tmp.1$breaks, plot=F)
-    attr(tmp,"class") <- "histogram"
-    return(tmp)
-  }
-  hst2 <- get.marker.histogram2(mrk_vals)
-  # zoom_y comes from hack in plotting function using flags$hvtn124_plot==T
-  ymax2 <- 0.6 * (hst2$counts/max(hst2$counts)) * (zoom_y[2]/1.05-zoom_y[1]) +
-    zoom_y[1]
-  hist_data <- data.frame(
-    xmin = hst2$breaks[-length(hst2$breaks)],
-    xmax = hst2$breaks[-1],
-    ymin = rep(zoom_y[1], length(hst2$counts)),
-    ymax = ymax2
-  )
-  if (zoom_x[2]<max(mrk_vals)) {
-    zoom_x[2] <- max(mrk_vals) + 0.1*(max(mrk_vals)-zoom_x[1])
+  
+  # NEW CODE (KDE)
+  if (F) {
+    
+    # Get median HVTN 124 marker value
+    median_124 <- as.numeric(quantile(mrk_vals, probs=0.5))
+    print(paste("Median marker value (HVTN 124):", round(10^median_124)))
+    
+    # Get CVE at median
+    plot_data_cve_np <- dplyr::filter(
+      plot_data_cve,
+      curve=="CVE, nonparametric"
+    )
+    index <- which.min(abs(plot_data_cve_np$x-median_124))
+    cve_med_np_est <- round(plot_data_cve_np$y[index], 3)
+    cve_med_np_lo <- round(plot_data_cve_np$ci_lo[index], 3)
+    cve_med_np_up <- round(plot_data_cve_np$ci_up[index], 3)
+    print(paste0("CVE (95%CI) at median: ", cve_med_np_est, " (", cve_med_np_lo,
+                 " -- ", cve_med_np_up, ")"))
+    
+    # What % of HVTN 705 participants reached the median value
+    pct_705_above_med <- sum(dat_v$s>=median_124, na.rm=T)/sum(!is.na(dat_v$s))
+    print(paste("% 705 participants above median:",round(pct_705_above_med, 3)))
+    
+    # Overlaid plot
+    dens <- stats::density(
+      x = mrk_vals,
+      bw = "ucv"
+      # adjust = 0.5 # !!!!!
+    )
+    kde_data <- data.frame(
+      x = dens$x,
+      ymin = zoom_y[1],
+      ymax = 0.25*(dens_height*(dens$y/max(dens$y))) + zoom_y[1]
+    )
+    if (zoom_x[2]<max(mrk_vals)) {
+      zoom_x[2] <- max(mrk_vals) + 0.1*(max(mrk_vals)-zoom_x[1])
+    }
+    plot + geom_ribbon(
+      aes(x=x, ymin=ymin, ymax=ymax),
+      data = kde_data,
+      color = "brown4",
+      size = 0.4,
+      fill = "brown4", # "forestgreen"
+      alpha = 0.1,
+      inherit.aes = F
+    ) +
+      coord_cartesian(xlim=zoom_x, ylim=zoom_y, expand=F)
+    
   }
   
-  plot + geom_rect(
-    aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax),
-    hist_data,
-    color = "brown4",
-    size = 0.4,
-    fill = "brown4",
-    alpha = 0.1,
-    inherit.aes = F
-  ) + coord_cartesian(xlim=zoom_x, ylim=zoom_y, expand=F)
+  # OLD CODE (histogram)
+  if (F) {
+    
+    # Generate histogram
+    get.marker.histogram2 <- function(marker) {
+      tmp.1 <- hist(marker, breaks=15, plot=F)
+      wt <- rep(1, length(marker))
+      tmp <- plotrix::weighted.hist(marker, wt, breaks=tmp.1$breaks, plot=F)
+      attr(tmp,"class") <- "histogram"
+      return(tmp)
+    }
+    hst2 <- get.marker.histogram2(mrk_vals)
+    # zoom_y comes from hack in plotting function using flags$hvtn124_plot==T
+    # ymax2 <- 0.6 * (hst2$counts/max(hst2$counts)) * (zoom_y[2]/1.05-zoom_y[1]) +
+    #   zoom_y[1]
+    ymax2 <- 0.2 * (hst2$counts/max(hst2$counts)) * (zoom_y[2]/1.05-zoom_y[1]) +
+      zoom_y[1]
+    hist_data <- data.frame(
+      xmin = hst2$breaks[-length(hst2$breaks)],
+      xmax = hst2$breaks[-1],
+      ymin = rep(zoom_y[1], length(hst2$counts)),
+      ymax = ymax2
+    )
+    if (zoom_x[2]<max(mrk_vals)) {
+      zoom_x[2] <- max(mrk_vals) + 0.1*(max(mrk_vals)-zoom_x[1])
+    }
+    
+    plot + geom_rect(
+      aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax),
+      hist_data,
+      color = "brown4",
+      size = 0.4,
+      fill = "brown4",
+      alpha = 0.1,
+      inherit.aes = F
+    ) + coord_cartesian(xlim=zoom_x, ylim=zoom_y, expand=F)
+    
+  }
   
 }
 
