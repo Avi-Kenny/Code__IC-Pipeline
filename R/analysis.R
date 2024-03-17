@@ -85,7 +85,7 @@
     paper_npcve = F,
     paper_cox = F,
     hvtn124_plot = F,
-    partA_mnscrpt2 = F # !!!!!
+    partA_mnscrpt2 = T # !!!!!
   )
   
   # Set default cfg2 values (+ those common to multiple analyses)
@@ -614,6 +614,7 @@
     # Second manuscript: 1-3,13-15,25-27,37-39,45-47,49-51,59-64
     
     # Override default config
+    cfg2$estimators <- list(overall="Cox gcomp", cr=c("Grenander", "Cox gcomp"))
     cfg2$qnt[["Risk, nonparametric"]] <- c(0,0.9)
     cfg2$qnt[["CVE, nonparametric"]] <- c(0,0.9)
     cfg2$params$g_n_type <- "parametric (edge) 2"
@@ -1665,7 +1666,7 @@ if (flags$run_mediation) {
 
 if ("Grenander" %in% cfg2$estimators$cr) {
   
-  calc_ests <- T
+  calc_ests <- F
   if (calc_ests) {
     
     set.seed(cfg2$seed)
@@ -1828,7 +1829,7 @@ if ("Cox (spline 4 df)" %in% cfg2$estimators$cr) {
 
 if ("Cox gcomp" %in% cfg2$estimators$cr) {
   
-  calc_ests <- T
+  calc_ests <- F
   if (calc_ests) {
     
     set.seed(cfg2$seed)
@@ -2221,8 +2222,8 @@ if (flags$run_hyptest) {
           aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax),
           hist_data,
           alpha = 0.3,
-          fill = "orange",
-          # fill = "forestgreen",
+          # fill = "orange",
+          fill = "forestgreen",
           inherit.aes = F
         )
       
@@ -2233,8 +2234,8 @@ if (flags$run_hyptest) {
         data = kde_data,
         inherit.aes = F,
         color = "white",
-        fill = "orange",
-        # fill = "forestgreen",
+        # fill = "orange",
+        fill = "forestgreen",
         alpha = 0.3
       )
       
