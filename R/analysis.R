@@ -12,7 +12,7 @@
   # "Janssen" "Moderna" "AMP" "AZD1222" "Janssen (partA)" "Profiscov"
   # "HVTN 705 (primary)" "HVTN 705 (all)" "RV144" "HVTN 705 (second)"
   # "HVTN 705 (compare RV144)" "Moderna (boost)"
-  cfg2 <- list(analysis="Janssen (partA)", seed=1)
+  cfg2 <- list(analysis="HVTN 705 (second)", seed=1)
   
   # Set proper task ID variable
   if (cluster_config$js=="slurm") {
@@ -915,7 +915,7 @@
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 1
+    cfg2$tid <- 47
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
@@ -2222,8 +2222,8 @@ if (flags$run_hyptest) {
           aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax),
           hist_data,
           alpha = 0.3,
-          # fill = "orange",
-          fill = "forestgreen",
+          fill = "orange",
+          # fill = "forestgreen",
           inherit.aes = F
         )
       
@@ -2234,8 +2234,8 @@ if (flags$run_hyptest) {
         data = kde_data,
         inherit.aes = F,
         color = "white",
-        # fill = "orange",
-        fill = "forestgreen",
+        fill = "orange",
+        # fill = "forestgreen",
         alpha = 0.3
       )
       
