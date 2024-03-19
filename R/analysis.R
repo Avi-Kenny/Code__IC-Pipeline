@@ -78,14 +78,14 @@
     run_hyptest = F,
     run_mediation = F,
     hvtn705_abstract_fig = F,
-    table_of_vals = T, # !!!!!
-    save_data_objs = T, # !!!!!
+    table_of_vals = F,
+    save_data_objs = F,
     save_plot_objs = F,
     save_diagnostics = F,
     paper_npcve = F,
     paper_cox = F,
-    hvtn124_plot = F,
-    partA_mnscrpt2 = T # !!!!!
+    hvtn124_plot = T, # !!!!!
+    partA_mnscrpt2 = F
   )
   
   # Set default cfg2 values (+ those common to multiple analyses)
@@ -386,11 +386,12 @@
     cfg2$density_type <- "kde edge"
     
     # Analysis-specific config
-    cfg2$marker <- c("Day210ELCZ", "Day210ADCPgp140C97ZAfib", "Day210IgG340mdw_V1V2", "Day210IgG340mdw_gp120_gp140_vm", "Day210ELISpotPTEEnv", "Day210mdw_xassay_overall", "Day210ADCPgp140Mos1fib", "Day210IgG50mdw_V1V2", "Day210ADCCCAP8_pAUC", "Day210ADCCCH58_pAUC", "Day210ADCCWITO_pAUC", "Day210ICS4AnyEnvIFNg_OR_IL2", "Day210ICS8AnyEnvIFNg_OR_IL2", "Day210IgG3AE.A244.V1V2.Tags_293F40delta", "Day210IgG3C.1086C.V1.V2.Tags40delta", "Day210IgG3gp70.001428.2.42.V1V240delta", "Day210IgG3gp70.1012.11.TC21.3257.V1V240delta", "Day210IgG3gp70.1394C9G1.V1V240delta", "Day210IgG3gp70.BF1266.431a.V1V240delta", "Day210IgG3gp70.Ce1086.B2.V1V240delta", "Day210IgG3gp70.B.CaseA.V1.V240delta", "Day210mdw_xassay_select_igg3v1v2", "Day210IgG340mdw_V1V2_trunc1", "Day210mdw_xassay_select_igg3v1v2_trunc1", "Day210IgG340mdw_V2i_trunc1", "Day210IgG340mdw_V2p_trunc1")
+    cfg2$marker <- c("Day210ELCZ", "Day210ADCPgp140C97ZAfib", "Day210IgG340mdw_V1V2", "Day210IgG340mdw_gp120_gp140_vm", "Day210ELISpotPTEEnv", "Day210mdw_xassay_overall", "Day210ADCPgp140Mos1fib", "Day210IgG50mdw_V1V2", "Day210ADCCCAP8_pAUC", "Day210ADCCCH58_pAUC", "Day210ADCCWITO_pAUC", "Day210ICS4AnyEnvIFNg_OR_IL2", "Day210ICS8AnyEnvIFNg_OR_IL2", "Day210IgG3AE.A244.V1V2.Tags_293F40delta", "Day210IgG3C.1086C.V1.V2.Tags40delta", "Day210IgG3gp70.001428.2.42.V1V240delta", "Day210IgG3gp70.1012.11.TC21.3257.V1V240delta", "Day210IgG3gp70.1394C9G1.V1V240delta", "Day210IgG3gp70.BF1266.431a.V1V240delta", "Day210IgG3gp70.Ce1086.B2.V1V240delta", "Day210IgG3gp70.B.CaseA.V1.V240delta", "Day210mdw_xassay_select_igg3v1v2", "Day210IgG340mdw_V1V2_trunc1", "Day210mdw_xassay_select_igg3v1v2_trunc1", "Day210IgG340mdw_V2i_trunc1", "Day210IgG340mdw_V2p_trunc1", "Day210mdw.5antigen.igg3v1v2.trunc1")
     cfg2$lab_title <- c("IgG gp140 C97ZA: Month 7", "ADCP gp140 C97ZA: Month 7", "IgG3 V1V2 breadth: Month 7", "IgG3 gp120+gp140 breadth: Month 7", "ELISPot PTE Env: Month 7", "Multi-epitope functions: Month 7", "ADCP gp140 Mos1: Month 7", "IgG V1V2 breadth: Month 7", "ADCC AUC CAP8: Month 7", "ADCC AUC CH58: Month 7", "ADCC AUC WITO: Month 7", "Pct CD4+ T-cells expressing IFN-g/IL-2: Month 7", "Pct CD8+ T-cells expressing IFN-g/IL-2: Month 7", "IgG3 AE.A244 V1V2 Tags 293F: Month 7", "IgG3 C.1086C V1V2 Tags: Month 7", "IgG3 gp70-001428.2.42 V1V2: Month 7", "IgG3 gp70-1012.11.TC21.3257 V1V2: Month 7", "IgG3 gp70-1394C9G1 V1V2: Month 7", "IgG3 gp70-BF1266 431a V1V2: Month 7", "IgG3 gp70-Ce1086 B2 V1V2: Month 7", "IgG3 gp70-B.CaseA2 V1V2: Month 7", "IgG3 V1V2 A244/1086/CaseA: Month 7", "IgG3 V1V2 breadth score trunc1: Month 7", "IgG3 V1V2 breadth score selected trunc1: Month 7", "IgG3 V2i breadth score trunc1: Month 7", "IgG3 V2p breadth score trunc1: Month 7")
     cfg2$lab_x <- c("IgG gp140 C97ZA (EU/ml) (=s)", "Average phagocytosis score to gp140 C97ZA (=s)", "IgG3 V1V2 breadth (Wt avg log10 Net MFI) (=s)", "IgG3 gp120 + gp140 breadth (Wt avg log10 Net MFI) (=s)", "ELISPot PTE Env (=s)", "Multi-epitope functions (=s)", "Average phagocytosis score to gp140 Mos1 (=s)", "IgG V1V2 breadth (Wt avg log10 Net MFI) (=s)", "AUC baseline-subtracted CAP8 (% loss of luc activity) (=s)", "AUC baseline-subtracted CH58 (% loss of luc activity) (=s)", "AUC baseline-subtracted WITO (% loss of luc activity) (=s)", "CD4+ T cell responses to any Env peptide pools (=s)", "CD8+ T cell responses to any Env peptide pools (=s)", "IgG3 Net MFI to AE.A244 V1V2 Tags 293F (=s)", "IgG3 Net MFI to C.1086C V1V2 Tags (=s)", "IgG3 Net MFI to gp70-001428.2.42 V1V2 (=s)", "IgG3 Net MFI to gp70-1012.11.TC21.3257 V1V2 (=s)", "IgG3 Net MFI to gp70-1394C9G1 V1V2 (=s)", "IgG3 Net MFI to gp70-BF1266 431a V1V2 (=s)", "IgG3 Net MFI to gp70-Ce1086 B2 V1V2 (=s)", "IgG3 Net MFI to gp70-B.CaseA2 V1V2 (=s)", "IgG3 V1V2 breadth (AE.A244/C.1086/B.CaseA) (=s)", "IgG3 V1V2 breadth score trunc1 (=s)", "IgG3 V1V2 breadth score selected trunc1 (=s)", "IgG3 V2i breadth score trunc1 (=s)", "IgG3 V2p breadth score trunc1 (=s)")
     cfg2$t_0 <- 550
-    cfg2$dataset <- "HVTN705_secondcasecontrolprocesseddata_v12.csv"
+    # cfg2$dataset <- "HVTN705_secondcasecontrolprocesseddata_v12.csv"
+    cfg2$dataset <- "HVTN705_secondcasecontrolprocesseddata_v13.csv"
     cfg2$folder_local <- "HVTN 705 (second) data/"
     cfg2$folder_cluster <- "Z:/vaccine/p705/analysis/lab/cc/copcor/"
     cfg2$cr2_trial <- "hvtn705second"
@@ -915,7 +916,8 @@
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 47
+    cfg2$tid <- 23
+    # cfg2$tid <- 27
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
