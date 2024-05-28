@@ -12,7 +12,7 @@
   # "Janssen" "Moderna" "AMP" "AZD1222" "Janssen (partA)" "Profiscov"
   # "HVTN 705 (primary)" "HVTN 705 (all)" "RV144" "HVTN 705 (second)"
   # "HVTN 705 (compare RV144)" "Moderna (boost)"
-  cfg2 <- list(analysis="HVTN 705 (second)", seed=1)
+  cfg2 <- list(analysis="Moderna (boost)", seed=1)
   
   # Set proper task ID variable
   if (cluster_config$js=="slurm") {
@@ -85,7 +85,8 @@
     paper_npcve = F,
     paper_cox = F,
     hvtn124_plot = F,
-    partA_mnscrpt2 = T # !!!!!
+    partA_mnscrpt2 = F, # !!!!!
+    moderna_boost_x_scale = T # !!!!!
   )
   
   # Set default cfg2 values (+ those common to multiple analyses)
@@ -861,7 +862,8 @@
     cfg2$t_0 <- 0
     cfg2$dataset <- "moderna_boost_data_processed_20230912.csv"
     cfg2$folder_local <- "Moderna (boost) data/"
-    cfg2$folder_cluster <- "Z:/covpn/p3001/analysis/correlates/Part_C_Unblinded_Phase_Data/adata/"
+    # cfg2$folder_cluster <- "Z:/covpn/p3001/analysis/correlates/Part_C_Unblinded_Phase_Data/adata/"
+    cfg2$folder_cluster <- "C:/Users/ak811/Desktop/Avi/Research/IC-Pipeline/Data/Moderna (boost) data/"
     cfg2$cr2_trial <- "moderna_boost"
     cfg2$cr2_COR <- c("BD29naive", "BD29nnaive")
     cfg2$v <- list(
@@ -915,7 +917,7 @@
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 47
+    cfg2$tid <- 3
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
@@ -957,6 +959,7 @@
   
   # Moderna boost specific code
   flags$filter_naive <- cfg2$analysis=="Moderna (boost)"
+  flags$x_axis_power10 <- cfg2$analysis=="Moderna (boost)"
   
 }
 
@@ -1300,7 +1303,16 @@ if (cfg2$estimators$overall %in% c("Cox gcomp", "KM")) {
       dat_ov$x4 <- NULL
       attr(dat_ov, "dim_x") <- 3
     }
-    ests_ov <- vaccine::est_overall(dat=dat_ov, t_0=cfg2$t_0, method=method, ve=F)
+    ests_ov <- vaccine::est_overall(
+      dat=dat_ov, t_0=cfg2$t_0, method=method, ve=F
+    )
+    
+    if (F) {
+      saveRDS(ests_ov, paste0("rds/", cfg2$analysis, " objs/ests_ov_", cfg2$tid,
+                           ".rds"))
+      # ests_ov <- readRDS(paste0("rds/", cfg2$analysis, " objs/ests_ov_",
+      #                           cfg2$tid, ".rds"))
+    }
     
     if ("CVE" %in% cfg2$plots) { stop("TO DO") }
     
@@ -1343,7 +1355,7 @@ if (cfg2$estimators$overall %in% c("Cox gcomp", "KM")) {
     xx <- seq(ceiling(xlim_scaled[1]), floor(xlim_scaled[2])) / more_ticks
     x_axis <- list(ticks=c(), labels=list())
     for (x in xx) {
-      if (x>=3) {
+      if (x>=3 || flags$x_axis_power10) {
         x_axis$ticks[length(x_axis$ticks)+1] <- x
         x_axis$labels[[length(x_axis$labels)+1]] <- bquote(10^.(x))
       } else {
@@ -2378,6 +2390,15 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
   if (nrow(plot_data_risk)>0) {
     
     cfg2$lab_y <- paste0("Probability of ", cfg2$endpoint, " by day ", cfg2$t_0)
+    
+    if (flags$moderna_boost_x_scale) {
+      if (cfg2$tid %in% c(3,23)) {
+        cfg2$zoom_x <- c(3.9,6.2)
+      } else if (cfg2$tid %in% c(8,28)) {
+        cfg2$zoom_x <- c(1.6,4.1)
+      }
+      cfg2$more_ticks <- 1
+    }
     
     plot <- create_plot(
       plot_data = trim_plot_data(plot_data_risk, cutoffs, cfg2),

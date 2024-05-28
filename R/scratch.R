@@ -4,7 +4,7 @@ if (F) {
   library(magrittr)
   library(dplyr)
   
-  tids <- c(1:3,13:15,25:27,37:39,45:47, 49:51,59:64)
+  tids <- c(1:3,13:15,25:27,37:39,45:47,49:51,59:64)
   folder <- paste0("../Figures + Tables/Janssen (partA) plots/Run 19 (added UL",
                    "OQ truncation)/CSVs")
   
@@ -13,7 +13,7 @@ if (F) {
     path_cve <- paste0(folder, "/cve_", i, ".csv")
     path_risk <- paste0(folder, "/risk_", i, ".csv")
     cve <- utils::read.csv(path_cve)
-    risk <- utils::read.csv(path_cr)
+    risk <- utils::read.csv(path_risk)
     cve$which <- "cve"
     risk$which <- "risk"
     dat <- rbind(cve,risk)
