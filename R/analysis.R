@@ -2391,12 +2391,23 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
     
     cfg2$lab_y <- paste0("Probability of ", cfg2$endpoint, " by day ", cfg2$t_0)
     
+    # !!!!! Perhaps incorporate this into cfg2
     if (flags$moderna_boost_x_scale) {
-      if (cfg2$tid %in% c(3,23)) {
-        cfg2$zoom_x <- c(3.9,6.2)
-      } else if (cfg2$tid %in% c(8,28)) {
-        cfg2$zoom_x <- c(1.6,4.1)
-      }
+      cfg2$zoom_x <- dplyr::case_when(
+        cfg2$tid %in% c(3,23) ~ c(3.9,6.2), # Main figure 2
+        cfg2$tid %in% c(8,28) ~ c(3.9,6.2), # Main figure 2
+        cfg2$tid %in% c(1,21) ~ c(2.5,5.5), # Supp figure S14
+        cfg2$tid %in% c(6,26) ~ c(0.5,3.5), # Supp figure S14
+        cfg2$tid %in% c(11,31) ~ c(3.3,6.6), # Supp figure S15
+        cfg2$tid %in% c(16,36) ~ c(0.9,4.5), # Supp figure S15
+        cfg2$tid %in% c(13,33) ~ c(4.9,6.7), # Supp figure S16
+        cfg2$tid %in% c(18,38) ~ c(2.8,4.7), # Supp figure S16
+        cfg2$tid %in% c(5,25) ~ c(0,2.5), # Supp figure S17
+        cfg2$tid %in% c(10,30) ~ c(-0.1,2.5), # Supp figure S17
+        cfg2$tid %in% c(15,35) ~ c(-0.6,2.5), # Supp figure S18
+        cfg2$tid %in% c(20,40) ~ c(-0.1,2.7), # Supp figure S18
+        TRUE ~ c(-1,7) # Default (unused)
+      )
       cfg2$more_ticks <- 1
     }
     
