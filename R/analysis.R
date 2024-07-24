@@ -12,7 +12,7 @@
   # "Janssen" "Moderna" "AMP" "AZD1222" "Janssen (partA)" "Profiscov"
   # "HVTN 705 (primary)" "HVTN 705 (all)" "RV144" "HVTN 705 (second)"
   # "HVTN 705 (compare RV144)" "Moderna (boost)"
-  cfg2 <- list(analysis="Moderna (boost)", seed=1)
+  cfg2 <- list(analysis="Sanofi", seed=1)
   
   # Set proper task ID variable
   if (cluster_config$js=="slurm") {
@@ -78,15 +78,15 @@
     run_hyptest = F,
     run_mediation = F,
     hvtn705_abstract_fig = F,
-    table_of_vals = T, # !!!!!
-    save_data_objs = T, # !!!!!
+    table_of_vals = T,
+    save_data_objs = T,
     save_plot_objs = F,
     save_diagnostics = F,
     paper_npcve = F,
     paper_cox = F,
     hvtn124_plot = F,
-    partA_mnscrpt2 = F, # !!!!!
-    moderna_boost_x_scale = T # !!!!!
+    partA_mnscrpt2 = F,
+    moderna_boost_x_scale = F
   )
   
   # Set default cfg2 values (+ those common to multiple analyses)
@@ -862,8 +862,7 @@
     cfg2$t_0 <- 0
     cfg2$dataset <- "moderna_boost_data_processed_20230912.csv"
     cfg2$folder_local <- "Moderna (boost) data/"
-    # cfg2$folder_cluster <- "Z:/covpn/p3001/analysis/correlates/Part_C_Unblinded_Phase_Data/adata/"
-    cfg2$folder_cluster <- "C:/Users/ak811/Desktop/Avi/Research/IC-Pipeline/Data/Moderna (boost) data/"
+    cfg2$folder_cluster <- "Z:/covpn/p3001/analysis/correlates/Part_C_Unblinded_Phase_Data/adata/"
     cfg2$cr2_trial <- "moderna_boost"
     cfg2$cr2_COR <- c("BD29naive", "BD29nnaive")
     cfg2$v <- list(
@@ -913,11 +912,84 @@
     
   }
   
-  # cfg2$estimators <- list(overall="Cox gcomp", cr=c("Cox gcomp")) # !!!!!
+  if (cfg2$analysis=="Sanofi") {
+    
+    # Override default config
+    # (none yet)
+
+    # Analysis-specific config
+    cfg2$marker <- c(
+      "Day43bindSpike", "Day43bindSpike_beta", "Day43bindSpike_alpha", "Day43bindSpike_gamma", "Day43bindSpike_delta1", "Day43bindSpike_delta2", "Day43bindSpike_delta3", "Day43bindSpike_omicron", "Day43bindSpike_mdw",
+      "Day43pseudoneutid50", "Day43pseudoneutid50_B.1.351", "Day43pseudoneutid50_BA.1", "Day43pseudoneutid50_BA.2", "Day43pseudoneutid50_BA.4.5", "Day43pseudoneutid50_mdw",
+      "Delta43overBbindSpike", "Delta43overBbindSpike_beta", "Delta43overBbindSpike_alpha", "Delta43overBbindSpike_gamma", "Delta43overBbindSpike_delta1", "Delta43overBbindSpike_delta2", "Delta43overBbindSpike_delta3", "Delta43overBbindSpike_omicron", "Delta43overBbindSpike_mdw",
+      "Delta43overBpseudoneutid50", "Delta43overBpseudoneutid50_B.1.351", "Delta43overBpseudoneutid50_BA.1", "Delta43overBpseudoneutid50_BA.2", "Delta43overBpseudoneutid50_BA.4.5", "Delta43overBpseudoneutid50_mdw"
+    )
+    cfg2$lab_title <- c(
+      "Binding Antibody to Spike D614: Day43", "Binding Antibody to Spike Beta: Day43", "Binding Antibody to Spike Alpha: Day43", "Binding Antibody to Spike Gamma: Day43", "Binding Antibody to Spike Delta-AY.4.2: Day43", "Binding Antibody to Spike Delta-B.1.617.2/AY.4: Day43", "Binding Antibody to Spike Delta-B.1.617.2: Day43", "Binding Antibody to Spike BA.1: Day43", "Binding Antibody to Spike crossreactivity score: Day43",
+      "PsV Neutralization to D614G: Day43", "PsV Neutralization to Beta: Day43", "PsV Neutralization to BA.1: Day43", "PsV Neutralization to BA.2: Day43", "PsV Neutralization to BA.4/BA.5: Day43", "PsV Neutralization breadth score: Day43",
+      "Binding Antibody to Spike D614: Delta43overB", "Binding Antibody to Spike Beta: Delta43overB", "Binding Antibody to Spike Alpha: Delta43overB", "Binding Antibody to Spike Gamma: Delta43overB", "Binding Antibody to Spike Delta-AY.4.2: Delta43overB", "Binding Antibody to Spike Delta-B.1.617.2/AY.4: Delta43overB", "Binding Antibody to Spike Delta-B.1.617.2: Delta43overB", "Binding Antibody to Spike BA.1: Delta43overB", "Binding Antibody to Spike crossreactivity score: Delta43overB",
+      "PsV Neutralization to D614G: Delta43overB", "PsV Neutralization to Beta: Delta43overB", "PsV Neutralization to BA.1: Delta43overB", "PsV Neutralization to BA.2: Delta43overB", "PsV Neutralization to BA.4/BA.5: Delta43overB", "PsV Neutralization breadth score: Delta43overB"
+    )
+    cfg2$lab_x <- c(
+      "Anti Spike IgG D614 (AU/ml) (=s)", "Anti Spike IgG Beta (AU/ml) (=s)", "Anti Spike IgG Alpha (AU/ml) (=s)", "Anti Spike IgG Gamma (AU/ml) (=s)", "Anti Spike IgG Delta-AY.4.2 (AU/ml) (=s)", "Anti Spike IgG Delta-B.1.617.2/AY.4 (AU/ml) (=s)", "Anti Spike IgG Delta-B.1.617.2 (AU/ml) (=s)", "Anti Spike IgG BA.1 (AU/ml) (=s)", "Anti Spike IgG crossreactivity score (=s)",
+      "Pseudovirus-nAb D614G (AU/ml) (=s)", "Pseudovirus-nAb Beta (AU/ml) (=s)", "Pseudovirus-nAb BA.1 (AU/ml) (=s)", "Pseudovirus-nAb BA.2 (AU/ml) (=s)", "Pseudovirus-nAb BA.4/BA.5 (AU/ml) (=s)", "Pseudovirus-nAb ID50 breadth score (=s)"
+    )
+    
+    cfg2$t_0 <- 0
+    cfg2$dataset <- "vat08_combined_data_processed_20240723.csv"
+    cfg2$folder_local <- "Sanofi data/"
+    # cfg2$folder_cluster <- "Z:/covpn/p3005/analysis/correlates/Part_A_Blinded_Phase_Data/adata/"
+    cfg2$folder_cluster <- "C:/Users/ak811/Desktop/Avi/Research/IC-Pipeline/Data/Sanofi data/"
+    cfg2$cr2_trial <- ""
+    cfg2$cr2_COR <- ""
+    cfg2$v <- list(
+      id = "Ptid",
+      time = "EventTimeOmicronD43M6hotdeck7",
+      event = "EventIndOmicronD43M6hotdeck7",
+      wt = "wt.D43.bAb",
+      ph1 = "ph1.D43",
+      ph2 = c("ph2.D43.bAb", "ph2.D43.bAb"),
+      covariates = "~. + FOI + standardized_risk_score + Sex + as.factor(Region3)"
+    )
+    
+    # Sanofi-specific variable
+    cfg2$trial_stage <- c(1,2)
+    
+    # Variable map; one row corresponds to one CVE graph
+    cfg2$map <- data.frame(
+      trial_stage = rep(c(1,2), each=30),
+      endpoint = rep(1, 60),
+      marker = rep(c(1:30), 2),
+      lab_title = rep(c(1:30), 2),
+      lab_x = rep(c(1:15), 4),
+      t_0 = rep(1, 60),
+      dataset = rep(1, 60),
+      cr2_trial = rep(1, 60), # Unused
+      cr2_COR = rep(1, 60), # Unused
+      cr2_marker = rep(1, 60), # Unused
+      edge_corr = rep(1, 60), # !!!!!
+      v_id = rep(1, 60),
+      v_time = rep(1, 60),
+      v_event = rep(1, 60),
+      v_wt = rep(1, 60),
+      v_ph1 = rep(1, 60),
+      v_ph2 = rep(c(rep(1,9),rep(2,6)), 4),
+      v_covariates = rep(1, 60),
+      dir = rep(1, 60),
+      zoom_x = rep(1, 60),
+      zoom_y_cve = rep(1, 60),
+      zoom_y_risk = rep(1, 60),
+      more_ticks = rep(2, 60),
+      llox_label = rep(1, 60),
+      llox = rep(1, 60),
+      covariates_ph2 = rep(1, 60)
+    )
+    
+  }
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 3
+    cfg2$tid <- 1
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
@@ -928,8 +1000,8 @@
   for (x in c("endpoint", "marker", "lab_x", "lab_title", "day", "dataset",
               "cr2_trial", "cr2_COR", "cr2_marker", "t_0", "dir", "zoom_x",
               "zoom_y_cve", "zoom_y_risk", "more_ticks", "llox_label", "llox",
-              "edge_corr", "covariates_ph2")) {
-    cfg2[[x]] <- cfg2[[x]][[cfg2$map[cfg2$tid,x]]]
+              "edge_corr", "covariates_ph2", "trial_stage")) {
+    if (!is.null(cfg2[[x]])) { cfg2[[x]] <- cfg2[[x]][[cfg2$map[cfg2$tid,x]]] }
   }
   for (x in c("id", "time", "event", "wt", "ph1", "ph2", "covariates")) {
     cfg2$v[[x]] <- cfg2$v[[x]][[cfg2$map[cfg2$tid,paste0("v_",x)]]]
@@ -952,7 +1024,7 @@
   # Janssen-specific code
   flags$janssen_id50_lloq <- cfg2$analysis=="Janssen" &&
     cfg2$marker=="Day29pseudoneutid50"
-  flags$bsero <- cfg2$analysis %in% c("Janssen (partA)", "Profiscov")
+  flags$bsero0 <- cfg2$analysis %in% c("Janssen (partA)", "Profiscov")
   
   # HVTN705-specific code
   flags$hvtn705_supress <- cfg2$analysis=="HVTN 705 (all)" && cfg2$tid==37
@@ -960,6 +1032,10 @@
   # Moderna boost specific code
   flags$filter_naive <- cfg2$analysis=="Moderna (boost)"
   flags$x_axis_power10 <- cfg2$analysis=="Moderna (boost)"
+  
+  # Sanofi-specific code
+  flags$bsero1 <- cfg2$analysis %in% c("Sanofi")
+  flags$trial_stage <- cfg2$analysis %in% c("Sanofi")
   
 }
 
@@ -982,7 +1058,11 @@
   rm(df_raw)
   
   # Subset to filter out baseline seropositive individuals
-  if (flags$bsero) { df_ph1_full %<>% dplyr::filter(Bserostatus==0) }
+  if (flags$bsero0) { df_ph1_full %<>% dplyr::filter(Bserostatus==0) }
+  if (flags$bsero1) { df_ph1_full %<>% dplyr::filter(Bserostatus==1) }
+  if (flags$trial_stage) {
+    df_ph1_full %<>% dplyr::filter(Trialstage==cfg2$trial_stage)
+  }
   
   # Subset to filter based on naive/non-naive status
   if (flags$filter_naive) {
@@ -1678,7 +1758,7 @@ if (flags$run_mediation) {
 
 if ("Grenander" %in% cfg2$estimators$cr) {
   
-  calc_ests <- F
+  calc_ests <- T
   if (calc_ests) {
     
     set.seed(cfg2$seed)
@@ -1697,6 +1777,7 @@ if ("Grenander" %in% cfg2$estimators$cr) {
         grid_size = list(y=101, s=101, x=5),
         surv_type = cfg2$params$Q_n_type,
         # surv_type = "survML-G",
+        # surv_type = "Cox",
         density_type = cfg2$params$g_n_type,
         # density_bins = 0, # !!!!!
         deriv_type = cfg2$params$deriv_type
@@ -1841,7 +1922,7 @@ if ("Cox (spline 4 df)" %in% cfg2$estimators$cr) {
 
 if ("Cox gcomp" %in% cfg2$estimators$cr) {
   
-  calc_ests <- F
+  calc_ests <- T
   if (calc_ests) {
     
     set.seed(cfg2$seed)
