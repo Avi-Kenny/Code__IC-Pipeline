@@ -3710,12 +3710,13 @@ if (F) {
 if (F) {
   
   tid_pairs <- data.frame(
+    index = c(1:30),
     tid_v = c( c(1:15),  c(31:45) ),
     tid_p = c( c(61:75), c(76:90) ),
     i_mrk = c( c(1:15), c(1:15) )
   )
   
-  for (i in c(1:nrow(tid_pairs))) {
+  for (i in tid_pairs$index) {
     
     t_v <- tid_pairs$tid_v[i]
     t_p <- tid_pairs$tid_p[i]
