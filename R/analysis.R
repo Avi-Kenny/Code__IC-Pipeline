@@ -80,7 +80,7 @@
     hvtn705_abstract_fig = F,
     table_of_vals = T,
     save_data_objs = T,
-    save_plot_objs = F,
+    save_plot_objs = T,
     save_diagnostics = F,
     paper_npcve = F,
     paper_cox = F,
@@ -915,8 +915,9 @@
   if (cfg2$analysis=="Sanofi") {
     
     # # Override default config
-    # cfg2$params$Q_n_type <- "survML-G" # survSuperLearner crashes for trial_stage==2
+    # cfg2$params$Q_n_type <- "survML-G"
     # cfg2$estimators <- list(overall="Cox gcomp", cr=c("Cox (spline 4 df)", "Cox gcomp")) # !!!!!
+    cfg2$density_type <- "kde edge"
     
     # Analysis-specific config
     cfg2$marker <- c(
@@ -955,6 +956,9 @@
     # Sanofi-specific variables
     cfg2$trial_stage <- c(1,2)
     cfg2$arm <- c("vaccine", "placebo")
+    
+    # Sanofi-specific code
+    cfg3 <- list(lab_title=cfg2$lab_title, lab_x=cfg2$lab_x)
     
     # Variable map; one row corresponds to one CVE graph
     cfg2$map <- data.frame(
@@ -1245,6 +1249,7 @@
     covariates_ph2 = cfg2$covariates_ph2
   )
   dat_v <- dat[dat$a==1,]
+  dat_p <- dat[dat$a==0,]
   
   # Create cfg2$t_0 variable if it is set to zero
   if (cfg2$t_0==0) {
@@ -1803,7 +1808,7 @@ if ("Grenander" %in% cfg2$estimators$cr) {
       s_out = s_grid,
       ci_type = cfg2$params$ci_type,
       placebo_risk_method = "Cox", # !!!!! Reevaluate this after finishing alternate estimator
-      return_extras = T,
+      return_extras = F, # !!!!!
       params_np = vaccine::params_ce_np(
         dir = cfg2$dir,
         edge_corr = cfg2$edge_corr,
@@ -2250,9 +2255,10 @@ if (flags$run_hyptest) {
     } else if (density_type=="kde") {
       
       # !!!!! For now, accessing data globally; change
+      if (cfg2$arm=="placebo") { dat_ <- dat_p } else { dat_ <- dat_v }
       df_dens <- data.frame(
-        s = dat_v$s[!is.na(dat_v$s)],
-        weights = dat_v$weights[!is.na(dat_v$s)]
+        s = dat_$s[!is.na(dat_$s)],
+        weights = dat_$weights[!is.na(dat_$s)]
       )
       df_dens$weights <- df_dens$weights / sum(df_dens$weights)
       dens <- stats::density(
@@ -2270,9 +2276,10 @@ if (flags$run_hyptest) {
     } else if (density_type=="kde edge") {
       
       # !!!!! For now, accessing data globally; change
+      if (cfg2$arm=="placebo") { dat_ <- dat_p } else { dat_ <- dat_v }
       df_dens <- data.frame(
-        s = dat_v$s[!is.na(dat_v$s) & dat_v$s!=min_s],
-        weights = dat_v$weights[!is.na(dat_v$s) & dat_v$s!=min_s]
+        s = dat_$s[!is.na(dat_$s) & dat_$s!=min_s],
+        weights = dat_$weights[!is.na(dat_$s) & dat_$s!=min_s]
       )
       df_dens$weights <- df_dens$weights / sum(df_dens$weights)
       dens <- stats::density(
@@ -2330,7 +2337,6 @@ if (flags$run_hyptest) {
         transform = function(x) { -log10(1-x) },
         inverse = function(x) { 1 - 10^(-x) }
       )
-      # browser() # !!!!! asdf
       hist_data$ymax <- 1 - 10^(-(hist_data$ymax*(-log10(1-zoom_y[2]))))
       # hist_data$ymax <- 1 - 10^(-((hist_data$ymax-hist_data$ymin)/2*(-log10(1-zoom_y[2]))))
       if (which=="CVE") {
@@ -2463,9 +2469,11 @@ if (flags$run_hyptest) {
 
 if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
   
+  if (cfg2$arm=="placebo") { dat_ <- dat_p } else { dat_ <- dat_v }
+
   # Create cutoff values corresponding to cfg2$qnt
   cutoffs <- lapply(cfg2$qnt, function(qnt) {
-    as.numeric(quantile(dat_v$s, na.rm=T, probs=qnt))
+    as.numeric(quantile(dat_$s, na.rm=T, probs=qnt))
   })
   
   # Trim estimates at specified quantiles
@@ -2486,8 +2494,8 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
   }
   
   hst <- get.marker.histogram(
-    marker = dat_v$s[!is.na(dat_v$s)],
-    wt = dat_v$weights[!is.na(dat_v$s)],
+    marker = dat_$s[!is.na(dat_$s)],
+    wt = dat_$weights[!is.na(dat_$s)],
     trial = cfg2$cr2_trial
   )
   
@@ -2560,7 +2568,25 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
                         filename),
       plot=plot, device="pdf", width=6, height=4
     )
-
+    
+    if (flags$save_plot_objs) {
+      saveRDS(
+        plot_data_risk,
+        paste0("rds/", cfg2$analysis, " objs/plot_data_risk_", cfg2$tid, ".rds"))
+      saveRDS(
+        hst,
+        paste0("rds/", cfg2$analysis, " objs/hst_", cfg2$tid, ".rds"))
+      saveRDS(
+        cutoffs,
+        paste0("rds/", cfg2$analysis, " objs/cutoffs_", cfg2$tid, ".rds"))
+      saveRDS(
+        cfg2,
+        paste0("rds/", cfg2$analysis, " objs/cfg2_", cfg2$tid, ".rds"))
+      saveRDS(
+        dat,
+        paste0("rds/", cfg2$analysis, " objs/dat_", cfg2$tid, ".rds"))
+    }
+    
     if (flags$table_of_vals) {
       write.table(trim_plot_data(plot_data_risk, cutoffs, cfg2),
                   file=paste0("../Figures + Tables/", cfg2$analysis,
@@ -2639,18 +2665,6 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
       saveRDS(
         plot_data_cve,
         paste0("rds/", cfg2$analysis, " objs/plot_data_cve_", cfg2$tid, ".rds"))
-      saveRDS(
-        hst,
-        paste0("rds/", cfg2$analysis, " objs/hst_", cfg2$tid, ".rds"))
-      saveRDS(
-        cutoffs,
-        paste0("rds/", cfg2$analysis, " objs/cutoffs_", cfg2$tid, ".rds"))
-      saveRDS(
-        cfg2,
-        paste0("rds/", cfg2$analysis, " objs/cfg2_", cfg2$tid, ".rds"))
-      saveRDS(
-        dat_v,
-        paste0("rds/", cfg2$analysis, " objs/dat_v_", cfg2$tid, ".rds"))
     }
     
     if (flags$table_of_vals) {
@@ -3687,5 +3701,83 @@ if (F) {
   
 }
 
+
+
+############################################.
+##### Sanofi vaccine vs. placebo plots #####
+############################################.
+
+if (F) {
+  
+  tid_pairs <- data.frame(
+    tid_v = c( c(1:15),  c(31:45) ),
+    tid_p = c( c(61:75), c(76:90) ),
+    i_mrk = c( c(1:15), c(1:15) )
+  )
+  
+  for (i in c(1:nrow(tid_pairs))) {
+    
+    t_v <- tid_pairs$tid_v[i]
+    t_p <- tid_pairs$tid_p[i]
+    t_i <- tid_pairs$i_mrk[i]
+    
+    ests_np_v <- readRDS(paste0("rds/Sanofi objs/ests_g/ests_g_",
+                                t_v, ".rds"))
+    ests_np_p <- readRDS(paste0("rds/Sanofi objs/ests_g/ests_g_",
+                                t_p, ".rds"))
+    
+    dat <- readRDS(paste0("rds/Sanofi objs/dat/dat_",
+                            t_v, ".rds"))
+
+    dat_alt <- list(
+      data.frame(s=dat$s[dat$a==1], weights=dat$weights[dat$a==1]),
+      data.frame(s=dat$s[dat$a==0], weights=dat$weights[dat$a==0])
+    )
+    
+    # !!!!! Check dat_alt against original data for one tid !!!!!
+    
+    ests_np_v <- vaccine::trim(ests_np_v, dat, c(0.05,0.95))
+    ests_np_p <- vaccine::trim(ests_np_p, dat, c(0.05,0.95), placebo=T)
+    
+    plot <- vaccine::plot_ce(
+      ests_np_v,
+      ests_np_p,
+      density_type = "kde",
+      dat_alt = dat_alt,
+      labels = c("Vaccine arm", "Placebo arm")
+    )
+    
+    # zz <- dplyr::filter(plot_data, overall=="" & !is.na(y))$x
+    # z_x_L <- min(zz, na.rm=T)
+    # z_x_R <- max(zz, na.rm=T)
+    # zoom_x <- c(z_x_L - 0.05*(z_x_R-z_x_L),
+    #             z_x_R + 0.05*(z_x_R-z_x_L))
+    zoom_x <- plot$coordinates$limits$x # !!!!! Testing
+    x_axis <- draw.x.axis.cor(xlim=zoom_x, llox=NA, more_ticks=1) # cfg2$more_ticks
+    
+    plot <- plot +
+      labs(
+        title = cfg3$lab_title[t_i],
+        x = cfg3$lab_x[t_i],
+        y = paste0("Probability of COVID by day ", cfg2$t_0)
+      ) +
+      scale_y_continuous(
+        labels = scales::label_percent(accuracy=1),
+        breaks = seq(-1,1,0.01),
+        minor_breaks = NULL
+      ) +
+      scale_x_continuous(
+        labels = do.call(expression,x_axis$labels),
+        breaks = x_axis$ticks
+      )
+    
+    ggsave(filename = paste0("../Figures + Tables/Sanofi plots/plot_vp_", t_i,
+                        ".pdf"),
+           plot=plot, device="pdf", width=6, height=4)
+    
+  }
+  
+  
+}
 
 
