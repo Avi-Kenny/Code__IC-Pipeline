@@ -914,9 +914,10 @@
   
   if (cfg2$analysis=="Sanofi") {
     
-    # Override default config
-    # (none yet)
-
+    # # Override default config
+    # cfg2$params$Q_n_type <- "survML-G" # survSuperLearner crashes for trial_stage==2
+    # cfg2$estimators <- list(overall="Cox gcomp", cr=c("Cox (spline 4 df)", "Cox gcomp")) # !!!!!
+    
     # Analysis-specific config
     cfg2$marker <- c(
       "Day43bindSpike", "Day43bindSpike_beta", "Day43bindSpike_alpha", "Day43bindSpike_gamma", "Day43bindSpike_delta1", "Day43bindSpike_delta2", "Day43bindSpike_delta3", "Day43bindSpike_omicron", "Day43bindSpike_mdw",
@@ -935,61 +936,83 @@
       "Pseudovirus-nAb D614G (AU/ml) (=s)", "Pseudovirus-nAb Beta (AU/ml) (=s)", "Pseudovirus-nAb BA.1 (AU/ml) (=s)", "Pseudovirus-nAb BA.2 (AU/ml) (=s)", "Pseudovirus-nAb BA.4/BA.5 (AU/ml) (=s)", "Pseudovirus-nAb ID50 breadth score (=s)"
     )
     
-    cfg2$t_0 <- 0
+    cfg2$t_0 <- 159
     cfg2$dataset <- "vat08_combined_data_processed_20240723.csv"
     cfg2$folder_local <- "Sanofi data/"
-    # cfg2$folder_cluster <- "Z:/covpn/p3005/analysis/correlates/Part_A_Blinded_Phase_Data/adata/"
     cfg2$folder_cluster <- "C:/Users/ak811/Desktop/Avi/Research/IC-Pipeline/Data/Sanofi data/"
     cfg2$cr2_trial <- ""
     cfg2$cr2_COR <- ""
     cfg2$v <- list(
       id = "Ptid",
-      time = "EventTimeOmicronD43M6hotdeck7",
-      event = "EventIndOmicronD43M6hotdeck7",
-      wt = "wt.D43.bAb",
+      time = "EventTimeOmicronD43M6hotdeck10",
+      event = "EventIndOmicronD43M6hotdeck10",
+      wt = c("wt.D43.bAb", "wt.D43.nAb"),
       ph1 = "ph1.D43",
-      ph2 = c("ph2.D43.bAb", "ph2.D43.bAb"),
+      ph2 = c("ph2.D43.bAb", "ph2.D43.nAb"),
       covariates = "~. + FOI + standardized_risk_score + Sex + as.factor(Region3)"
     )
     
-    # Sanofi-specific variable
+    # Sanofi-specific variables
     cfg2$trial_stage <- c(1,2)
+    cfg2$arm <- c("vaccine", "placebo")
     
     # Variable map; one row corresponds to one CVE graph
     cfg2$map <- data.frame(
-      trial_stage = rep(c(1,2), each=30),
-      endpoint = rep(1, 60),
-      marker = rep(c(1:30), 2),
-      lab_title = rep(c(1:30), 2),
-      lab_x = rep(c(1:15), 4),
-      t_0 = rep(1, 60),
-      dataset = rep(1, 60),
-      cr2_trial = rep(1, 60), # Unused
-      cr2_COR = rep(1, 60), # Unused
-      cr2_marker = rep(1, 60), # Unused
-      edge_corr = rep(1, 60), # !!!!!
-      v_id = rep(1, 60),
-      v_time = rep(1, 60),
-      v_event = rep(1, 60),
-      v_wt = rep(1, 60),
-      v_ph1 = rep(1, 60),
-      v_ph2 = rep(c(rep(1,9),rep(2,6)), 4),
-      v_covariates = rep(1, 60),
-      dir = rep(1, 60),
-      zoom_x = rep(1, 60),
-      zoom_y_cve = rep(1, 60),
-      zoom_y_risk = rep(1, 60),
-      more_ticks = rep(2, 60),
-      llox_label = rep(1, 60),
-      llox = rep(1, 60),
-      covariates_ph2 = rep(1, 60)
+      trial_stage = c(
+        rep(c(1,2), each=30),
+        rep(c(1,2), each=15)
+      ),
+      arm = c(
+        rep(1,60),
+        rep(2,30)
+      ),
+      endpoint = rep(1, 90),
+      marker = c(
+        rep(c(1:30), 2),
+        rep(c(1:15), 2)
+      ),
+      lab_title = c(
+        rep(c(1:30), 2),
+        rep(c(1:15), 2)
+      ),
+      lab_x = c(
+        rep(c(1:15), 4),
+        rep(c(1:15), 2)
+      ),
+      t_0 = c(rep(1, 90)),
+      dataset = c(rep(1, 90)),
+      cr2_trial = rep(1, 90), # Unused
+      cr2_COR = rep(1, 90), # Unused
+      cr2_marker = rep(1, 90), # Unused
+      edge_corr = rep(1, 90), # !!!!! Check
+      v_id = rep(1, 90),
+      v_time = rep(1, 90),
+      v_event = rep(1, 90),
+      v_wt = c(
+        rep(c(rep(1,9),rep(2,6)), 4),
+        rep(c(rep(1,9),rep(2,6)), 2)
+      ),
+      v_ph1 = rep(1, 90),
+      v_ph2 = c(
+        rep(c(rep(1,9),rep(2,6)), 4),
+        rep(c(rep(1,9),rep(2,6)), 2)
+      ),
+      v_covariates = rep(1, 90),
+      dir = rep(1, 90),
+      zoom_x = rep(1, 90),
+      zoom_y_cve = rep(1, 90),
+      zoom_y_risk = rep(1, 90),
+      more_ticks = rep(2, 90),
+      llox_label = rep(1, 90),
+      llox = rep(1, 90),
+      covariates_ph2 = rep(1, 90)
     )
     
   }
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 1
+    cfg2$tid <- 31
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
@@ -1000,7 +1023,7 @@
   for (x in c("endpoint", "marker", "lab_x", "lab_title", "day", "dataset",
               "cr2_trial", "cr2_COR", "cr2_marker", "t_0", "dir", "zoom_x",
               "zoom_y_cve", "zoom_y_risk", "more_ticks", "llox_label", "llox",
-              "edge_corr", "covariates_ph2", "trial_stage")) {
+              "edge_corr", "covariates_ph2", "trial_stage", "arm")) {
     if (!is.null(cfg2[[x]])) { cfg2[[x]] <- cfg2[[x]][[cfg2$map[cfg2$tid,x]]] }
   }
   for (x in c("id", "time", "event", "wt", "ph1", "ph2", "covariates")) {
@@ -1034,8 +1057,10 @@
   flags$x_axis_power10 <- cfg2$analysis=="Moderna (boost)"
   
   # Sanofi-specific code
-  flags$bsero1 <- cfg2$analysis %in% c("Sanofi")
-  flags$trial_stage <- cfg2$analysis %in% c("Sanofi")
+  flags$bsero1 <- cfg2$analysis=="Sanofi"
+  flags$trial_stage <- cfg2$analysis=="Sanofi"
+  cr_placebo_arm <- cfg2$analysis=="Sanofi" && cfg2$arm=="placebo"
+  if (cfg2$arm=="placebo") { cfg2$plots <- "Risk" }
   
 }
 
@@ -1198,6 +1223,13 @@
       uloq <- 844.7208
     }
     df_ph1$marker <- pmin(df_ph1$marker, log10(uloq))
+  }
+  
+  # !!!!! Hack to avoid conditional censoring function equaling zero in Sanofi
+  if (cfg2$analysis=="Sanofi") {
+    # half <- rbinom(n=5, size=length(df_ph1$time), prob=0.5)
+    # df_ph1$time <- ifelse(df_ph1$time==159 & half, 161, df_ph1$time)
+    df_ph1$time <- ifelse(df_ph1$time==159, 161, df_ph1$time)
   }
   
   # Create data object needed by `vaccine` package functions
@@ -1767,6 +1799,7 @@ if ("Grenander" %in% cfg2$estimators$cr) {
       type = "NP",
       t_0 = cfg2$t_0,
       cve = as.logical("CVE" %in% cfg2$plots),
+      cr_placebo_arm = cr_placebo_arm,
       s_out = s_grid,
       ci_type = cfg2$params$ci_type,
       placebo_risk_method = "Cox", # !!!!! Reevaluate this after finishing alternate estimator
@@ -1776,8 +1809,7 @@ if ("Grenander" %in% cfg2$estimators$cr) {
         edge_corr = cfg2$edge_corr,
         grid_size = list(y=101, s=101, x=5),
         surv_type = cfg2$params$Q_n_type,
-        # surv_type = "survML-G",
-        # surv_type = "Cox",
+        # surv_type = "Cox", # !!!!!
         density_type = cfg2$params$g_n_type,
         # density_bins = 0, # !!!!!
         deriv_type = cfg2$params$deriv_type
@@ -1830,6 +1862,7 @@ if ("Cox (spline 3 df)" %in% cfg2$estimators$cr) {
       type = "Cox",
       t_0 = cfg2$t_0,
       cve = as.logical("CVE" %in% cfg2$plots),
+      cr_placebo_arm = cr_placebo_arm,
       s_out = s_grid,
       ci_type = "transformed",
       placebo_risk_method = "Cox",
@@ -1875,6 +1908,7 @@ if ("Cox (spline 4 df)" %in% cfg2$estimators$cr) {
         type = "Cox",
         t_0 = cfg2$t_0,
         cve = as.logical("CVE" %in% cfg2$plots),
+        cr_placebo_arm = cr_placebo_arm,
         s_out = s_grid,
         ci_type = "transformed",
         placebo_risk_method = "Cox",
@@ -1886,6 +1920,7 @@ if ("Cox (spline 4 df)" %in% cfg2$estimators$cr) {
         type = "Cox",
         t_0 = cfg2$t_0,
         cve = T,
+        cr_placebo_arm = cr_placebo_arm,
         s_out = s_grid,
         ci_type = "transformed",
         placebo_risk_method = "Cox",
@@ -1931,6 +1966,7 @@ if ("Cox gcomp" %in% cfg2$estimators$cr) {
       type = "Cox",
       t_0 = cfg2$t_0,
       cve = as.logical("CVE" %in% cfg2$plots),
+      cr_placebo_arm = cr_placebo_arm,
       s_out = s_grid,
       ci_type = "transformed",
       placebo_risk_method = "Cox"
@@ -1975,6 +2011,7 @@ if ("Cox edge" %in% cfg2$estimators$cr) {
       type = "Cox",
       t_0 = cfg2$t_0,
       cve = as.logical("CVE" %in% cfg2$plots),
+      cr_placebo_arm = cr_placebo_arm,
       s_out = s_grid,
       ci_type = "transformed",
       placebo_risk_method = "Cox",
@@ -2339,7 +2376,8 @@ if (flags$run_hyptest) {
         alpha = 0.05,
         linetype = "dotted"
       ) +
-      geom_line(linewidth=0.7) +
+      # geom_line(linewidth=0.7) +
+      geom_line() +
       scale_y_continuous(
         labels = scales::label_percent(accuracy=1),
         breaks = syc_breaks,
@@ -2522,7 +2560,7 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
                         filename),
       plot=plot, device="pdf", width=6, height=4
     )
-    
+
     if (flags$table_of_vals) {
       write.table(trim_plot_data(plot_data_risk, cutoffs, cfg2),
                   file=paste0("../Figures + Tables/", cfg2$analysis,
@@ -3260,11 +3298,12 @@ if (F) {
         aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax, color=trial,
             fill=trial),
         hist_data,
-        linewidth = 0.3, # asdf1
+        # linewidth = 0.3,
         alpha = 0.2,
         inherit.aes = F
       ) +
-      geom_line(linewidth=0.5) + # 0.7           # Comment out to get histogram only
+      # geom_line(linewidth=0.5) + # 0.7     # Comment out to get histogram only
+      geom_line() + # 0.7                    # Comment out to get histogram only
       scale_y_continuous(
         labels = scales::label_percent(accuracy=1),
         breaks = syc_breaks,
@@ -3538,7 +3577,8 @@ if (F) {
         color = "white",
         alpha = 0.2
       ) +
-      geom_line(linewidth=0.5) + # 0.7           # Comment out to get KDE only
+      # geom_line(linewidth=0.5) + # 0.7           # Comment out to get KDE only
+      geom_line() + # 0.7           # Comment out to get KDE only
       scale_y_continuous(
         labels = scales::label_percent(accuracy=1),
         breaks = syc_breaks,

@@ -3,7 +3,8 @@
 
 # Set packages
 cfg$pkgs <- c(
-  "splines", "survival", "SuperLearner", "magrittr", "ggplot2", "dplyr"
+  "splines", "survival", "SuperLearner", "magrittr", "ggplot2", "dplyr",
+  "vaccine"
 )
 cfg$pkgs_nocluster <- c()
 
