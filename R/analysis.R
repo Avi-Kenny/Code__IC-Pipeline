@@ -3772,7 +3772,7 @@ if (F) {
         breaks = x_axis$ticks
       )
     
-    ggsave(filename = paste0("../Figures + Tables/Sanofi plots/plot_vp_", t_i,
+    ggsave(filename = paste0("../Figures + Tables/Sanofi plots/plot_vp_", i,
                         ".pdf"),
            plot=plot, device="pdf", width=6, height=4)
     
