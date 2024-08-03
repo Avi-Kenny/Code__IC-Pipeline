@@ -12,7 +12,7 @@
   # "Janssen" "Moderna" "AMP" "AZD1222" "Janssen (partA)" "Profiscov"
   # "HVTN 705 (primary)" "HVTN 705 (all)" "RV144" "HVTN 705 (second)"
   # "HVTN 705 (compare RV144)" "Moderna (boost)"
-  cfg2 <- list(analysis="Sanofi", seed=1)
+  cfg2 <- list(analysis="Sanofi", calc_ests=F, seed=1)
   
   # Set proper task ID variable
   if (cluster_config$js=="slurm") {
@@ -918,6 +918,7 @@
     # cfg2$params$Q_n_type <- "survML-G"
     # cfg2$estimators <- list(overall="Cox gcomp", cr=c("Cox (spline 4 df)", "Cox gcomp")) # !!!!!
     cfg2$density_type <- "kde edge"
+    cfg2$zoom_y_cve <- list(c(-1.05,1.05))
     
     # Analysis-specific config
     cfg2$marker <- c(
@@ -1016,7 +1017,7 @@
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 31
+    cfg2$tid <- 1
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
@@ -1795,8 +1796,7 @@ if (flags$run_mediation) {
 
 if ("Grenander" %in% cfg2$estimators$cr) {
   
-  calc_ests <- T
-  if (calc_ests) {
+  if (cfg2$calc_ests) {
     
     set.seed(cfg2$seed)
     ests <- vaccine::est_ce(
@@ -1858,8 +1858,7 @@ if ("Grenander" %in% cfg2$estimators$cr) {
 
 if ("Cox (spline 3 df)" %in% cfg2$estimators$cr) {
   
-  calc_ests <- T
-  if (calc_ests) {
+  if (cfg2$calc_ests) {
     
     set.seed(cfg2$seed)
     ests <- vaccine::est_ce(
@@ -1903,8 +1902,7 @@ if ("Cox (spline 3 df)" %in% cfg2$estimators$cr) {
 
 if ("Cox (spline 4 df)" %in% cfg2$estimators$cr) {
   
-  calc_ests <- T
-  if (calc_ests) {
+  if (cfg2$calc_ests) {
     
     set.seed(cfg2$seed)
     if (cfg2$analysis!="RV144") {
@@ -1962,8 +1960,7 @@ if ("Cox (spline 4 df)" %in% cfg2$estimators$cr) {
 
 if ("Cox gcomp" %in% cfg2$estimators$cr) {
   
-  calc_ests <- T
-  if (calc_ests) {
+  if (cfg2$calc_ests) {
     
     set.seed(cfg2$seed)
     ests <- vaccine::est_ce(
@@ -2007,8 +2004,7 @@ if ("Cox gcomp" %in% cfg2$estimators$cr) {
 
 if ("Cox edge" %in% cfg2$estimators$cr) {
   
-  calc_ests <- T
-  if (calc_ests) {
+  if (cfg2$calc_ests) {
     
     set.seed(cfg2$seed)
     ests <- vaccine::est_ce(
