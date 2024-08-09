@@ -12,7 +12,7 @@
   # "Janssen" "Moderna" "AMP" "AZD1222" "Janssen (partA)" "Profiscov"
   # "HVTN 705 (primary)" "HVTN 705 (all)" "RV144" "HVTN 705 (second)"
   # "HVTN 705 (compare RV144)" "Moderna (boost)"
-  cfg2 <- list(analysis="Sanofi", calc_ests=F, seed=1)
+  cfg2 <- list(analysis="Sanofi", calc_ests=T, seed=1)
   
   # Set proper task ID variable
   if (cluster_config$js=="slurm") {
@@ -928,26 +928,27 @@
       "Delta43overBpseudoneutid50", "Delta43overBpseudoneutid50_B.1.351", "Delta43overBpseudoneutid50_BA.1", "Delta43overBpseudoneutid50_BA.2", "Delta43overBpseudoneutid50_BA.4.5", "Delta43overBpseudoneutid50_mdw"
     )
     cfg2$lab_title <- c(
-      "Binding Antibody to Spike D614: Day43", "Binding Antibody to Spike Beta: Day43", "Binding Antibody to Spike Alpha: Day43", "Binding Antibody to Spike Gamma: Day43", "Binding Antibody to Spike Delta-AY.4.2: Day43", "Binding Antibody to Spike Delta-B.1.617.2/AY.4: Day43", "Binding Antibody to Spike Delta-B.1.617.2: Day43", "Binding Antibody to Spike BA.1: Day43", "Binding Antibody to Spike crossreactivity score: Day43",
-      "PsV Neutralization to D614G: Day43", "PsV Neutralization to Beta: Day43", "PsV Neutralization to BA.1: Day43", "PsV Neutralization to BA.2: Day43", "PsV Neutralization to BA.4/BA.5: Day43", "PsV Neutralization breadth score: Day43",
-      "Binding Antibody to Spike D614: Delta43overB", "Binding Antibody to Spike Beta: Delta43overB", "Binding Antibody to Spike Alpha: Delta43overB", "Binding Antibody to Spike Gamma: Delta43overB", "Binding Antibody to Spike Delta-AY.4.2: Delta43overB", "Binding Antibody to Spike Delta-B.1.617.2/AY.4: Delta43overB", "Binding Antibody to Spike Delta-B.1.617.2: Delta43overB", "Binding Antibody to Spike BA.1: Delta43overB", "Binding Antibody to Spike crossreactivity score: Delta43overB",
-      "PsV Neutralization to D614G: Delta43overB", "PsV Neutralization to Beta: Delta43overB", "PsV Neutralization to BA.1: Delta43overB", "PsV Neutralization to BA.2: Delta43overB", "PsV Neutralization to BA.4/BA.5: Delta43overB", "PsV Neutralization breadth score: Delta43overB"
+      "IgG Spike D614: Day43", "IgG Spike Beta: Day43", "IgG Spike Alpha: Day43", "IgG Spike Gamma: Day43", "IgG Spike Delta-AY.4.2: Day43", "IgG Spike Delta-B.1.617.2/AY.4: Day43", "IgG Spike Delta-B.1.617.2: Day43", "IgG Spike BA.1: Day43", "IgG Spike crossreactivity score: Day43",
+      "nAb ID50 D614G: Day43", "nAb ID50 Beta: Day43", "nAb ID50 BA.1: Day43", "nAb ID50 BA.2: Day43", "nAb ID50 BA.4/BA.5: Day43", "PsV Neutralization breadth score: Day43",
+      "IgG Spike D614: Delta43overB", "IgG Spike Beta: Delta43overB", "IgG Spike Alpha: Delta43overB", "IgG Spike Gamma: Delta43overB", "IgG Spike Delta-AY.4.2: Delta43overB", "IgG Spike Delta-B.1.617.2/AY.4: Delta43overB", "IgG Spike Delta-B.1.617.2: Delta43overB", "IgG Spike BA.1: Delta43overB", "IgG Spike crossreactivity score: Delta43overB",
+      "nAb ID50 D614G: Delta43overB", "nAb ID50 Beta: Delta43overB", "nAb ID50 BA.1: Delta43overB", "nAb ID50 BA.2: Delta43overB", "nAb ID50 BA.4/BA.5: Delta43overB", "PsV Neutralization breadth score: Delta43overB"
     )
     cfg2$lab_x <- c(
       "Anti Spike IgG D614 (AU/ml) (=s)", "Anti Spike IgG Beta (AU/ml) (=s)", "Anti Spike IgG Alpha (AU/ml) (=s)", "Anti Spike IgG Gamma (AU/ml) (=s)", "Anti Spike IgG Delta-AY.4.2 (AU/ml) (=s)", "Anti Spike IgG Delta-B.1.617.2/AY.4 (AU/ml) (=s)", "Anti Spike IgG Delta-B.1.617.2 (AU/ml) (=s)", "Anti Spike IgG BA.1 (AU/ml) (=s)", "Anti Spike IgG crossreactivity score (=s)",
       "Pseudovirus-nAb D614G (AU/ml) (=s)", "Pseudovirus-nAb Beta (AU/ml) (=s)", "Pseudovirus-nAb BA.1 (AU/ml) (=s)", "Pseudovirus-nAb BA.2 (AU/ml) (=s)", "Pseudovirus-nAb BA.4/BA.5 (AU/ml) (=s)", "Pseudovirus-nAb ID50 breadth score (=s)"
     )
     
-    cfg2$t_0 <- 159
-    cfg2$dataset <- "vat08_combined_data_processed_20240723.csv"
+    cfg2$t_0 <- c(159,129)
+    cfg2$dataset <- "vat08_combined_data_processed_20240804.csv"
     cfg2$folder_local <- "Sanofi data/"
+    # cfg2$folder_cluster <- "Z:/covpn/p3005/analysis/correlates/Part_A_Blinded_Phase_Data/adata/"
     cfg2$folder_cluster <- "C:/Users/ak811/Desktop/Avi/Research/IC-Pipeline/Data/Sanofi data/"
     cfg2$cr2_trial <- ""
     cfg2$cr2_COR <- ""
     cfg2$v <- list(
       id = "Ptid",
-      time = "EventTimeOmicronD43M6hotdeck10",
-      event = "EventIndOmicronD43M6hotdeck10",
+      time = c("EventTimeOmicronD43M6hotdeck10", "EventTimeOmicronD43M5hotdeck10"),
+      event = c("EventIndOmicronD43M6hotdeck10", "EventIndOmicronD43M5hotdeck10"),
       wt = c("wt.D43.bAb", "wt.D43.nAb"),
       ph1 = "ph1.D43",
       ph2 = c("ph2.D43.bAb", "ph2.D43.nAb"),
@@ -965,59 +966,63 @@
     cfg2$map <- data.frame(
       trial_stage = c(
         rep(c(1,2), each=30),
-        rep(c(1,2), each=15)
+        rep(c(1,2), each=15),
+        rep(2,30)
       ),
       arm = c(
         rep(1,60),
-        rep(2,30)
+        rep(2,30),
+        rep(1,30)
       ),
-      endpoint = rep(1, 90),
+      endpoint = rep(1, 120),
       marker = c(
         rep(c(1:30), 2),
-        rep(c(1:15), 2)
+        rep(c(1:15), 2),
+        c(1:30)
       ),
       lab_title = c(
         rep(c(1:30), 2),
-        rep(c(1:15), 2)
+        rep(c(1:15), 2),
+        c(1:30)
       ),
-      lab_x = c(
-        rep(c(1:15), 4),
-        rep(c(1:15), 2)
+      lab_x = rep(c(1:15), 8),
+      t_0 = c(
+        rep(1, 90),
+        rep(2, 30)
       ),
-      t_0 = c(rep(1, 90)),
-      dataset = c(rep(1, 90)),
-      cr2_trial = rep(1, 90), # Unused
-      cr2_COR = rep(1, 90), # Unused
-      cr2_marker = rep(1, 90), # Unused
-      edge_corr = rep(1, 90), # !!!!! Check
-      v_id = rep(1, 90),
-      v_time = rep(1, 90),
-      v_event = rep(1, 90),
-      v_wt = c(
-        rep(c(rep(1,9),rep(2,6)), 4),
-        rep(c(rep(1,9),rep(2,6)), 2)
+      dataset = c(rep(1, 120)),
+      cr2_trial = rep(1, 120), # Unused
+      cr2_COR = rep(1, 120), # Unused
+      cr2_marker = rep(1, 120), # Unused
+      edge_corr = rep(1, 120), # !!!!! Check
+      v_id = rep(1, 120),
+      v_time = c(rep(1,90), rep(2,30)),
+      v_event = c(rep(1,90), rep(2,30)),
+      v_wt = rep(c(rep(1,9),rep(2,6)), 8),
+      v_ph1 = rep(1, 120),
+      v_ph2 = rep(c(rep(1,9),rep(2,6)), 8),
+      v_covariates = rep(1, 120),
+      # dir = rep(1, 90),
+      dir = c(
+        rep(1,10), rep(2,5), rep(1,10), rep(2,5), # 1:30
+        rep(1,15), rep(2,9), rep(1,6), # 31:60
+        rep(1,30), # 61:90
+        rep(1,15), rep(2,9), rep(1,6) # 91:120
       ),
-      v_ph1 = rep(1, 90),
-      v_ph2 = c(
-        rep(c(rep(1,9),rep(2,6)), 4),
-        rep(c(rep(1,9),rep(2,6)), 2)
-      ),
-      v_covariates = rep(1, 90),
-      dir = rep(1, 90),
-      zoom_x = rep(1, 90),
-      zoom_y_cve = rep(1, 90),
-      zoom_y_risk = rep(1, 90),
-      more_ticks = rep(2, 90),
-      llox_label = rep(1, 90),
-      llox = rep(1, 90),
-      covariates_ph2 = rep(1, 90)
+      zoom_x = rep(1, 120),
+      zoom_y_cve = rep(1, 120),
+      zoom_y_risk = rep(1, 120),
+      more_ticks = rep(2, 120),
+      llox_label = rep(1, 120),
+      llox = rep(1, 120),
+      covariates_ph2 = rep(1, 120)
     )
     
   }
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 1
+    cfg2$tid <- 100
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
@@ -1230,11 +1235,15 @@
     df_ph1$marker <- pmin(df_ph1$marker, log10(uloq))
   }
   
-  # !!!!! Hack to avoid conditional censoring function equaling zero in Sanofi
+  # Hack to avoid conditional censoring function equaling zero in Sanofi
   if (cfg2$analysis=="Sanofi") {
-    # half <- rbinom(n=5, size=length(df_ph1$time), prob=0.5)
-    # df_ph1$time <- ifelse(df_ph1$time==159 & half, 161, df_ph1$time)
-    df_ph1$time <- ifelse(df_ph1$time==159, 161, df_ph1$time)
+    if (cfg2$t_0==159) {
+      df_ph1$time <- ifelse(df_ph1$time==159, 161, df_ph1$time)
+    } else if (cfg2$t_0==129) {
+      df_ph1$time <- ifelse(df_ph1$time==129, 131, df_ph1$time)
+    } else {
+      stop("Sanofi error; incorrect cfg2$t_0.")
+    }
   }
   
   # Create data object needed by `vaccine` package functions
@@ -1820,6 +1829,75 @@ if ("Grenander" %in% cfg2$estimators$cr) {
         deriv_type = cfg2$params$deriv_type
       )
     )
+    
+    # !!!!!
+    if (F) {
+      
+      ests_1 <- vaccine::est_ce(
+        dat = dat,
+        type = "NP",
+        t_0 = cfg2$t_0,
+        cve = as.logical("CVE" %in% cfg2$plots),
+        cr_placebo_arm = cr_placebo_arm,
+        s_out = s_grid,
+        ci_type = cfg2$params$ci_type,
+        placebo_risk_method = "Cox", # !!!!! Reevaluate this after finishing alternate estimator
+        return_extras = T, # !!!!!
+        params_np = vaccine::params_ce_np(
+          dir = cfg2$dir,
+          edge_corr = cfg2$edge_corr,
+          grid_size = list(y=101, s=101, x=5),
+          surv_type = "survSL",
+          density_type = cfg2$params$g_n_type,
+          deriv_type = cfg2$params$deriv_type
+        )
+      )
+      ests_2 <- vaccine::est_ce(
+        dat = dat,
+        type = "NP",
+        t_0 = cfg2$t_0,
+        cve = as.logical("CVE" %in% cfg2$plots),
+        cr_placebo_arm = cr_placebo_arm,
+        s_out = s_grid,
+        ci_type = cfg2$params$ci_type,
+        placebo_risk_method = "Cox", # !!!!! Reevaluate this after finishing alternate estimator
+        return_extras = T, # !!!!!
+        params_np = vaccine::params_ce_np(
+          dir = cfg2$dir,
+          edge_corr = cfg2$edge_corr,
+          grid_size = list(y=101, s=101, x=5),
+          surv_type = "Cox",
+          density_type = cfg2$params$g_n_type,
+          deriv_type = cfg2$params$deriv_type
+        )
+      )
+      ests_3 <- vaccine::est_ce(
+        dat = dat,
+        type = "NP",
+        t_0 = cfg2$t_0,
+        cve = as.logical("CVE" %in% cfg2$plots),
+        cr_placebo_arm = cr_placebo_arm,
+        s_out = s_grid,
+        ci_type = cfg2$params$ci_type,
+        placebo_risk_method = "Cox", # !!!!! Reevaluate this after finishing alternate estimator
+        return_extras = T, # !!!!!
+        params_np = vaccine::params_ce_np(
+          dir = cfg2$dir,
+          edge_corr = cfg2$edge_corr,
+          grid_size = list(y=101, s=101, x=5),
+          surv_type = "survML-G",
+          density_type = cfg2$params$g_n_type,
+          deriv_type = cfg2$params$deriv_type
+        )
+      )
+      plot_ce(ests_1)
+      plot_ce(ests_2)
+      plot_ce(ests_3)
+      diagnostics(ests_1)
+      diagnostics(ests_2)
+      diagnostics(ests_3)
+      
+    }
     
     if (flags$save_data_objs) {
       saveRDS(ests, paste0("rds/", cfg2$analysis, " objs/ests_g_", cfg2$tid,
