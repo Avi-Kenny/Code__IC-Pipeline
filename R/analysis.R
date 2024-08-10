@@ -949,9 +949,9 @@
       id = "Ptid",
       time = c("EventTimeOmicronD43M6hotdeck10", "EventTimeOmicronD43M5hotdeck10"),
       event = c("EventIndOmicronD43M6hotdeck10", "EventIndOmicronD43M5hotdeck10"),
-      wt = c("wt.D43.bAb", "wt.D43.nAb"),
-      ph1 = "ph1.D43",
-      ph2 = c("ph2.D43.bAb", "ph2.D43.nAb"),
+      wt = c("wt.D43.bAb", "wt.D43.nAb", "wt.D43.st1.nAb.batch0and1"),
+      ph1 = c("ph1.D43", "ph1.D43.st1.nAb.batch0and1"),
+      ph2 = c("ph2.D43.bAb", "ph2.D43.nAb", "ph2.D43.st1.nAb.batch0and1"),
       covariates = "~. + FOI + standardized_risk_score + Sex + as.factor(Region3)"
     )
     
@@ -998,17 +998,32 @@
       v_id = rep(1, 120),
       v_time = c(rep(1,90), rep(2,30)),
       v_event = c(rep(1,90), rep(2,30)),
-      v_wt = rep(c(rep(1,9),rep(2,6)), 8),
-      v_ph1 = rep(1, 120),
-      v_ph2 = rep(c(rep(1,9),rep(2,6)), 8),
-      v_covariates = rep(1, 120),
-      # dir = rep(1, 90),
-      dir = c(
-        rep(1,10), rep(2,5), rep(1,10), rep(2,5), # 1:30
-        rep(1,15), rep(2,9), rep(1,6), # 31:60
-        rep(1,30), # 61:90
-        rep(1,15), rep(2,9), rep(1,6) # 91:120
+      v_wt = c(
+        rep(c(rep(1,9),rep(3,6)),2),
+        rep(c(rep(1,9),rep(2,6)),2),
+        c(rep(1,9),rep(3,6)),
+        rep(c(rep(1,9),rep(2,6)),3)
       ),
+      v_ph1 = c(
+        rep(c(rep(1,9),rep(2,6)),2),
+        rep(1,30),
+        c(rep(1,9),rep(2,6)),
+        rep(1,45)
+      ),
+      v_ph2 = c(
+        rep(c(rep(1,9),rep(3,6)),2),
+        rep(c(rep(1,9),rep(2,6)),2),
+        c(rep(1,9),rep(3,6)),
+        rep(c(rep(1,9),rep(2,6)),3)
+      ),
+      v_covariates = rep(1, 120),
+      dir = rep(1, 120), # !!!!!
+      # dir = c(
+      #   rep(1,10), rep(2,5), rep(1,10), rep(2,5), # 1:30
+      #   rep(1,15), rep(2,9), rep(1,6), # 31:60
+      #   rep(1,30), # 61:90
+      #   rep(1,15), rep(2,9), rep(1,6) # 91:120
+      # ),
       zoom_x = rep(1, 120),
       zoom_y_cve = rep(1, 120),
       zoom_y_risk = rep(1, 120),
@@ -1022,7 +1037,7 @@
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 100
+    cfg2$tid <- 45
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
@@ -3803,32 +3818,33 @@ if (F) {
     
     dat <- readRDS(paste0("rds/Sanofi objs/dat/dat_",
                             t_v, ".rds"))
+    ests_ov <- vaccine::est_overall(dat=dat, t_0=159, method="Cox")
 
     dat_alt <- list(
       data.frame(s=dat$s[dat$a==1], weights=dat$weights[dat$a==1]),
       data.frame(s=dat$s[dat$a==0], weights=dat$weights[dat$a==0])
     )
     
-    # !!!!! Check dat_alt against original data for one tid !!!!!
-    
     ests_np_v <- vaccine::trim(ests_np_v, dat, c(0.05,0.95))
     ests_np_p <- vaccine::trim(ests_np_p, dat, c(0.05,0.95), placebo=T)
+    
+    if (i %in% c(11:15)) {
+      zoom_y <- c(0,0.1)
+    } else {
+      zoom_y <- "zoom out"
+    }
     
     plot <- vaccine::plot_ce(
       ests_np_v,
       ests_np_p,
       density_type = "kde",
       dat_alt = dat_alt,
+      zoom_y = zoom_y,
       labels = c("Vaccine arm", "Placebo arm")
     )
     
-    # zz <- dplyr::filter(plot_data, overall=="" & !is.na(y))$x
-    # z_x_L <- min(zz, na.rm=T)
-    # z_x_R <- max(zz, na.rm=T)
-    # zoom_x <- c(z_x_L - 0.05*(z_x_R-z_x_L),
-    #             z_x_R + 0.05*(z_x_R-z_x_L))
-    zoom_x <- plot$coordinates$limits$x # !!!!! Testing
-    x_axis <- draw.x.axis.cor(xlim=zoom_x, llox=NA, more_ticks=1) # cfg2$more_ticks
+    zoom_x <- plot$coordinates$limits$x
+    x_axis <- draw.x.axis.cor(xlim=zoom_x, llox=NA, more_ticks=1)
     
     plot <- plot +
       labs(
@@ -3846,6 +3862,24 @@ if (F) {
         breaks = x_axis$ticks
       )
     
+    # Add overall incidence lines
+    y_plac <- ests_ov[ests_ov$stat=="risk" & ests_ov$group=="placebo", "est"]
+    y_vacc <- ests_ov[ests_ov$stat=="risk" & ests_ov$group=="vaccine", "est"]
+    
+    plot$layers <- c(
+      plot$layers[[1]],
+      plot$layers[[3]],
+      geom_hline(yintercept=c(y_plac, y_vacc), color="grey"),
+      plot$layers[[2]]
+    )
+    
+    plot <- plot +
+      annotate("text", label="Placebo overall", x=zoom_x[2], y=y_plac, size=2.5,
+               hjust=1.05, vjust=-0.5) +
+      annotate("text", label="Vaccine overall", x=zoom_x[2], y=y_vacc, size=2.5,
+               hjust=1.05, vjust=-0.5)
+    
+    # Save plot
     ggsave(filename = paste0("../Figures + Tables/Sanofi plots/plot_vp_", i,
                         ".pdf"),
            plot=plot, device="pdf", width=6, height=4)
