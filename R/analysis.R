@@ -923,6 +923,11 @@
     # Analysis-specific config
     cfg2$marker <- c(
       "Day43bindSpike", "Day43bindSpike_beta", "Day43bindSpike_alpha", "Day43bindSpike_gamma", "Day43bindSpike_delta1", "Day43bindSpike_delta2", "Day43bindSpike_delta3", "Day43bindSpike_omicron", "Day43bindSpike_mdw",
+      "Day43pseudoneutid50_10", "Day43pseudoneutid50_B.1.351_10", "Day43pseudoneutid50_BA.1_10", "Day43pseudoneutid50_BA.2_10", "Day43pseudoneutid50_BA.4.5_10", "Day43pseudoneutid50_mdw_10",
+      "Delta43overBbindSpike", "Delta43overBbindSpike_beta", "Delta43overBbindSpike_alpha", "Delta43overBbindSpike_gamma", "Delta43overBbindSpike_delta1", "Delta43overBbindSpike_delta2", "Delta43overBbindSpike_delta3", "Delta43overBbindSpike_omicron", "Delta43overBbindSpike_mdw",
+      "Delta43overBpseudoneutid50_10", "Delta43overBpseudoneutid50_B.1.351_10", "Delta43overBpseudoneutid50_BA.1_10", "Delta43overBpseudoneutid50_BA.2_10", "Delta43overBpseudoneutid50_BA.4.5_10", "Delta43overBpseudoneutid50_mdw_10",
+      
+      "Day43bindSpike", "Day43bindSpike_beta", "Day43bindSpike_alpha", "Day43bindSpike_gamma", "Day43bindSpike_delta1", "Day43bindSpike_delta2", "Day43bindSpike_delta3", "Day43bindSpike_omicron", "Day43bindSpike_mdw",
       "Day43pseudoneutid50", "Day43pseudoneutid50_B.1.351", "Day43pseudoneutid50_BA.1", "Day43pseudoneutid50_BA.2", "Day43pseudoneutid50_BA.4.5", "Day43pseudoneutid50_mdw",
       "Delta43overBbindSpike", "Delta43overBbindSpike_beta", "Delta43overBbindSpike_alpha", "Delta43overBbindSpike_gamma", "Delta43overBbindSpike_delta1", "Delta43overBbindSpike_delta2", "Delta43overBbindSpike_delta3", "Delta43overBbindSpike_omicron", "Delta43overBbindSpike_mdw",
       "Delta43overBpseudoneutid50", "Delta43overBpseudoneutid50_B.1.351", "Delta43overBpseudoneutid50_BA.1", "Delta43overBpseudoneutid50_BA.2", "Delta43overBpseudoneutid50_BA.4.5", "Delta43overBpseudoneutid50_mdw"
@@ -969,27 +974,12 @@
         rep(c(1,2), each=15),
         rep(2,30)
       ),
-      arm = c(
-        rep(1,60),
-        rep(2,30),
-        rep(1,30)
-      ),
+      arm = c(rep(1,60), rep(2,30), rep(1,30)),
       endpoint = rep(1, 120),
-      marker = c(
-        rep(c(1:30), 2),
-        rep(c(1:15), 2),
-        c(1:30)
-      ),
-      lab_title = c(
-        rep(c(1:30), 2),
-        rep(c(1:15), 2),
-        c(1:30)
-      ),
+      marker = c(c(1:60), c(1:15), c(31:45), c(31:60)),
+      lab_title = c(rep(c(1:30), 2), rep(c(1:15), 2), c(1:30)),
       lab_x = rep(c(1:15), 8),
-      t_0 = c(
-        rep(1, 90),
-        rep(2, 30)
-      ),
+      t_0 = c(rep(1, 90), rep(2, 30)),
       dataset = c(rep(1, 120)),
       cr2_trial = rep(1, 120), # Unused
       cr2_COR = rep(1, 120), # Unused
@@ -1017,13 +1007,12 @@
         rep(c(rep(1,9),rep(2,6)),3)
       ),
       v_covariates = rep(1, 120),
-      dir = rep(1, 120), # !!!!!
-      # dir = c(
-      #   rep(1,10), rep(2,5), rep(1,10), rep(2,5), # 1:30
-      #   rep(1,15), rep(2,9), rep(1,6), # 31:60
-      #   rep(1,30), # 61:90
-      #   rep(1,15), rep(2,9), rep(1,6) # 91:120
-      # ),
+      # dir = rep(1, 120),
+      dir = c(
+        rep(1, 45),
+        rep(2, 9),
+        rep(1, 66)
+      ),
       zoom_x = rep(1, 120),
       zoom_y_cve = rep(1, 120),
       zoom_y_risk = rep(1, 120),
@@ -1037,7 +1026,7 @@
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 45
+    cfg2$tid <- 120
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
@@ -1832,7 +1821,7 @@ if ("Grenander" %in% cfg2$estimators$cr) {
       s_out = s_grid,
       ci_type = cfg2$params$ci_type,
       placebo_risk_method = "Cox", # !!!!! Reevaluate this after finishing alternate estimator
-      return_extras = F, # !!!!!
+      return_extras = F,
       params_np = vaccine::params_ce_np(
         dir = cfg2$dir,
         edge_corr = cfg2$edge_corr,
@@ -1842,6 +1831,7 @@ if ("Grenander" %in% cfg2$estimators$cr) {
         density_type = cfg2$params$g_n_type,
         # density_bins = 0, # !!!!!
         deriv_type = cfg2$params$deriv_type
+        # convex_type = "CLS"
       )
     )
     
