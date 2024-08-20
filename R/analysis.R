@@ -1007,12 +1007,12 @@
         rep(c(rep(1,9),rep(2,6)),3)
       ),
       v_covariates = rep(1, 120),
-      # dir = rep(1, 120),
-      dir = c(
-        rep(1, 45),
-        rep(2, 9),
-        rep(1, 66)
-      ),
+      dir = rep(1, 120),
+      # dir = c(
+      #   rep(1, 45),
+      #   rep(2, 9),
+      #   rep(1, 66)
+      # ),
       zoom_x = rep(1, 120),
       zoom_y_cve = rep(1, 120),
       zoom_y_risk = rep(1, 120),
@@ -3801,12 +3801,12 @@ if (F) {
     t_p <- tid_pairs$tid_p[i]
     t_i <- tid_pairs$i_mrk[i]
     
-    ests_np_v <- readRDS(paste0("rds/Sanofi objs/ests_g/ests_g_",
+    ests_np_v <- readRDS(paste0("rds/Sanofi objs/Sanofi v13/ests_g/ests_g_",
                                 t_v, ".rds"))
-    ests_np_p <- readRDS(paste0("rds/Sanofi objs/ests_g/ests_g_",
+    ests_np_p <- readRDS(paste0("rds/Sanofi objs/Sanofi v13/ests_g/ests_g_",
                                 t_p, ".rds"))
     
-    dat <- readRDS(paste0("rds/Sanofi objs/dat/dat_",
+    dat <- readRDS(paste0("rds/Sanofi objs/Sanofi v13/dat/dat_",
                             t_v, ".rds"))
     ests_ov <- vaccine::est_overall(dat=dat, t_0=159, method="Cox")
 
