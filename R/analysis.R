@@ -2,6 +2,11 @@
 ##### Setup #####
 #################.
 
+# Uncomment these line if running analysis.R as a standalone file
+# pkgs <- c("splines", "survival", "SuperLearner", "magrittr", "ggplot2", "dplyr",
+#           "vaccine")
+# for (pkg in pkgs) { do.call("library", list(pkg)) }
+
 {
   # Print timestamp
   print(paste("START:", Sys.time()))

@@ -6,10 +6,5 @@ cfg <- list(
 # Secondary config
 source("R/config.R", local=T)
 
-# Load functions
-{
-  source("R/misc_functions.R", local=T)
-}
-
 # Analysis pipeline
 if (cfg$run_analysis) { source("R/analysis.R", local=T) }
