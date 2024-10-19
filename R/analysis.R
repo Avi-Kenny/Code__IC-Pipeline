@@ -1,5 +1,3 @@
-# SAP: https://www.overleaf.com/project/604a54625b885d0da667de4b
-
 #################.
 ##### Setup #####
 #################.
@@ -785,7 +783,7 @@
     cfg2$t_0 <- c(578) # c(0)
     cfg2$dataset <- c("rv144_ank.csv")
     cfg2$folder_local <- "RV144 data/"
-    cfg2$folder_cluster <- "C:/Users/ak811/Desktop/Avi/Research/IC-Pipeline/Data/RV144 data/"
+    cfg2$folder_cluster <- "IC-Pipeline/Data/RV144 data/" # !!!!! Not full path
     cfg2$cr2_trial <- ""
     cfg2$cr2_COR <- ""
     cfg2$v <- list(
@@ -947,7 +945,7 @@
     cfg2$dataset <- "vat08_combined_data_processed_20240804.csv"
     cfg2$folder_local <- "Sanofi data/"
     # cfg2$folder_cluster <- "Z:/covpn/p3005/analysis/correlates/Part_A_Blinded_Phase_Data/adata/"
-    cfg2$folder_cluster <- "C:/Users/ak811/Desktop/Avi/Research/IC-Pipeline/Data/Sanofi data/"
+    cfg2$folder_cluster <- "IC-Pipeline/Data/Sanofi data/" # !!!!! Not full path
     cfg2$cr2_trial <- ""
     cfg2$cr2_COR <- ""
     cfg2$v <- list(
@@ -2770,9 +2768,8 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
 if (F) {
   
   # Read in data
-  dat_124 <- read.csv(paste0("C:/Users/ak811/Desktop/Avi/Research/_Old/HVTN 12",
-                             "4 (Peter Gilbert)/Data/bama_igg3_data_v124_for_a",
-                             "vi_v3.csv"))
+  dat_124 <- read.csv(paste0("Research/_Old/HVTN 124 (Peter Gilbert)/Data/bama",
+                             "_igg3_data_v124_for_avi_v3.csv")) # !!!!! Not full path
   
   # Map marker names
   cfg2$marker2 <- dplyr::case_when(
