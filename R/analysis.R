@@ -81,9 +81,9 @@
     run_hyptest = F,
     run_mediation = F,
     hvtn705_abstract_fig = F,
-    table_of_vals = F,
-    save_data_objs = F,
-    save_plot_objs = F,
+    table_of_vals = T,
+    save_data_objs = T,
+    save_plot_objs = T,
     save_diagnostics = F,
     paper_npcve = F,
     paper_cox = F,
@@ -167,7 +167,7 @@
       ph2 = "ph2.D29start1",
       covariates = "~. + risk_score + as.factor(Region)"
     )
-
+    
     # Variable map; one row corresponds to one CVE graph
     cfg2$map <- data.frame(
       endpoint = rep(1, 4),
@@ -273,7 +273,7 @@
     cfg2$qnt[["CVE, nonparametric"]] <- c(0.1,0.9)
     cfg2$params$deriv_type <- "linear"
     cfg2$params$ci_type <- "regular"
-
+    
     # Analysis-specific config
     cfg2$marker <- "bweight"
     cfg2$lab_title <- c("HVTN703/HPTN081", "HVTN704/HPTN085", "Pooled AMP trials")
@@ -332,7 +332,7 @@
     
     # Override default config
     cfg2$params$deriv_type <- "line"
-
+    
     # Analysis-specific config
     cfg2$marker <- c("Day210ELCZ", "Day210ELMo", "Day210ADCPgp140C97ZAfib", "Day210ADCPgp140Mos1fib", "Day210IgG3gp140C97ZAfibritin40delta", "Day210IgG3gp140Mos1fibritin40delta", "Day210IgG340mdw_gp120", "Day210IgG340mdw_gp140", "Day210IgG340mdw_V1V2", "Day210IgG3gp4140delta", "Day210IgG340mdw_multi", "Day210IgG340mdw_gp120_gp140_vm", "Day210IgG50mdw_V1V2", "Day210mdw_xassay", "Day210ADCCCAP8_pk", "Day210ADCCCH58_pk", "Day210ADCCWITO_pk", "Day210ADCCCAP8_pAUC", "Day210ADCCCH58_pAUC", "Day210ADCCWITO_pAUC", "Day210ICS4AnyEnvIFNg_OR_IL2", "Day210ICS8AnyEnvIFNg_OR_IL2", "Day210IgG3AE.A244.V1V2.Tags_293F40delta", "Day210IgG3C.1086C.V1.V2.Tags40delta", "Day210IgG3gp70.001428.2.42.V1V240delta", "Day210IgG3gp70.1012.11.TC21.3257.V1V240delta", "Day210IgG3gp70.1394C9G1.V1V240delta", "Day210IgG3gp70.BF1266.431a.V1V240delta", "Day210IgG3gp70.Ce1086.B2.V1V240delta", "Day210IgG3gp70.B.CaseA.V1.V240delta", "Day210IgGAE.A244.V1V2.Tags_293F50delta", "Day210IgGC.1086C.V1.V2.Tags50delta", "Day210IgGgp70_001428.2.42.V1V250delta", "Day210IgGgp70_1012.11.TC21.3257.V1V250delta", "Day210IgGgp70_1394C9G1.V1V250delta", "Day210IgGgp70_9004SS.A3.4.V1V250delta", "Day210IgGgp70_BF1266.431a.V1V250delta", "Day210IgGgp70_Ce1086.B2.V1V250delta", "Day210IgGgp70.B.CaseA.V1.V250delta")
     cfg2$lab_title <- c("IgG to VT-C (EU/ml): Month 7", "IgG to VT-M (EU/ml): Month 7", "Average phagocytosis score to gp140 C97ZA: Month 7", "Average phagocytosis score to gp140 Mos1: Month 7", "IgG3 Net MFI to gp140 C97ZA: Month 7", "IgG3 Net MFI to gp140 Mosaic: Month 7", "IgG3 gp120 breadth (Weighted avg log10 Net MFI): Month 7", "IgG3 gp140 breadth (Weighted avg log10 Net MFI): Month 7", "IgG3 V1V2 breadth (Weighted avg log10 Net MFI): Month 7", "IgG3 Net MFI to gp41: Month 7", "IgG3 multi-epitope breadth (Wt avg log10 Net MFI): Month 7", "IgG3 gp120 + gp140 breadth (Wt avg log10 Net MFI): Month 7", "IgG V1V2 breadth (Wt avg log10 Net MFI): Month 7", "Overall maximal diversity score: Month 7", "Peak baseline-subtracted pct loss luc activity to CAP8: Month 7", "Peak baseline-subtracted pct loss luc activity to CH58: Month 7", "Peak baseline-subtracted pct loss luc activity to WITO: Month 7", "AUC baseline-subtracted pct loss luc activity to CAP8: Month 7", "AUC baseline-subtracted pct loss luc activity to CH58: Month 7", "AUC baseline-subtracted pct loss luc activity to WITO: Month 7", "Pct CD4+ T-cells expressing IFN-g/IL-2: Month 7", "Pct CD8+ T-cells expressing IFN-g/IL-2: Month 7", "IgG3 Net MFI to AE.A244 V1V2 Tags 293F: Month 7", "IgG3 Net MFI to C.1086C V1V2 Tags: Month 7", "IgG3 Net MFI to gp70-001428.2.42 V1V2: Month 7", "IgG3 Net MFI to gp70-1012.11.TC21.3257 V1V2: Month 7", "IgG3 Net MFI to gp70-1394C9G1 V1V2: Month 7", "IgG3 Net MFI to gp70-BF1266 431a V1V2: Month 7", "IgG3 Net MFI to gp70-Ce1086 B2 V1V2: Month 7", "IgG3 Net MFI to gp70-B.CaseA2 V1V2: Month 7", "IgG Net MFI to AE.A244 V1V2 Tags 293F: Month 7", "IgG Net MFI to C.1086C V1V2 Tags: Month 7", "IgG Net MFI to gp70-001428.2.42 V1V2: Month 7", "IgG Net MFI to gp70-1012.11.TC21.3257 V1V2: Month 7", "IgG Net MFI to gp70-1394C9G1 V1V2: Month 7", "IgG Net MFI to gp70-9004SS.A3.4 V1V2: Month 7", "IgG Net MFI to gp70-BF1266.431a V1V2: Month 7", "IgG Net MFI to gp70-Ce1086.B2 V1V2: Month 7", "IgG Net MFI to gp70.B.CaseA V1V2: Month 7")
@@ -352,7 +352,7 @@
       ph2 = "Ph2ptids.D210",
       covariates = "~. + RSA + Age + BMI + Riskscore"
     )
-
+    
     # Variable map; one row corresponds to one CVE graph
     cfg2$map <- data.frame(
       endpoint = rep(3, 39),
@@ -467,7 +467,7 @@
       ph2 = "Ph2ptids.D210",
       covariates = "~. + RSA + Age + BMI + Riskscore"
     )
-
+    
     # Variable map; one row corresponds to one CVE graph
     cfg2$map <- data.frame(
       endpoint = rep(3, 6),
@@ -503,7 +503,7 @@
     
     # Override default config
     cfg2$params$deriv_type <- "line"
-
+    
     # Analysis-specific config
     cfg2$marker <- c("Day210ICS4JMos1gp120IFNg_OR_IL2", "Day210ICS4JMos1gp41IFNg_OR_IL2", "Day210ICS4JMos2GagIFNg_OR_IL2", "Day210ICS4JMos2RNAseIntIFNg_OR_IL2", "Day210ICS4JMos2Sgp120IFNg_OR_IL2", "Day210ICS4JMos2Sgp41IFNg_OR_IL2", "Day210ICS8JMos1gp120IFNg_OR_IL2", "Day210ICS8JMos1gp41IFNg_OR_IL2", "Day210ICS8JMos2GagIFNg_OR_IL2", "Day210ICS8JMos2RNAseIntIFNg_OR_IL2", "Day210ICS8JMos2Sgp120IFNg_OR_IL2", "Day210ICS8JMos2Sgp41IFNg_OR_IL2")
     cfg2$lab_title <- c("Pct CD4+ T-cells expressing IFN-g/IL-2 JMos1 gp120: Month 7", "Pct CD4+ T-cells expressing IFN-g/IL-2 JMos1 gp41: Month 7", "Pct CD4+ T-cells expressing IFN-g/IL-2 JMos2 Gag: Month 7", "Pct CD4+ T-cells expressing IFN-g/IL-2 JMos2 RNAseInt: Month 7", "Pct CD4+ T-cells expressing IFN-g/IL-2 JMos2s gp120: Month 7", "Pct CD4+ T-cells expressing IFN-g/IL-2 JMos2s gp41: Month 7", "Pct CD8+ T-cells expressing IFN-g/IL-2 JMos1 gp120: Month 7", "Pct CD8+ T-cells expressing IFN-g/IL-2 JMos1 gp41: Month 7", "Pct CD8+ T-cells expressing IFN-g/IL-2 JMos2 Gag: Month 7", "Pct CD8+ T-cells expressing IFN-g/IL-2 JMos2 RNAseInt: Month 7", "Pct CD8+ T-cells expressing IFN-g/IL-2 JMos2s gp120: Month 7", "Pct CD8+ T-cells expressing IFN-g/IL-2 JMos2s gp41: Month 7")
@@ -523,7 +523,7 @@
       ph2 = "Ph2ptids.D210",
       covariates = "~. + RSA + Age + BMI + Riskscore"
     )
-
+    
     # Variable map; one row corresponds to one CVE graph
     cfg2$map <- data.frame(
       endpoint = rep(3, 12),
@@ -582,7 +582,7 @@
       ph2 = c("ph2.D29", "ph2.D57"),
       covariates = "~. + Age + risk_score"
     )
-
+    
     # Variable map; one row corresponds to one CVE graph
     cfg2$map <- data.frame(
       endpoint = rep(1, 4),
@@ -741,7 +741,7 @@
       ph2 = c("ph2.D43", "ph2.D91"),
       covariates = "~.+ HighRiskInd + Sex + Age + BMI"
     )
-
+    
     # Variable map; one row corresponds to one CVE graph
     cfg2$map <- data.frame(
       endpoint = rep(1, 19), # F (constant)
@@ -788,7 +788,7 @@
     cfg2$t_0 <- c(578) # c(0)
     cfg2$dataset <- c("rv144_ank.csv")
     cfg2$folder_local <- "RV144 data/"
-    cfg2$folder_cluster <- "IC-Pipeline/Data/RV144 data/" # !!!!! Not full path
+    cfg2$folder_cluster <- "../../IC-Pipeline/Data/RV144 data/"
     cfg2$cr2_trial <- ""
     cfg2$cr2_COR <- ""
     cfg2$v <- list(
@@ -800,7 +800,7 @@
       ph2 = "ph2",
       covariates = "~. + dem_sex + as.factor(BRA_risk)"
     )
-
+    
     # Variable map; one row corresponds to one CVE graph
     cfg2$map <- data.frame(
       endpoint = rep(3, 6),
@@ -950,7 +950,7 @@
     cfg2$dataset <- "vat08_combined_data_processed_20240804.csv"
     cfg2$folder_local <- "Sanofi data/"
     # cfg2$folder_cluster <- "Z:/covpn/p3005/analysis/correlates/Part_A_Blinded_Phase_Data/adata/"
-    cfg2$folder_cluster <- "IC-Pipeline/Data/Sanofi data/" # !!!!! Not full path
+    cfg2$folder_cluster <- "../../IC-Pipeline/Data/Sanofi data/"
     cfg2$cr2_trial <- ""
     cfg2$cr2_COR <- ""
     cfg2$v <- list(
@@ -972,64 +972,61 @@
     
     # Variable map; one row corresponds to one CVE graph
     cfg2$map <- data.frame(
-      trial_stage = c(
-        rep(c(1,2), each=30),
-        rep(c(1,2), each=15),
-        rep(2,30)
-      ),
-      arm = c(rep(1,60), rep(2,30), rep(1,30)),
-      endpoint = rep(1, 120),
-      marker = c(c(1:60), c(1:15), c(31:45), c(31:60)),
-      lab_title = c(rep(c(1:30), 2), rep(c(1:15), 2), c(1:30)),
-      lab_x = rep(c(1:15), 8),
-      t_0 = c(rep(1, 90), rep(2, 30)),
-      dataset = c(rep(1, 120)),
-      cr2_trial = rep(1, 120), # Unused
-      cr2_COR = rep(1, 120), # Unused
-      cr2_marker = rep(1, 120), # Unused
-      edge_corr = rep(1, 120), # !!!!! Check
-      v_id = rep(1, 120),
-      v_time = c(rep(1,90), rep(2,30)),
-      v_event = c(rep(1,90), rep(2,30)),
+      trial_stage = c(rep(1,30), rep(2,30), rep(1,15), rep(2,15)),
+      arm = c(rep(1,60), rep(2,30)),
+      endpoint = rep(1, 90),
+      marker = c(c(1:60), c(1:15), c(31:45)),
+      lab_title = c(rep(c(1:30), 2), rep(c(1:15), 2)),
+      lab_x = rep(c(1:15), 6),
+      # t_0 = c(rep(1, 90), rep(2, 30)), # Changed on 2024-10-22
+      t_0 = c(rep(1,30), rep(2,30), rep(1,15), rep(2,15)),
+      dataset = c(rep(1, 90)),
+      cr2_trial = rep(1, 90), # Unused
+      cr2_COR = rep(1, 90), # Unused
+      cr2_marker = rep(1, 90), # Unused
+      edge_corr = rep(1, 90), # !!!!! Check
+      v_id = rep(1, 90),
+      v_time = c(rep(1,30), rep(2,30), rep(1,15), rep(2,15)),
+      v_event = c(rep(1,30), rep(2,30), rep(1,15), rep(2,15)),
       v_wt = c(
         rep(c(rep(1,9),rep(3,6)),2),
         rep(c(rep(1,9),rep(2,6)),2),
         c(rep(1,9),rep(3,6)),
-        rep(c(rep(1,9),rep(2,6)),3)
+        c(rep(1,9),rep(2,6))
       ),
       v_ph1 = c(
         rep(c(rep(1,9),rep(2,6)),2),
         rep(1,30),
         c(rep(1,9),rep(2,6)),
-        rep(1,45)
+        rep(1,15)
       ),
       v_ph2 = c(
         rep(c(rep(1,9),rep(3,6)),2),
         rep(c(rep(1,9),rep(2,6)),2),
         c(rep(1,9),rep(3,6)),
-        rep(c(rep(1,9),rep(2,6)),3)
+        c(rep(1,9),rep(2,6))
       ),
-      v_covariates = rep(1, 120),
-      dir = rep(1, 120),
+      v_covariates = rep(1, 90),
+      dir = rep(1, 90),
       # dir = c(
       #   rep(1, 45),
       #   rep(2, 9),
-      #   rep(1, 66)
+      #   rep(1, 36)
       # ),
-      zoom_x = rep(1, 120),
-      zoom_y_cve = rep(1, 120),
-      zoom_y_risk = rep(1, 120),
-      more_ticks = rep(2, 120),
-      llox_label = rep(1, 120),
-      llox = rep(1, 120),
-      covariates_ph2 = rep(1, 120)
+      zoom_x = rep(1, 90),
+      zoom_y_cve = rep(1, 90),
+      zoom_y_risk = rep(1, 90),
+      more_ticks = rep(2, 90),
+      llox_label = rep(1, 90),
+      llox = rep(1, 90),
+      covariates_ph2 = rep(1, 90)
     )
     
   }
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 120
+    cfg2$tid <- 61
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
@@ -1443,7 +1440,7 @@ if (cfg2$estimators$overall %in% c("Cox gcomp", "KM")) {
     
     if (F) {
       saveRDS(ests_ov, paste0("rds/", cfg2$analysis, " objs/ests_ov_", cfg2$tid,
-                           ".rds"))
+                              ".rds"))
       # ests_ov <- readRDS(paste0("rds/", cfg2$analysis, " objs/ests_ov_",
       #                           cfg2$tid, ".rds"))
     }
@@ -1592,7 +1589,7 @@ if (cfg2$estimators$overall=="Cox import" ||
     ests_risk <- ests$cr$est %>% pmax(0) %>% pmin(1)
     ci_lo_risk <- ests$cr$ci_lower %>% pmax(0) %>% pmin(1)
     ci_up_risk <- ests$cr$ci_upper %>% pmax(0) %>% pmin(1)
-
+    
     # Compute CVE estimates
     if (run_cve) {
       ests_cve <- ests$cve$est
@@ -1681,7 +1678,7 @@ if (flags$run_mediation) {
       "nie_est"=double(),"nie_se"=double(),"nie_lo"=double(),"nie_up"=double(),
       "pm_est"=double(),"pm_se"=double(),"pm_lo"=double(),"pm_up"=double()
     )
-
+    
     for (i in inds) {
       ests <- readRDS(paste0("rds/", analysis, " objs/ests_med_", i, ".rds"))
       e_nde <- as.list(ests[ests$effect=="NDE",][2:5])
@@ -1690,7 +1687,7 @@ if (flags$run_mediation) {
       e_all <- c(e_nde, e_nie, e_pm)
       e_all <- lapply(e_all, function(x) { round(x,3) })
       df_med[nrow(df_med)+1,] <- c(list(i=i), e_all)
-
+      
     }
     write.table(
       df_med,
@@ -1734,10 +1731,10 @@ if (flags$run_mediation) {
           severity==3 ~ levs_severity[3]
         ), levels=levs_severity)
       )
-
+      
       forest_plot <- function(df_med, title, var_estimate, var_ci_lo, var_ci_up,
                               var_y, facet_var_x, facet_var_y, xlim) {
-
+        
         # Extract data
         df_plot <- subset(df_med,select="i")
         df_plot$var_estimate <- df_med[[var_estimate]]
@@ -1746,7 +1743,7 @@ if (flags$run_mediation) {
         df_plot$var_y <- df_med[[var_y]]
         df_plot$facet_var_x <- df_med[[facet_var_x]]
         df_plot$facet_var_y <- df_med[[facet_var_y]]
-
+        
         # Plot
         p <- ggplot(df_plot, aes(x=var_estimate, y=var_y)) +
           geom_vline(xintercept=0, linetype="dashed", color="grey") +
@@ -1761,10 +1758,10 @@ if (flags$run_mediation) {
                 panel.grid.minor.y = element_blank(),
                 panel.grid.minor = element_line(linewidth=0.2),
                 panel.grid.major = element_line(linewidth=0.2))
-          return(p)
-
+        return(p)
+        
       }
-
+      
       titles <- c("Proportion Mediated",
                   "Natural Direct Effect",
                   "Natural Indirect Effect")
@@ -2398,7 +2395,7 @@ if (flags$run_hyptest) {
     # Note: using geom_rect for the histogram so that it can be shifted up/down
     if (rr_y_axis) {
       syc_sec.axis <- sec_axis(~1-., breaks=seq(0,2,0.1),
-                           name="Risk ratio (vaccine/placebo)")
+                               name="Risk ratio (vaccine/placebo)")
     } else {
       syc_sec.axis <- waiver()
     }
@@ -2436,14 +2433,14 @@ if (flags$run_hyptest) {
     plot <- ggplot(plot_data, aes(x=x, y=y, color=curve))
     if (density_type=="histogram") {
       
-       plot <- plot + geom_rect(
-          aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax),
-          hist_data,
-          alpha = 0.3,
-          fill = "orange",
-          # fill = "forestgreen",
-          inherit.aes = F
-        )
+      plot <- plot + geom_rect(
+        aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax),
+        hist_data,
+        alpha = 0.3,
+        fill = "orange",
+        # fill = "forestgreen",
+        inherit.aes = F
+      )
       
     } else if (density_type %in% c("kde", "kde edge")) {
       
@@ -2552,7 +2549,7 @@ if (flags$run_hyptest) {
 if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
   
   if (cfg2$arm=="placebo") { dat_ <- dat_p } else { dat_ <- dat_v }
-
+  
   # Create cutoff values corresponding to cfg2$qnt
   cutoffs <- lapply(cfg2$qnt, function(qnt) {
     as.numeric(quantile(dat_$s, na.rm=T, probs=qnt))
@@ -3188,7 +3185,7 @@ if (F) {
   
   # Filter out individuals in stratum 8
   rv144_ank %<>% dplyr::filter(!(stratum==8 & Trt==1))
-
+  
   # # !!!!! strata not accounted for: male vaccno=1
   # nrow(dplyr::filter(rv144_ank, stratum==8 & Trt==1))
   # nrow(dplyr::filter(rv144_ank, stratum==8 & Trt==1 & dem_sex==0 & vaccno==1))
@@ -3753,7 +3750,7 @@ if (F) {
     mutate(curve="HVTN 705")
   plot_data_merged <- rbind(plot_data_cve_144,plot_data_cve_705)
   
-
+  
   # Hard-code labels
   cfg2 <- cfg2_705 # !!!!!
   cfg2$lab_y <- "Controlled VE against HIV"
@@ -3803,14 +3800,16 @@ if (F) {
     t_p <- tid_pairs$tid_p[i]
     t_i <- tid_pairs$i_mrk[i]
     
-    ests_np_v <- readRDS(paste0("rds/Sanofi objs/Sanofi v13/ests_g/ests_g_",
+    ests_np_v <- readRDS(paste0("rds/Sanofi objs/Sanofi v14/ests_g/ests_g_",
                                 t_v, ".rds"))
-    ests_np_p <- readRDS(paste0("rds/Sanofi objs/Sanofi v13/ests_g/ests_g_",
+    ests_np_p <- readRDS(paste0("rds/Sanofi objs/Sanofi v14/ests_g/ests_g_",
                                 t_p, ".rds"))
     
-    dat <- readRDS(paste0("rds/Sanofi objs/Sanofi v13/dat/dat_",
-                            t_v, ".rds"))
-    ests_ov <- vaccine::est_overall(dat=dat, t_0=159, method="Cox")
+    dat <- readRDS(paste0("rds/Sanofi objs/Sanofi v14/dat/dat_",
+                          t_v, ".rds"))
+    
+    t_0_ <- ifelse(i %in% c(1:15), 159, 129)
+    ests_ov <- vaccine::est_overall(dat=dat, t_0=t_0_, method="Cox")
 
     dat_alt <- list(
       data.frame(s=dat$s[dat$a==1], weights=dat$weights[dat$a==1]),
@@ -3842,7 +3841,7 @@ if (F) {
       labs(
         title = cfg3$lab_title[t_i],
         x = cfg3$lab_x[t_i],
-        y = paste0("Probability of COVID by day ", cfg2$t_0)
+        y = paste0("Probability of COVID by day ", t_0_)
       ) +
       scale_y_continuous(
         labels = scales::label_percent(accuracy=1),
@@ -3873,7 +3872,7 @@ if (F) {
     
     # Save plot
     ggsave(filename = paste0("../Figures + Tables/Sanofi plots/plot_vp_", i,
-                        ".pdf"),
+                             ".pdf"),
            plot=plot, device="pdf", width=6, height=4)
     
   }
