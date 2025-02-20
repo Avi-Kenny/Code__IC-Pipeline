@@ -920,6 +920,7 @@
     # # Override default config
     # cfg2$params$Q_n_type <- "survML-G"
     # cfg2$estimators <- list(overall="Cox gcomp", cr=c("Cox (spline 4 df)", "Cox gcomp")) # !!!!!
+    # cfg2$estimators <- list(overall="Cox gcomp", cr=c("Grenander"))
     cfg2$density_type <- "kde edge"
     cfg2$zoom_y_cve <- list(c(-1.05,1.05))
     
@@ -978,7 +979,6 @@
       marker = c(c(1:60), c(1:15), c(31:45)),
       lab_title = c(rep(c(1:30), 2), rep(c(1:15), 2)),
       lab_x = rep(c(1:15), 6),
-      # t_0 = c(rep(1, 90), rep(2, 30)), # Changed on 2024-10-22
       t_0 = c(rep(1,30), rep(2,30), rep(1,15), rep(2,15)),
       dataset = c(rep(1, 90)),
       cr2_trial = rep(1, 90), # Unused
