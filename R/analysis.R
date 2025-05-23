@@ -948,7 +948,8 @@
     )
     
     cfg2$t_0 <- c(159,129)
-    cfg2$dataset <- "vat08_combined_data_processed_20240804.csv"
+    # cfg2$dataset <- "vat08_combined_data_processed_20240804.csv"
+    cfg2$dataset <- "vat08_combined_data_processed_20250417.csv"
     cfg2$folder_local <- "Sanofi data/"
     # cfg2$folder_cluster <- "Z:/covpn/p3005/analysis/correlates/Part_A_Blinded_Phase_Data/adata/"
     cfg2$folder_cluster <- "../../IC-Pipeline/Data/Sanofi data/"
@@ -3800,12 +3801,12 @@ if (F) {
     t_p <- tid_pairs$tid_p[i]
     t_i <- tid_pairs$i_mrk[i]
     
-    ests_np_v <- readRDS(paste0("rds/Sanofi objs/Sanofi v14/ests_g/ests_g_",
+    ests_np_v <- readRDS(paste0("rds/Sanofi objs/Sanofi v15/ests_g/ests_g_",
                                 t_v, ".rds"))
-    ests_np_p <- readRDS(paste0("rds/Sanofi objs/Sanofi v14/ests_g/ests_g_",
+    ests_np_p <- readRDS(paste0("rds/Sanofi objs/Sanofi v15/ests_g/ests_g_",
                                 t_p, ".rds"))
     
-    dat <- readRDS(paste0("rds/Sanofi objs/Sanofi v14/dat/dat_",
+    dat <- readRDS(paste0("rds/Sanofi objs/Sanofi v15/dat/dat_",
                           t_v, ".rds"))
     
     t_0_ <- ifelse(i %in% c(1:15), 159, 129)

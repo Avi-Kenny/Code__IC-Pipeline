@@ -4,7 +4,7 @@
 # Set packages
 cfg$pkgs <- c(
   "splines", "survival", "SuperLearner", "magrittr", "ggplot2", "dplyr",
-  "vaccine"
+  "vaccine", "plotrix"
 )
 cfg$pkgs_nocluster <- c()
 
@@ -21,6 +21,13 @@ if (Sys.getenv("HOME")=="/home/akenny") {
   cluster_config <- list(
     js = "slurm",
     dir = paste0("/hpc/home/ak811/", Sys.getenv("proj"),
+                 "/Code__", Sys.getenv("proj"))
+  )
+} else if (Sys.getenv("HOME")=="/home/ak811") {
+  # Duke RCC
+  cluster_config <- list(
+    js = "slurm",
+    dir = paste0("/shared/home/ak811/", Sys.getenv("proj"),
                  "/Code__", Sys.getenv("proj"))
   )
 } else {
