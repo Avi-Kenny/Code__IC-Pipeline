@@ -15,7 +15,7 @@
   # "Janssen" "Moderna" "AMP" "AZD1222" "Janssen (partA)" "Profiscov"
   # "HVTN 705 (primary)" "HVTN 705 (all)" "RV144" "HVTN 705 (second)"
   # "HVTN 705 (compare RV144)" "Moderna (boost)"
-  cfg2 <- list(analysis="Sanofi", calc_ests=F, seed=1)
+  cfg2 <- list(analysis="Sanofi", calc_ests=T, seed=1)
   
   # Set proper task ID variable
   if (cluster_config$js=="slurm") {
@@ -90,7 +90,7 @@
     hvtn124_plot = F,
     partA_mnscrpt2 = F,
     moderna_boost_x_scale = F,
-    sanofi_align_y_axis = T
+    sanofi_align_y_axis = F
   )
   
   # Set default cfg2 values (+ those common to multiple analyses)
@@ -921,7 +921,7 @@
     # # Override default config
     # cfg2$params$Q_n_type <- "survML-G"
     # cfg2$estimators <- list(overall="Cox gcomp", cr=c("Cox (spline 4 df)", "Cox gcomp")) # !!!!!
-    cfg2$estimators <- list(overall="Cox gcomp", cr=c("Grenander"))
+    # cfg2$estimators <- list(overall="Cox gcomp", cr=c("Grenander"))
     cfg2$density_type <- "kde edge"
     cfg2$zoom_y_cve <- list(c(-1.05,1.05))
     
