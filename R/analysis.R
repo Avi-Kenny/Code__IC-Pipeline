@@ -15,7 +15,7 @@
   # "Janssen" "Moderna" "AMP" "AZD1222" "Janssen (partA)" "Profiscov"
   # "HVTN 705 (primary)" "HVTN 705 (all)" "RV144" "HVTN 705 (second)"
   # "HVTN 705 (compare RV144)" "Moderna (boost)"
-  cfg2 <- list(analysis="Sanofi", calc_ests=T, seed=1)
+  cfg2 <- list(analysis="Sanofi", calc_ests=F, seed=1)
   
   # Set proper task ID variable
   if (cluster_config$js=="slurm") {
@@ -89,7 +89,8 @@
     paper_cox = F,
     hvtn124_plot = F,
     partA_mnscrpt2 = F,
-    moderna_boost_x_scale = F
+    moderna_boost_x_scale = F,
+    sanofi_align_y_axis = T
   )
   
   # Set default cfg2 values (+ those common to multiple analyses)
@@ -920,7 +921,7 @@
     # # Override default config
     # cfg2$params$Q_n_type <- "survML-G"
     # cfg2$estimators <- list(overall="Cox gcomp", cr=c("Cox (spline 4 df)", "Cox gcomp")) # !!!!!
-    # cfg2$estimators <- list(overall="Cox gcomp", cr=c("Grenander"))
+    cfg2$estimators <- list(overall="Cox gcomp", cr=c("Grenander"))
     cfg2$density_type <- "kde edge"
     cfg2$zoom_y_cve <- list(c(-1.05,1.05))
     
@@ -1027,7 +1028,7 @@
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 61
+    cfg2$tid <- 57
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
@@ -2616,6 +2617,10 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
         TRUE ~ c(-1,7) # Default (unused)
       )
       cfg2$more_ticks <- 1
+    } else if (flags$sanofi_align_y_axis) {
+      if (cfg2$tid %in% c(53,57)) { cfg2$zoom_y_risk <- c(-0.002,0.035) } # Main figure 5
+      if (cfg2$tid %in% c(46,47)) { cfg2$zoom_y_risk <- c(-0.002,0.065) } # Supp figure 28
+      if (cfg2$tid %in% c(55,56)) { cfg2$zoom_y_risk <- c(-0.002,0.030) } # Supp figure 29
     }
     
     plot <- create_plot(
@@ -3796,6 +3801,7 @@ if (F) {
   )
   
   for (i in tid_pairs$index) {
+  # for (i in (15+c(1,2,8,10,11,12))) { # !!!!!
     
     t_v <- tid_pairs$tid_v[i]
     t_p <- tid_pairs$tid_p[i]
@@ -3822,6 +3828,8 @@ if (F) {
     
     if (i %in% c(11:15)) {
       zoom_y <- c(0,0.1)
+    } else if (i %in% (15+c(1,2,8,10,11,12))) {
+      zoom_y <- c(0,0.06)
     } else {
       zoom_y <- "zoom out"
     }
