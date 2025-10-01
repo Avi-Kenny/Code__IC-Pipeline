@@ -1,6 +1,7 @@
+core
 Figures + Tables/
 renv/
-
+*.csv
 *.out
 
 # History files

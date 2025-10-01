@@ -45,3 +45,8 @@ To generate the plots, run the following commands in a bash shell on the repo ro
 sbatch --array=1-64 run_r.sh
 ```
 
+When all jobs are done, the controlled risk and VE plots will be in the folder Figures + Tables\Janssen (partA) plots. To get the mediation results, run the following command in R at the project level:
+```{r}
+source("make_mediation_table.R")
+```
+
