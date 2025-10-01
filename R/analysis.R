@@ -136,7 +136,8 @@
     cfg2$llox <- NULL
     cfg2$density_type <- "histogram"
     cfg2$covariates_ph2 <- c(FALSE,TRUE)
-    
+    cfg2$arm <- "vaccine"
+
   }
   
   # Set up analysis-specific configuration variables. Each row in the cfg2$map
@@ -1036,10 +1037,12 @@
   }
   
   # Set config based on cfg2$map
-  for (x in c("endpoint", "marker", "lab_x", "lab_title", "day", "dataset",
-              "cr2_trial", "cr2_COR", "cr2_marker", "t_0", "dir", "zoom_x",
-              "zoom_y_cve", "zoom_y_risk", "more_ticks", "llox_label", "llox",
-              "edge_corr", "covariates_ph2", "trial_stage", "arm")) {
+  var_list <- c("endpoint", "marker", "lab_x", "lab_title", "day", "dataset",
+                "cr2_trial", "cr2_COR", "cr2_marker", "t_0", "dir", "zoom_x",
+                "zoom_y_cve", "zoom_y_risk", "more_ticks", "llox_label", "llox",
+                "edge_corr", "covariates_ph2")
+  if (cfg2$analysis=="Sanofi") { var_list <- c(var_list, "trial_stage", "arm") }
+  for (x in var_list) {
     if (!is.null(cfg2[[x]])) { cfg2[[x]] <- cfg2[[x]][[cfg2$map[cfg2$tid,x]]] }
   }
   for (x in c("id", "time", "event", "wt", "ph1", "ph2", "covariates")) {
