@@ -16,7 +16,10 @@
   # "HVTN 705 (primary)" "HVTN 705 (all)" "RV144" "HVTN 705 (second)"
   # "HVTN 705 (compare RV144)" "Moderna (boost)"
   cfg2 <- list(analysis="Janssen (partA)", calc_ests=T, seed=1)
-  
+
+  dir.create(paste0("rds/", cfg2$analysis, " objs"), showWarnings = FALSE, recursive=TRUE)
+  dir.create(paste0("Figures + Tables/", cfg2$analysis, " plots"), showWarnings = FALSE, recursive=TRUE)
+
   # Set proper task ID variable
   if (cluster_config$js=="slurm") {
     .tid_var <- "SLURM_ARRAY_TASK_ID"
@@ -156,7 +159,7 @@
     cfg2$lab_x <- c("Anti Spike IgG (BAU/ml) (=s)", "Anti RBD IgG (BAU/ml) (=s)", "Pseudovirus-nAb ID50 (IU50/ml) (=s)", "Phagocytic Score (=s)")
     cfg2$t_0 <- 54
     cfg2$dataset <- c("janssen_pooled_real_data_processed_with_riskscore.csv", "janssen_pooled_realADCP_data_processed_with_riskscore.csv")
-    cfg2$folder_local <- "Janssen data/"
+    cfg2$folder_local <- "../Data/Janssen data/"
     cfg2$folder_cluster <- "Z:/covpn/p3003/analysis/correlates/Part_A_Blinded_Phase_Data/adata/"
     cfg2$cr2_trial <- c("janssen_pooled_real", "janssen_pooled_realADCP")
     cfg2$cr2_COR <- "D29IncludeNotMolecConfirmedstart1"
@@ -213,7 +216,7 @@
     cfg2$lab_x <- c("Anti Spike IgG (BAU/ml) (=s)", "Anti RBD IgG (BAU/ml) (=s)", "Pseudovirus-nAb ID50 (IU50/ml) (=s)", "Pseudovirus-nAb ID80 (IU80/ml) (=s)", "Live Virus-mnAb ID50 (IU50/ml) (=s)")
     cfg2$t_0 <- c(126,100) # Try changing to 0
     cfg2$dataset <- "P3001ModernaCOVEimmunemarkerdata_correlates_processed_v1.1_lvmn_added_Jan14_2022.csv"
-    cfg2$folder_local <- "Moderna data/"
+    cfg2$folder_local <- "../Data/Moderna data/"
     cfg2$folder_cluster <- "Z:/covpn/p3001/analysis/correlates/Part_A_Blinded_Phase_Data/adata/"
     cfg2$cr2_trial <- "moderna_real"
     cfg2$cr2_COR <- c("D29", "D57")
@@ -282,7 +285,7 @@
     cfg2$lab_x <- "Body Weight (kg)"
     cfg2$t_0 <- 595
     cfg2$dataset <- "amp_survival_all.csv"
-    cfg2$folder_local <- "AMP data/"
+    cfg2$folder_local <- "../Data/AMP data/"
     cfg2$folder_cluster <- "Z:/vaccine/p704/analysis/datashare/avi_kenny/adata/"
     cfg2$cr2_trial <- F
     cfg2$cr2_COR <- F
@@ -341,7 +344,7 @@
     cfg2$lab_x <- c("IgG to VT-C (=s)", "IgG to VT-M (=s)", "ADCP gp140 C97ZA (=s)", "ADCP gp140 Mos1 (=s)", "IgG3 gp140 C97ZA (=s)", "IgG3 gp140 Mosaic (=s)", "IgG3 gp120 breadth (=s)", "IgG3 gp140 breadth (=s)", "IgG3 V1V2 breadth (=s)", "IgG3 gp41 (=s)", "IgG3 multi-epitope breadth (=s)", "IgG3 gp120+gp140 breadth (=s)", "IgG V1V2 breadth (=s)", "Overall max diversity score (=s)", "ADCC Peak CAP8 (=s)", "ADCC Peak CH58 (=s)", "ADCC Peak WITO (=s)", "ADCC  AUC CAP8 (=s)", "ADCC AUC CH58 (=s)", "ADCC AUC WITO (=s)", "CD4+ T-cells IFN-g/IL-2 (=s)", "CD8+ T-cells IFN-g/IL-2 (=s)", "IgG3 AE.A244 V1V2 Tags 293F (=s)", "IgG3 C.1086C V1V2 Tags (=s)", "IgG3 gp70-001428.2.42 V1V2 (=s)", "IgG3 gp70-1012.11.TC21.3257 V1V2 (=s)", "IgG3 gp70-1394C9G1 V1V2 (=s)", "IgG3 gp70-BF1266 431a V1V2 (=s)", "IgG3 gp70-Ce1086 B2 V1V2 (=s)", "IgG3 gp70-B.CaseA2 V1V2 (=s)", "IgG AE.A244 V1V2 Tags 293F (=s)", "IgG C.1086C V1V2 Tags (=s)", "IgG gp70-001428.2.42 V1V2 (=s)", "IgG gp70-1012.11.TC21.3257 V1V2 (=s)", "IgG gp70-1394C9G1 V1V2 (=s)", "IgG gp70-9004SS.A3.4 V1V2 (=s)", "IgG gp70-BF1266.431a V1V2 (=s)", "IgG gp70-Ce1086.B2 V1V2 (=s)", "IgG gp70.B.CaseA V1V2 (=s)")
     cfg2$t_0 <- 550
     cfg2$dataset <- "HVTN705_secondcasecontrolprocesseddata_excludeELISpotmarkers.csv"
-    cfg2$folder_local <- "HVTN 705 (all) data/"
+    cfg2$folder_local <- "../Data/HVTN 705 (all) data/"
     cfg2$folder_cluster <- "Z:/vaccine/p705/analysis/lab/cc/copcor/"
     cfg2$cr2_trial <- "hvtn705second"
     cfg2$cr2_COR <- "D210"
@@ -397,7 +400,7 @@
     cfg2$lab_x <- c("IgG gp140 C97ZA (EU/ml) (=s)", "Average phagocytosis score to gp140 C97ZA (=s)", "IgG3 V1V2 breadth (Wt avg log10 Net MFI) (=s)", "IgG3 gp120 + gp140 breadth (Wt avg log10 Net MFI) (=s)", "ELISPot PTE Env (=s)", "Multi-epitope functions (=s)", "Average phagocytosis score to gp140 Mos1 (=s)", "IgG V1V2 breadth (Wt avg log10 Net MFI) (=s)", "AUC baseline-subtracted CAP8 (% loss of luc activity) (=s)", "AUC baseline-subtracted CH58 (% loss of luc activity) (=s)", "AUC baseline-subtracted WITO (% loss of luc activity) (=s)", "CD4+ T cell responses to any Env peptide pools (=s)", "CD8+ T cell responses to any Env peptide pools (=s)", "IgG3 Net MFI to AE.A244 V1V2 Tags 293F (=s)", "IgG3 Net MFI to C.1086C V1V2 Tags (=s)", "IgG3 Net MFI to gp70-001428.2.42 V1V2 (=s)", "IgG3 Net MFI to gp70-1012.11.TC21.3257 V1V2 (=s)", "IgG3 Net MFI to gp70-1394C9G1 V1V2 (=s)", "IgG3 Net MFI to gp70-BF1266 431a V1V2 (=s)", "IgG3 Net MFI to gp70-Ce1086 B2 V1V2 (=s)", "IgG3 Net MFI to gp70-B.CaseA2 V1V2 (=s)", "IgG3 V1V2 breadth (AE.A244/C.1086/B.CaseA) (=s)", "IgG3 V1V2 breadth score trunc1 (=s)", "IgG3 V1V2 breadth score selected trunc1 (=s)", "IgG3 V2i breadth score trunc1 (=s)", "IgG3 V2p breadth score trunc1 (=s)")
     cfg2$t_0 <- 550
     cfg2$dataset <- "HVTN705_secondcasecontrolprocesseddata_v12.csv"
-    cfg2$folder_local <- "HVTN 705 (second) data/"
+    cfg2$folder_local <- "../Data/HVTN 705 (second) data/"
     cfg2$folder_cluster <- "Z:/vaccine/p705/analysis/lab/cc/copcor/"
     cfg2$cr2_trial <- "hvtn705second"
     cfg2$cr2_COR <- "D210"
@@ -456,7 +459,7 @@
     cfg2$lab_x <- c("IgG3 AE.A244 V1V2 Tags 293F (=s)", "IgG3 C.1086C V1V2 Tags (=s)", "IgG3 gp70-Ce1086 B2 V1V2 (=s)", "IgG3 gp70-B.CaseA2 V1V2 (=s)", "IgA A1.con.env03 140 CF (=s)", "IgG3 V1V2 A244, 1086, CaseA (=s)")
     cfg2$t_0 <- 550
     cfg2$dataset <- "HVTN705_secondcasecontrolprocesseddata_v9.csv"
-    cfg2$folder_local <- "HVTN 705 (compare RV144) data/"
+    cfg2$folder_local <- "../Data/HVTN 705 (compare RV144) data/"
     cfg2$folder_cluster <- "Z:/vaccine/p705/analysis/lab/cc/copcor/"
     cfg2$cr2_trial <- "hvtn705second"
     cfg2$cr2_COR <- "D210"
@@ -512,7 +515,7 @@
     cfg2$lab_x <- c("CD4+ T-cells IFN-g/IL-2 JMos1 gp120 (=s)", "CD4+ T-cells IFN-g/IL-2 JMos1 gp41 (=s)", "CD4+ T-cells IFN-g/IL-2 JMos2 Gag (=s)", "CD4+ T-cells IFN-g/IL-2 JMos2 RNAseInt (=s)", "CD4+ T-cells IFN-g/IL-2 JMos2s gp120 (=s)", "CD4+ T-cells IFN-g/IL-2 JMos2s gp41 (=s)", "CD8+ T-cells IFN-g/IL-2 JMos1 gp120 (=s)", "CD8+ T-cells IFN-g/IL-2 JMos1 gp41 (=s)", "CD8+ T-cells IFN-g/IL-2 JMos2 Gag (=s)", "CD8+ T-cells IFN-g/IL-2 JMos2 RNAseInt (=s)", "CD8+ T-cells IFN-g/IL-2 JMos2s gp120 (=s)", "CD8+ T-cells IFN-g/IL-2 JMos2s gp41 (=s)")
     cfg2$t_0 <- 550
     cfg2$dataset <- "HVTN705_secondcasecontrolprocesseddata_excludeELISpotmarkersaddICSmarkers.csv"
-    cfg2$folder_local <- "HVTN 705 (ICS) data/"
+    cfg2$folder_local <- "../Data/HVTN 705 (ICS) data/"
     cfg2$folder_cluster <- "Z:/vaccine/p705/analysis/lab/cc/copcor/"
     cfg2$cr2_trial <- "hvtn705second"
     cfg2$cr2_COR <- "D210"
@@ -571,7 +574,7 @@
     cfg2$lab_x <- c("Pseudovirus-nAb ID50 (IU50/ml) (=s)", "Anti Spike IgG (BAU/ml) (=s)")
     cfg2$t_0 <- c(117,92)
     cfg2$dataset <- c("azd1222_data_processed_with_riskscore.csv", "azd1222_bAb_data_processed_with_riskscore.csv")
-    cfg2$folder_local <- "AZD1222 data/"
+    cfg2$folder_local <- "../Data/AZD1222 data/"
     cfg2$folder_cluster <- "Z:/covpn/p3002/analysis/correlates/Part_A_Blinded_Phase_Data/adata/"
     cfg2$cr2_trial <- c("azd1222", "azd1222_bAb")
     cfg2$cr2_COR <- c("D29", "D57")
@@ -618,7 +621,7 @@
     
     # Initial analysis: 1-58
     # Second manuscript: 1-3,13-15,25-27,37-39,45-47,49-51,59-64
-    
+
     # Override default config
     cfg2$estimators <- list(overall="Cox gcomp", cr=c("Grenander", "Cox gcomp"))
     cfg2$qnt[["Risk, nonparametric"]] <- c(0,0.9)
@@ -636,7 +639,7 @@
     cfg2$lab_x <- c("Anti Spike IgG (BAU/ml) (=s)", "Anti RBD IgG (BAU/ml) (=s)", "Pseudovirus-nAb ID50 (IU50/ml) (=s)", "Phagocytic Score (=s)", "Pseudovirus-nAb ID50 LA (IU50/ml) (=s)", "Pseudovirus-nAb ID50 SA (IU50/ml) (=s)")
     cfg2$t_0 <- 0
     # cfg2$t_0 <- 101
-    cfg2$dataset <- c("janssen_pooled_partA_data_processed_with_riskscore.csv",
+    cfg2$dataset <- c("janssen_pooled_partA_data_processed_with_riskscore_20240226.csv",
                       "janssen_pooled_partAsenior_data_processed_with_riskscore.csv",
                       "janssen_pooled_partAnonsenior_data_processed_with_riskscore.csv",
                       "janssen_na_partA_data_processed_with_riskscore.csv",
@@ -647,7 +650,8 @@
                       "janssen_la_partAnonsenior_data_processed_with_riskscore.csv",
                       "janssen_sa_partA_data_processed_with_riskscore.csv",
                       "janssen_sa_partAnonsenior_data_processed_with_riskscore.csv")
-    cfg2$folder_local <- "Janssen (partA) data/"
+#     cfg2$folder_local <- "../Data/Janssen (partA) data/"
+    cfg2$folder_local <- "../covpn/adata/"
     cfg2$folder_cluster <- "Z:/covpn/p3003/analysis/correlates/Part_A_Blinded_Phase_Data/adata/"
     cfg2$cr2_trial <- c("janssen_pooled_partA",
                         "janssen_pooled_partAsenior",
@@ -730,7 +734,7 @@
     cfg2$t_0 <- c(114,66)
     cfg2$dataset <- c("profiscov_data_processed_with_riskscore.csv",
                       "profiscov_lvmn_data_processed_with_riskscore.csv")
-    cfg2$folder_local <- "Profiscov data/"
+    cfg2$folder_local <- "../Data/Profiscov data/"
     cfg2$folder_cluster <- "Y:/cavd/Objective 4/GH-VAP/ID127-Gast/correlates/adata/"
     cfg2$cr2_trial <- c("profiscov", "profiscov_lvmn") # dummy; not using Cox estimates
     cfg2$cr2_COR <- c("D43", "D91")
@@ -789,7 +793,7 @@
     cfg2$lab_x <- c("IgG3 AE.A244 V1V2 Tags 293F (=s)", "IgG3 C.1086C V1V2 Tags (=s)", "IgG3 gp70-Ce1086 B2 V1V2 (=s)", "IgG3 gp70-B.CaseA2 V1V2 (=s)", "IgA A1.con.env03 140 CF (=s)", "IgG3 V1V2 A244, 1086, CaseA (=s)")
     cfg2$t_0 <- c(578) # c(0)
     cfg2$dataset <- c("rv144_ank.csv")
-    cfg2$folder_local <- "RV144 data/"
+    cfg2$folder_local <- "../Data/RV144 data/"
     cfg2$folder_cluster <- "../../IC-Pipeline/Data/RV144 data/"
     cfg2$cr2_trial <- ""
     cfg2$cr2_COR <- ""
@@ -866,7 +870,7 @@
     
     cfg2$t_0 <- 0
     cfg2$dataset <- "moderna_boost_data_processed_20230912.csv"
-    cfg2$folder_local <- "Moderna (boost) data/"
+    cfg2$folder_local <- "../Data/Moderna (boost) data/"
     cfg2$folder_cluster <- "Z:/covpn/p3001/analysis/correlates/Part_C_Unblinded_Phase_Data/adata/"
     cfg2$cr2_trial <- "moderna_boost"
     cfg2$cr2_COR <- c("BD29naive", "BD29nnaive")
@@ -952,7 +956,7 @@
     cfg2$t_0 <- c(159,129)
     # cfg2$dataset <- "vat08_combined_data_processed_20240804.csv"
     cfg2$dataset <- "vat08_combined_data_processed_20250417.csv"
-    cfg2$folder_local <- "Sanofi data/"
+    cfg2$folder_local <- "../Data/Sanofi data/"
     # cfg2$folder_cluster <- "Z:/covpn/p3005/analysis/correlates/Part_A_Blinded_Phase_Data/adata/"
     cfg2$folder_cluster <- "../../IC-Pipeline/Data/Sanofi data/"
     cfg2$cr2_trial <- ""
@@ -1033,7 +1037,7 @@
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
-    cfg2$dataset <- paste0("../Data/", cfg2$folder_local, cfg2$dataset)
+    cfg2$dataset <- paste0(cfg2$folder_local, cfg2$dataset)
   }
   
   # Set config based on cfg2$map
@@ -1521,7 +1525,7 @@ if (cfg2$estimators$overall %in% c("Cox gcomp", "KM")) {
 if (cfg2$estimators$overall=="Cox import" ||
     "Cox import" %in% cfg2$estimators$cr) {
   
-  path1 <- paste0("../Data/", cfg2$folder_local, "output/", cfg2$cr2_trial, "/",
+  path1 <- paste0(cfg2$folder_local, "output/", cfg2$cr2_trial, "/",
                   cfg2$cr2_COR, "/marginalized.risk.Rdata")
   path2 <- gsub("risk.Rdata", "risk.no.marker.Rdata", path1)
   load(path1) # risks.all.1
@@ -1793,13 +1797,13 @@ if (flags$run_mediation) {
                            xlim=c(-1,1))
       
       # Export 10x6
-      ggsave(filename = paste0("../Figures + Tables/", cfg2$analysis,
+      ggsave(filename = paste0("Figures + Tables/", cfg2$analysis,
                                " plots/plot_pm.pdf"),
              plot=p_pm, device="pdf", width=10, height=6)
-      ggsave(filename = paste0("../Figures + Tables/", cfg2$analysis,
+      ggsave(filename = paste0("Figures + Tables/", cfg2$analysis,
                                " plots/plot_nde.pdf"),
              plot=p_nde, device="pdf", width=10, height=6)
-      ggsave(filename = paste0("../Figures + Tables/", cfg2$analysis,
+      ggsave(filename = paste0("Figures + Tables/", cfg2$analysis,
                                " plots/plot_nie.pdf"),
              plot=p_nie, device="pdf", width=10, height=6)
       
@@ -2172,8 +2176,8 @@ if (flags$run_hyptest) {
   # !!!!! Move this
   if (F) {
     
-    # folder <- "../Figures + Tables/Janssen (partA) plots/Run 11 (58 graphs, 0.90 cutoff)/Hyptest"
-    folder <- "../Figures + Tables/Profiscov plots/Run 5 (added hyptest)/Hyptest"
+    # folder <- "Figures + Tables/Janssen (partA) plots/Run 11 (58 graphs, 0.90 cutoff)/Hyptest"
+    folder <- "Figures + Tables/Profiscov plots/Run 5 (added hyptest)/Hyptest"
     files <- dir(folder)
     n_pvals <- length(files)
     p_vals <- rep(NA, n_pvals)
@@ -2655,7 +2659,7 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
     }
     
     ggsave(
-      filename = paste0("../Figures + Tables/", cfg2$analysis, " plots/",
+      filename = paste0("Figures + Tables/", cfg2$analysis, " plots/",
                         filename),
       plot=plot, device="pdf", width=6, height=4
     )
@@ -2680,7 +2684,7 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
     
     if (flags$table_of_vals) {
       write.table(trim_plot_data(plot_data_risk, cutoffs, cfg2),
-                  file=paste0("../Figures + Tables/", cfg2$analysis,
+                  file=paste0("Figures + Tables/", cfg2$analysis,
                               " plots/risk_", cfg2$tid, ".csv"),
                   sep=",",
                   row.names=FALSE)
@@ -2747,7 +2751,7 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
     }
     
     ggsave(
-      filename = paste0("../Figures + Tables/", cfg2$analysis, " plots/",
+      filename = paste0("Figures + Tables/", cfg2$analysis, " plots/",
                         filename),
       plot=plot, device="pdf", width=6, height=4
     )
@@ -2760,7 +2764,7 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
     
     if (flags$table_of_vals) {
       write.table(trim_plot_data(plot_data_cve, cutoffs, cfg2),
-                  file=paste0("../Figures + Tables/", cfg2$analysis,
+                  file=paste0("Figures + Tables/", cfg2$analysis,
                               " plots/cve_", cfg2$tid, ".csv"),
                   sep=",",
                   row.names=FALSE)
@@ -3041,7 +3045,7 @@ if (F) {
       hst = hst
     )
     ggsave(
-      filename = paste0("../Figures + Tables/", cfg2$analysis,
+      filename = paste0("Figures + Tables/", cfg2$analysis,
                         " plots/plot_risk_", i, ".pdf"),
       plot=plot, device="pdf", width=6, height=4
     )
@@ -3886,7 +3890,7 @@ if (F) {
                hjust=1.05, vjust=-0.5)
     
     # Save plot
-    ggsave(filename = paste0("../Figures + Tables/Sanofi plots/plot_vp_", i,
+    ggsave(filename = paste0("Figures + Tables/Sanofi plots/plot_vp_", i,
                              ".pdf"),
            plot=plot, device="pdf", width=6, height=4)
     

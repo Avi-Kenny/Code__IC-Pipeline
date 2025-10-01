@@ -1,5 +1,5 @@
 # Change library path
-.libPaths(c("/home/akenny/R_lib", "/hpc/home/ak811/R_lib", .libPaths()))
+# .libPaths(c("/home/akenny/R_lib", "/hpc/home/ak811/R_lib", .libPaths()))
 
 # Set packages
 cfg$pkgs <- c(

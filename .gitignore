@@ -1,3 +1,8 @@
+Figures + Tables/
+renv/
+
+*.out
+
 # History files
 .Rhistory
 .Rapp.history
