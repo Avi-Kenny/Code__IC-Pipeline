@@ -31,7 +31,7 @@ if (Sys.getenv("HOME")=="/home/akenny") {
                  "/Code__", Sys.getenv("proj"))
   )
 } else {
-  cluster_config <- list(js="", dir="")
+  cluster_config <- list(js="slurm", dir="")
 }
 
 # Load packages (if running locally or not running sims)
