@@ -1234,6 +1234,7 @@
   
   # ULOQ truncation for Janssen partA
   if (cfg2$analysis=="Janssen (partA)") {
+    uloq <- NULL
     if (cfg2$marker=="Day29bindSpike") {
       uloq <- 238.1165
     } else if (cfg2$marker=="Day29bindRBD") {
@@ -1241,7 +1242,9 @@
     } else if (cfg2$marker=="Day29pseudoneutid50") {
       uloq <- 844.7208
     }
-    df_ph1$marker <- pmin(df_ph1$marker, log10(uloq))
+    if (!is.null(uloq)) {
+      df_ph1$marker <- pmin(df_ph1$marker, log10(uloq))
+    }
   }
   
   # Hack to avoid conditional censoring function equaling zero in Sanofi
