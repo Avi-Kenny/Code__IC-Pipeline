@@ -4,7 +4,7 @@
 # Set packages
 cfg$pkgs <- c(
   "splines", "survival", "SuperLearner", "magrittr", "ggplot2", "dplyr",
-  "vaccine", "plotrix"
+  "vaccine", "plotrix", "survSuperLearner"
 )
 cfg$pkgs_nocluster <- c()
 
