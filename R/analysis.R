@@ -15,7 +15,7 @@
   # "Janssen" "Moderna" "AMP" "AZD1222" "Janssen (partA)" "Profiscov"
   # "HVTN 705 (primary)" "HVTN 705 (all)" "RV144" "HVTN 705 (second)"
   # "HVTN 705 (compare RV144)" "Moderna (boost)"
-  cfg2 <- list(analysis="Janssen (partA)", calc_ests=T, seed=1)
+  cfg2 <- list(analysis="Moderna", calc_ests=T, seed=1)
 
   dir.create(paste0("rds/", cfg2$analysis, " objs"), showWarnings = FALSE, recursive=TRUE)
   dir.create(paste0("Figures + Tables/", cfg2$analysis, " plots"), showWarnings = FALSE, recursive=TRUE)
@@ -82,16 +82,16 @@
   #       dependent on cfg2 variables
   flags <- list(
     run_hyptest = F,
-    run_mediation = T,
+    run_mediation = F,
     hvtn705_abstract_fig = F,
-    table_of_vals = T,
+    table_of_vals = F,
     save_data_objs = F,
     save_plot_objs = F,
     save_diagnostics = F,
     paper_npcve = F,
-    paper_cox = F,
+    paper_cox = T,
     hvtn124_plot = F,
-    partA_mnscrpt2 = T,
+    partA_mnscrpt2 = F,
     moderna_boost_x_scale = F,
     sanofi_align_y_axis = F
   )
@@ -261,10 +261,13 @@
     
     # Flag-specific operation
     if (flags$paper_npcve || flags$paper_cox) {
-      
       cfg2$zoom_x <- c("zoomed", "zoomed llox")
       cfg2$map$zoom_x <- c(1,1,1,1,2,1,2,1,2,1)
-      
+    }
+    
+    # Flag-specific operation
+    if (flags$paper_cox) {
+      cfg2$estimators <- list(overall="Cox gcomp", cr="Cox gcomp")
     }
     
   }
@@ -1033,7 +1036,7 @@
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 57
+    cfg2$tid <- 3
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
