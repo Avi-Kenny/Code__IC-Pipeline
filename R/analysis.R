@@ -85,7 +85,7 @@
     run_mediation = F,
     hvtn705_abstract_fig = F,
     table_of_vals = F,
-    save_data_objs = F,
+    save_data_objs = T,
     save_plot_objs = F,
     save_diagnostics = F,
     paper_npcve = F,
@@ -267,7 +267,12 @@
     
     # Flag-specific operation
     if (flags$paper_cox) {
+      
       cfg2$estimators <- list(overall="Cox gcomp", cr="Cox gcomp")
+      cfg2$qnt[["Bootstrap CI"]] <- c(0.025,0.975)
+      cfg2$qnt[["Uniform CI"]] <- c(0.025,0.975)
+      cfg2$qnt[["Pointwise CI"]] <- c(0.025,0.975)
+      
     }
     
   }
@@ -1036,7 +1041,7 @@
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 3
+    cfg2$tid <- 4
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
@@ -2062,6 +2067,136 @@ if (flags$run_hyptest) {
 
 
 
+#########################.
+##### Cox CVE paper #####
+#########################.
+
+if (flags$paper_cox) {
+  
+  ####################.
+  # 1. Modify tables #
+  ####################.
+  
+  # Modify tables
+  plot_data_risk %<>% dplyr::mutate(
+    curve = ifelse(curve=="Risk, Cox model", "Pointwise CI", curve)
+  )
+  # plot_data_cve %<>% dplyr::mutate(
+  #   curve = ifelse(curve=="CVE, Cox model", "Pointwise CI", curve)
+  # )
+  plot_data_risk %<>% dplyr::filter(curve!="Placebo overall")
+  
+  #########################.
+  # 2. Uniform conf bands #
+  #########################.
+  
+  set.seed(cfg2$seed)
+  print(paste("Uniform START:", Sys.time()))
+  ests <- vaccine::est_ce(
+    dat = dat,
+    type = "Cox",
+    t_0 = cfg2$t_0,
+    cve = as.logical("CVE" %in% cfg2$plots),
+    cr_placebo_arm = cr_placebo_arm,
+    s_out = s_grid,
+    ci_type = "uniform",
+    placebo_risk_method = "Cox"
+  )
+  print(paste("Uniform END:", Sys.time()))
+  saveRDS(ests, paste0("rds/", cfg2$analysis, " objs/ests_unif_", cfg2$tid,
+                       ".rds"))
+  
+  ests2 <- process_ests(ests, s_grid, run_cve=T,
+                        lab_risk="Uniform CI",
+                        lab_cve="Uniform CI")
+  plot_data_risk <- rbind(plot_data_risk, ests2$risk)
+  plot_data_cve <- rbind(plot_data_cve, ests2$cve)
+  
+  ###########################.
+  # 3. Bootstrap conf bands #
+  ###########################.
+  
+  set.seed(cfg2$seed)
+  
+  # Objects to hold replicate info
+  n_boot <- 1000
+  ests_cr_boot <- ests_cve_boot <- matrix(nrow=n_boot, ncol=length(s_grid))
+  num_succ <- 0
+  num_errs <- 0
+  
+  print(paste("Bootstrap START:", Sys.time()))
+  for (i in c(1:n_boot)) {
+    
+    # Create resampled data object
+    tps_strata <- dat$strata
+    tps_strata_unique <- sort(unique(tps_strata))
+    ids_new <- c()
+    for (str in tps_strata_unique) {
+      ids_str <- which(tps_strata==str)
+      ids_new <- c(ids_new, sample(ids_str, replace=T))
+    }
+    dat_resampled <- dat[ids_new,]
+    
+    dat_resampled2 <- load_data(
+      time="y", event="delta", vacc="a", marker="s",
+      covariates=c("x1","x2","x3"), weights="weights", ph2="z",
+      data=dat_resampled
+    )
+    
+    tryCatch(
+      expr = {
+        ests_one <- vaccine::est_ce(
+          dat = dat_resampled2,
+          type = "Cox",
+          t_0 = cfg2$t_0,
+          cve = as.logical("CVE" %in% cfg2$plots),
+          cr_placebo_arm = cr_placebo_arm,
+          s_out = s_grid,
+          ci_type = "none",
+          placebo_risk_method = "Cox"
+        )
+        ests_cr_boot[i,] <- ests_one$cr$est
+        ests_cve_boot[i,] <- ests_one$cve$est
+        num_succ <- num_succ + 1
+      },
+      error = function(e) {
+        num_errs <<- num_errs + 1
+      }
+    )
+    
+  }
+  print(paste("Bootstrap END:", Sys.time()))
+  
+  # Extract CIs
+  ci_cve_lower <- ci_cve_upper <- ci_cr_upper <- ci_cr_lower <- rep(NA, length(s_grid))
+  for (i in c(1:length(s_grid))) {
+    lims_cr <- as.numeric(quantile(ests_cr_boot[,i], probs=c(0.025,0.975), na.rm=T))
+    lims_cve <- as.numeric(quantile(ests_cve_boot[,i], probs=c(0.025,0.975), na.rm=T))
+    ci_cr_lower[i] <- lims_cr[1]
+    ci_cr_upper[i] <- lims_cr[2]
+    ci_cve_lower[i] <- lims_cve[1]
+    ci_cve_upper[i] <- lims_cve[2]
+  }
+  
+  # Modify ests
+  ests$cr$ci_lower <- ci_cr_lower
+  ests$cr$ci_upper <- ci_cr_upper
+  ests$cve$ci_lower <- ci_cve_lower
+  ests$cve$ci_upper <- ci_cve_upper
+  saveRDS(ests, paste0("rds/", cfg2$analysis, " objs/ests_boot_", cfg2$tid,
+                       ".rds"))
+  
+  ests2 <- process_ests(ests, s_grid, run_cve=T,
+                        lab_risk="Bootstrap CI",
+                        lab_cve="Bootstrap CI")
+  plot_data_risk <- rbind(plot_data_risk, ests2$risk)
+  plot_data_cve <- rbind(plot_data_cve, ests2$cve)
+  stop("Continue manually.")
+  
+}
+
+
+
 #############################.
 ##### Plotting function #####
 #############################.
@@ -2119,7 +2254,8 @@ if (flags$run_hyptest) {
       "Risk, Cox (basic)", "CVE, Cox (basic)",
       "Risk, Cox (spline 4 df)", "CVE, Cox (spline 4 df)",
       "Risk, Cox (spline 3 df)", "CVE, Cox (spline 3 df)",
-      "Risk, Cox (edge)", "CVE, Cox (edge)"
+      "Risk, Cox (edge)", "CVE, Cox (edge)",
+      "Bootstrap CI", "Uniform CI", "Pointwise CI"
     )
     curve_colors <- c(
       "darkgrey", "darkgrey", "darkgrey", "darkgrey",
@@ -2130,7 +2266,8 @@ if (flags$run_hyptest) {
       "darkorchid3", "darkorchid3",
       "firebrick3", "firebrick3",
       "firebrick3", "firebrick3",
-      "darkgreen", "darkgreen"
+      "darkgreen", "darkgreen",
+      "firebrick3", "deepskyblue3", "darkorchid3"
     )
     names(curve_colors) <- curves
     indices <- which(curves %in% unique(plot_data$curve))
@@ -2304,12 +2441,13 @@ if (flags$run_hyptest) {
     plot <- ggplot(plot_data, aes(x=x, y=y, color=curve))
     if (density_type=="histogram") {
       
+      fill_color <- "orange"
+      if (flags$paper_cox) { fill_color <- "forestgreen" }
       plot <- plot + geom_rect(
         aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax),
         hist_data,
         alpha = 0.3,
-        fill = "orange",
-        # fill = "forestgreen",
+        fill = fill_color,
         inherit.aes = F
       )
       
@@ -2326,14 +2464,26 @@ if (flags$run_hyptest) {
       )
       
     }
-    plot <- plot +
-      geom_ribbon(
+    if (flags$paper_cox) {
+      plot <- plot +
+        geom_ribbon(
+          aes(ymin=ci_lo, ymax=ci_up, linetype=curve),
+          alpha = 0
+        ) +
+        geom_line(
+          aes(x=x, y=y, color=curve),
+          inherit.aes = F
+        )
+    } else {
+      plot <- plot + geom_ribbon(
         aes(ymin=ci_lo, ymax=ci_up, fill=curve),
         alpha = 0.05,
         linetype = "dotted"
       ) +
-      # geom_line(linewidth=0.7) +
-      geom_line() +
+        geom_line()
+    }
+    
+    plot <- plot +
       scale_y_continuous(
         labels = scales::label_percent(accuracy=1),
         breaks = syc_breaks,
@@ -2358,6 +2508,17 @@ if (flags$run_hyptest) {
       ) +
       theme(legend.position="bottom") +
       labs(title=labs$title, x=labs$x, y=labs$y, color=NULL, fill=NULL)
+    
+    if (flags$paper_cox) {
+      plot <- plot +
+        scale_linetype_manual(
+          values = c("Vaccine overall"="dotted", "Pointwise CI"="solid",
+                     "Bootstrap CI"="dashed", "Uniform CI"="twodash"),
+          breaks = curves[!(curves %in% c("Placebo overall", "Vaccine overall"))]
+        ) +
+        labs(linetype=NULL)
+    }
+    
     if (log10_x_axis) {
       if (is.null(cfg2$llox)) {
         x_axis <- draw.x.axis.cor(zoom_x, NA, cfg2$more_ticks)
@@ -2490,11 +2651,13 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
       if (cfg2$tid %in% c(53,57)) { cfg2$zoom_y_risk <- c(-0.002,0.035) } # Main figure 5
       if (cfg2$tid %in% c(46,47)) { cfg2$zoom_y_risk <- c(-0.002,0.065) } # Supp figure 28
       if (cfg2$tid %in% c(55,56)) { cfg2$zoom_y_risk <- c(-0.002,0.030) } # Supp figure 29
+    } else if (flags$paper_cox) {
+      if (cfg2$tid==3) { cfg2$zoom_y_risk <- c(-0.002,0.025) }
+      if (cfg2$tid==4) { cfg2$zoom_y_risk <- c(-0.002,0.025) }
     }
     
     plot <- create_plot(
       plot_data = trim_plot_data(plot_data_risk, cutoffs, cfg2),
-      # plot_data = trim_plot_data(dplyr::filter(plot_data_risk, curve!="Risk, Cox model"), cutoffs, cfg2),
       which = "Risk",
       zoom_x = cfg2$zoom_x,
       zoom_y = cfg2$zoom_y_risk,
@@ -2584,7 +2747,6 @@ if (nrow(plot_data_risk)>0 || nrow(plot_data_cve)>0) {
     case_dots <- as.logical(flags$partA_mnscrpt2)
     plot <- create_plot(
       plot_data = trim_plot_data(plot_data_cve, cutoffs, cfg2),
-      # plot_data = trim_plot_data(dplyr::filter(plot_data_cve, curve!="CVE, Cox model"), cutoffs, cfg2),
       which = "CVE",
       zoom_x = cfg2$zoom_x,
       zoom_y = cfg2$zoom_y_cve,
