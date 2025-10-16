@@ -1041,7 +1041,7 @@
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 4
+    cfg2$tid <- 3
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
@@ -2192,6 +2192,43 @@ if (flags$paper_cox) {
   plot_data_risk <- rbind(plot_data_risk, ests2$risk)
   plot_data_cve <- rbind(plot_data_cve, ests2$cve)
   stop("Continue manually.")
+  
+  ########################.
+  # 4. Positivity figure #
+  ########################.
+  
+  # Subset to those with marker value
+  dat_vs <- dat_v[!is.na(dat_v$s),]
+
+  # Data wrangling
+  dat_vs$x1 <- factor(dat_vs$x1)
+  dat_vs$x2 <- factor(dat_vs$x2)
+  dat_vs$x3 <- cut(dat_vs$x3, breaks=round(stats::quantile(dat_vs$x3),1),
+                   include.lowest=T)
+  
+  # Plotting function
+  dens_plot <- function(dat_vs, var, lab, xlim) {
+    dat_vs$var <- dat_vs[[var]]
+    plot <- ggplot(dat_vs, aes(x=s, color=var)) +
+      geom_density(adjust=0.5) +
+      scale_x_continuous(labels=scales::math_format(10^.x), limits=xlim) +
+      ylim(c(0,1.8)) +
+      labs(y=NULL, color=lab) +
+      theme(legend.position="bottom")
+    return(plot)
+  }
+  
+  # Create and save plot
+  # xlim <- c(2,5) # For day 57
+  xlim <- c(1,4) # For day 29
+  p1 <- dens_plot(dat_vs, "x1", lab="Minority", xlim=xlim)
+  p2 <- dens_plot(dat_vs, "x2", lab="High risk", xlim=xlim)
+  p3 <- dens_plot(dat_vs, "x3", lab="Risk score", xlim=xlim)
+  plot <- ggpubr::ggarrange(p1, p2, p3, ncol=2, nrow=2)
+  ggsave(
+    filename = "densities_by_x_day29.pdf",
+    plot=plot, device="pdf", width=9, height=5
+  )
   
 }
 
