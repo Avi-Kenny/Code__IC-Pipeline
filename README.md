@@ -33,7 +33,7 @@ General setup:
 
 ### ENSEMBLE trial severe correlates manuscript
 
-Make sure that the analysis string at line 18 of analysis.R is set to "Janssen (partA)" as shown below.
+Make sure that the analysis string in analysis.R is set to "Janssen (partA)" as shown below.
 ```{r}
   cfg2 <- list(analysis="Janssen (partA)", calc_ests=T, seed=1)
 ```
@@ -46,5 +46,19 @@ sbatch --array=1-64 run_r.sh
 When all jobs are done, the controlled risk and VE plots will be in the folder Figures + Tables\Janssen (partA) plots. To get the mediation results, run the following command in R at the project level:
 ```{r}
 source("make_mediation_table.R")
+```
+
+
+
+### Sanofi stage 2 correlates manuscript
+
+Make sure that the analysis string in analysis.R is set to "Sanofi" as shown below.
+```{r}
+  cfg2 <- list(analysis="Sanofi", calc_ests=T, seed=1)
+```
+
+To generate the controlled risk plots, run the following commands in a bash shell on the repo root level. xx jobs are created to run in parallel on a slurm cluster. Each job renders one of the xx Rmd files. The script run_r.sh contains the following code:
+```{bash}
+sbatch --array=1-xx run_r.sh
 ```
 
