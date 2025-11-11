@@ -38,7 +38,7 @@ Make sure that the analysis string in analysis.R is set to "Janssen (partA)" as 
   cfg2 <- list(analysis="Janssen (partA)", calc_ests=T, seed=1)
 ```
 
-To generate the controlled risk plots, run the following commands in a bash shell on the repo root level. 64 jobs are created to run in parallel on a slurm cluster. Each job renders one of the 64 Rmd files. The script run_r.sh contains the following code:
+To generate the controlled risk plots, run the following commands in a bash shell on the repo root level. 64 jobs are created to run in parallel on a slurm cluster. Each job renders one of the 64 set of plots and supporting files. The script run_r.sh contains the following code:
 ```{bash}
 sbatch --array=1-64 run_r.sh
 ```
@@ -57,8 +57,8 @@ Make sure that the analysis string in analysis.R is set to "Sanofi" as shown bel
   cfg2 <- list(analysis="Sanofi", calc_ests=T, seed=1)
 ```
 
-To generate the controlled risk plots, run the following commands in a bash shell on the repo root level. xx jobs are created to run in parallel on a slurm cluster. Each job renders one of the xx Rmd files. The script run_r.sh contains the following code:
+To generate the controlled risk plots, run the following commands in a bash shell on the repo root level. xx jobs are created to run in parallel on a slurm cluster. Each job renders one of the 90 set of plots and supporting files. The script run_r.sh contains the following code:
 ```{bash}
-sbatch --array=1-xx run_r.sh
+sbatch --array=1-90 run_r.sh
 ```
 
