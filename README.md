@@ -33,7 +33,7 @@ Make sure that the analysis string in R/analysis.R is set to "Janssen (partA)" a
   cfg2 <- list(analysis="Janssen (partA)", calc_ests=T, seed=1)
 ```
 
-- Modify R/analysis.R so that cfg2$folder_local below _if (cfg2$analysis=="Janssen (partA)") {_ points to the local copy of analysis-ready data file, e.g.,
+Modify R/analysis.R so that cfg2$folder_local below _if (cfg2$analysis=="Janssen (partA)") {_ points to the local copy of analysis-ready data file, e.g.,
   ```{r}
     cfg2$folder_local <- "../covpn/adata/"
   ```
@@ -57,7 +57,7 @@ Make sure that the analysis string in R/analysis.R is set to "Sanofi" as shown b
   cfg2 <- list(analysis="Sanofi", calc_ests=T, seed=1)
 ```
 
-- Modify R/analysis.R so that cfg2$folder_local below _if (cfg2$analysis=="Sanofi") {_ points to the local copy of analysis-ready data file, e.g.,
+Modify R/analysis.R so that cfg2$folder_local below _if (cfg2$analysis=="Sanofi") {_ points to the local copy of analysis-ready data file, e.g.,
   ```{r}
     cfg2$folder_local <- "../covpn/adata/"
   ```
