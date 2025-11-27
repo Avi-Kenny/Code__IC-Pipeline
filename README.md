@@ -25,11 +25,6 @@ General setup:
    ```
 
 
-- Modify the following line in R/analysis.R to point to the local copy of analysis-ready data file.
-  ```{r}
-    cfg2$folder_local <- "../covpn/adata/"
-  ```
-
 
 ### ENSEMBLE trial severe correlates manuscript
 
@@ -37,6 +32,11 @@ Make sure that the analysis string in R/analysis.R is set to "Janssen (partA)" a
 ```{r}
   cfg2 <- list(analysis="Janssen (partA)", calc_ests=T, seed=1)
 ```
+
+- Modify R/analysis.R so that cfg2$folder_local below _if (cfg2$analysis=="Janssen (partA)") {_ points to the local copy of analysis-ready data file, e.g.,
+  ```{r}
+    cfg2$folder_local <- "../covpn/adata/"
+  ```
 
 To generate the controlled risk plots, run the following commands in a bash shell on the repo root level. 64 jobs are created to run in parallel on a slurm cluster. Each job renders one of the 64 set of plots and supporting files. The script run_r.sh contains the following code:
 ```{bash}
@@ -56,6 +56,11 @@ Make sure that the analysis string in R/analysis.R is set to "Sanofi" as shown b
 ```{r}
   cfg2 <- list(analysis="Sanofi", calc_ests=T, seed=1)
 ```
+
+- Modify R/analysis.R so that cfg2$folder_local below _if (cfg2$analysis=="Sanofi") {_ points to the local copy of analysis-ready data file, e.g.,
+  ```{r}
+    cfg2$folder_local <- "../covpn/adata/"
+  ```
 
 To generate the controlled risk plots, run the following commands in a bash shell on the repo root level. 90 jobs are created to run in parallel on a slurm cluster. Each job renders one of the 90 set of plots and supporting files. The script run_r.sh contains the following code:
 ```{bash}
