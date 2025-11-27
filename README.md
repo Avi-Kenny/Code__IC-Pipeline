@@ -8,9 +8,15 @@ General setup:
 
 - Assume that we have a high performance computing environment with a slurm scheduler.
 
-- Assume that we have R 4.4.2 loaded, e.g. on the Fred Hutch cluster, ml R-bundle-CRAN/2024.11-foss-2024a
+- Assume that we have R 4.4.2 loaded, e.g. on the Fred Hutch cluster, ml R-bundle-CRAN/2024.11-foss-2024a, which includes gsl
 
-- Assume that we have additional modules required for packages installation and execution loaded, including GSL and CMake. The bundle above takes care of all modules needed.
+- Load additional modules
+  ```{bash}
+  ml CMake/3.29.3-GCCcore-13.3.0
+  ml GLPK/5.0-GCCcore-13.3.0
+  ml Pandoc/2.13
+  ml ICU/75.1-GCCcore-13.3.0
+  ```
 
 - Assume that we have renv installed. If not, open R console at the project level (the folder containing this readme file), and run the following commands to install the current renv from CRAN, which is 1.1.5 as of September 2025. A different renv version may also work.
   ```{r}
