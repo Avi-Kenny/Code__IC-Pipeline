@@ -25,7 +25,7 @@ General setup:
    ```
 
 
-- Modify line 651 (copied below) in analysis.R to point to the local copy of analysis-ready data file.
+- Modify the following line in R/analysis.R to point to the local copy of analysis-ready data file.
   ```{r}
     cfg2$folder_local <- "../covpn/adata/"
   ```
@@ -33,7 +33,7 @@ General setup:
 
 ### ENSEMBLE trial severe correlates manuscript
 
-Make sure that the analysis string in analysis.R is set to "Janssen (partA)" as shown below.
+Make sure that the analysis string in R/analysis.R is set to "Janssen (partA)" as shown below.
 ```{r}
   cfg2 <- list(analysis="Janssen (partA)", calc_ests=T, seed=1)
 ```
@@ -52,7 +52,7 @@ source("make_mediation_table.R")
 
 ### Sanofi stage 2 correlates manuscript
 
-Make sure that the analysis string in analysis.R is set to "Sanofi" as shown below.
+Make sure that the analysis string in R/analysis.R is set to "Sanofi" as shown below.
 ```{r}
   cfg2 <- list(analysis="Sanofi", calc_ests=T, seed=1)
 ```
