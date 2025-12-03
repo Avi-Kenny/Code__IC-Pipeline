@@ -89,7 +89,7 @@
     save_plot_objs = F,
     save_diagnostics = F,
     paper_npcve = F,
-    paper_cox = T,
+    paper_cox = F,
     hvtn124_plot = F,
     partA_mnscrpt2 = F,
     moderna_boost_x_scale = F,
