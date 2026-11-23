@@ -1041,7 +1041,7 @@
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 3
+    cfg2$tid <- 5
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
@@ -1666,6 +1666,23 @@ if (flags$run_mediation) {
   )
   saveRDS(ests_np_med, paste0("rds/", cfg2$analysis, " objs/ests_med_",
                               cfg2$tid, ".rds"))
+  
+  # Cox-based mediation
+  if (F) {
+    
+    set.seed(cfg2$seed)
+    edge_ind <- T
+    # edge_ind <- F
+    ests_cox_med <- vaccine::est_med(
+      dat = dat,
+      type = "Cox",
+      t_0 = cfg2$t_0,
+      scale = "VE",
+      params_cox = params_med_cox(edge_ind=edge_ind)
+    )
+    print(ests_cox_med)
+
+  }
   
   print("MEDIATION ANALYSIS RESULTS")
   print("--------------------------")
