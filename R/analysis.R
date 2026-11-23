@@ -15,7 +15,7 @@
   # "Janssen" "Moderna" "AMP" "AZD1222" "Janssen (partA)" "Profiscov"
   # "HVTN 705 (primary)" "HVTN 705 (all)" "RV144" "HVTN 705 (second)"
   # "HVTN 705 (compare RV144)" "Moderna (boost)"
-  cfg2 <- list(analysis="Moderna", calc_ests=T, seed=1)
+  cfg2 <- list(analysis="AMP2", calc_ests=F, seed=1) # !!!!!
 
   dir.create(paste0("rds/", cfg2$analysis, " objs"), showWarnings = FALSE, recursive=TRUE)
   dir.create(paste0("Figures + Tables/", cfg2$analysis, " plots"), showWarnings = FALSE, recursive=TRUE)
@@ -88,7 +88,7 @@
     save_data_objs = T,
     save_plot_objs = F,
     save_diagnostics = F,
-    paper_npcve = F,
+    paper_npcve = T, # !!!!!
     paper_cox = F,
     hvtn124_plot = F,
     partA_mnscrpt2 = F,
@@ -134,7 +134,7 @@
     cfg2$zoom_y_cve <- "zoomed"
     cfg2$zoom_y_risk <- "zoomed (risk)"
     cfg2$zoom_y_risk_max <- NA
-    cfg2$more_ticks <- c(1,2)
+    cfg2$more_ticks <- c(1:4)
     cfg2$llox_label <- NULL
     cfg2$llox <- NULL
     cfg2$density_type <- "histogram"
@@ -338,6 +338,75 @@
       more_ticks = rep(1, 12),
       covariates_ph2 = rep(1, 12)
     )
+    
+  }
+  
+  if (cfg2$analysis=="AMP2") {
+    
+    # Override default config
+    cfg2$qnt[["Risk, nonparametric"]] <- c(0.1,0.9)
+    cfg2$qnt[["CVE, nonparametric"]] <- c(0.1,0.9)
+    # cfg2$zoom_y_risk <- list(c(-0.002,0.072))
+    # cfg2$llox_label <- "LOD" # NEW
+    # cfg2$llox <- c(0.3076,1.594,2.42,15.02,22.66) # NEW
+    cfg2$plots <- c("Risk")
+    # cfg2$params$deriv_type <- "linear" # From AMP
+    # cfg2$params$ci_type <- "regular" # From AMP
+    
+    # Analysis-specific config
+    cfg2$marker <- c("Day61conc")
+    cfg2$lab_title <- c("Log10 VRC01 Serum Concentration: Day 61")
+    cfg2$lab_x <- c("VRC01 Serum Concentration (log10 ucg/ml) (=s)")
+    cfg2$t_0 <- 534
+    cfg2$dataset <- "dt703704Day61concentrationcorrelates.csv"
+    cfg2$folder_local <- "../Data/AMP2 data/"
+    cfg2$folder_cluster <- "T:/vaccine/p704/analysis/manuscripts/pkcorrelatesSeaton/data_share/"
+    cfg2$cr2_trial <- "protocol" # !!!!! Double-check
+    cfg2$cr2_COR <- c("D61")
+    cfg2$v <- list(
+      id = "Ptid", # !!!!! Not present in the data
+      time = "fudays61towk80",
+      event = "status61towk80",
+      wt = "IPSweight",
+      ph1 = NA,
+      ph2 = "ph2ind",
+      covariates = "~. + weight + age + protocol"
+    )
+    
+    # Variable map; one row corresponds to one CVE graph
+    cfg2$map <- data.frame(
+      endpoint = c(2),
+      marker = c(1),
+      lab_title = c(1),
+      lab_x = c(1),
+      t_0 = c(1),
+      dataset = c(1),
+      cr2_trial = c(1),
+      cr2_COR = c(1),
+      cr2_marker = c(1),
+      edge_corr = c(1),
+      v_id = c(1),
+      v_time = c(1),
+      v_event = c(1),
+      v_wt = c(1),
+      v_ph1 = c(1),
+      v_ph2 = c(1),
+      v_covariates = c(1),
+      dir = c(1),
+      zoom_x = c(1),
+      zoom_y_cve = c(1),
+      zoom_y_risk = c(1),
+      more_ticks = c(4),
+      llox_label = c(1),
+      llox = c(1),
+      covariates_ph2 = c(1)
+    )
+    
+    # Flag-specific operation
+    if (flags$paper_npcve) {
+      cfg2$zoom_x <- c("zoomed", "zoomed llox")
+      # cfg2$map$zoom_x <- c(1,1,1,1,2,1,2,1,2,1)
+    }
     
   }
   
@@ -1041,7 +1110,7 @@
   
   # Set config based on local vs. cluster
   if (Sys.getenv("USERDOMAIN")=="WIN") {
-    cfg2$tid <- 5
+    cfg2$tid <- 1
     cfg2$dataset <- paste0(cfg2$folder_cluster, cfg2$dataset)
   } else {
     cfg2$tid <- as.integer(Sys.getenv(.tid_var))
@@ -1148,6 +1217,9 @@
     } else {
       df_ph1_full %<>% dplyr::filter(tx==cfg2$amp_tx)
     }
+  } else if (cfg2$analysis=="AMP2") {
+    df_ph1_full %<>% dplyr::filter(rx_pool=="T1+T2" & MITT_flag==1)
+    df_ph1_full$Day61conc <- log10(df_ph1_full$Day61conc)
   }
   
   # Parse covariate data frame
@@ -1229,9 +1301,9 @@
   )
   plot_data_cve <- plot_data_risk
   
-  # !!!!! Hack to get Moderna (boost) analysis running
-  if (cfg2$analysis=="Moderna (boost)") {
-    df_ph1_full$Trt <- rep(1, length(df_ph1_full$Trt))
+  # Hack to get Moderna (boost) and AMP2 analyses running
+  if (cfg2$analysis %in% c("Moderna (boost)", "AMP2")) {
+    df_ph1_full$Trt <- rep(1, nrow(df_ph1_full))
   }
   
   df_ph1 <- cbind(
@@ -1415,7 +1487,7 @@ if (cfg2$estimators$overall %in% c("Cox gcomp", "KM")) {
     stop("cfg2$estimators$overall incorrectly specified.")
   }
   
-  if (cfg2$analysis!="Moderna (boost)") {
+  if (!(cfg2$analysis %in% c("Moderna (boost)", "AMP2"))) {
     
     ests_ov <- vaccine::est_overall(dat=dat, t_0=cfg2$t_0, method=method)
     
@@ -2496,7 +2568,7 @@ if (flags$paper_cox) {
     if (density_type=="histogram") {
       
       fill_color <- "orange"
-      if (flags$paper_cox) { fill_color <- "forestgreen" }
+      if (flags$paper_cox || flags$paper_npcve) { fill_color <- "forestgreen" }
       plot <- plot + geom_rect(
         aes(xmin=xmin, xmax=xmax, ymin=ymin, ymax=ymax),
         hist_data,
